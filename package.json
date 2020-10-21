@@ -292,7 +292,9 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19",
-    "video-react": "^0.14.1"
+    "video-react": "^0.14.1",
+    "bootstrap": "^4.5.3",
+    "react-bootstrap": "^1.4.0"
   },
   "devEngines": {
     "node": ">=7.x",

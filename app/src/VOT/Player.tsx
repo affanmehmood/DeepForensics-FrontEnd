@@ -12,6 +12,7 @@ import {
 
 // eslint-disable-next-line
 export default function About(props: any): JSX.Element {
+  const { vidsrc } = props;
   return (
     <>
       <link
@@ -19,8 +20,8 @@ export default function About(props: any): JSX.Element {
         href="https://video-react.github.io/assets/video-react.css"
       />
 
-      <Player poster="/assets/poster.png">
-        <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
+      <Player>
+        <source src="http://media.w3.org/2010/05/bunny/movie.mp4" />
 
         <ControlBar>
           <ReplayControl seconds={10} order={1.1} />
