@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
@@ -6,17 +8,11 @@ import './VOTFront.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function VotFront(): JSX.Element {
-  const [videoFile, setVideoFileURL] = useState({
-    videoFileURL: '',
-    videoFileObject: null,
-  });
+  const [videoFileUrl, setVideoFileURL] = useState('N)N');
 
   // eslint-disable-next-line
-  const handleVideoUpload = (event: any) => {
-    setVideoFileURL({
-      videoFileURL: URL.createObjectURL(event.target.files[0]),
-      videoFileObject: event.target.files[0],
-    });
+  const handleVideoUpload = () => {
+    setVideoFileURL(document.getElementById('myFile').files[0].path);
   };
   return (
     <>
@@ -31,7 +27,8 @@ export default function VotFront(): JSX.Element {
             <div className="col-10 mx-auto">
               <div className="row">
                 <div className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column">
-                  <Player vidsrc={videoFile.videoFileURL} />
+                  <Player vidsrc={videoFileUrl} />
+                  <h6>{videoFileUrl}</h6>
                 </div>
                 <div className="col-lg-4 col-md-4 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
                   <div className="col-md-12 col-lg-12">
@@ -43,7 +40,7 @@ export default function VotFront(): JSX.Element {
                               <input
                                 type="file"
                                 className="custom-file-input"
-                                id="customFile"
+                                id="myFile"
                                 accept="video/*"
                                 onChange={handleVideoUpload}
                               />
