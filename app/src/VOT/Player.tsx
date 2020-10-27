@@ -21,7 +21,7 @@ export default function About(props: any): JSX.Element {
       />
 
       <Player>
-        <source src="http://media.w3.org/2010/05/bunny/movie.mp4" />
+        <source src={vidsrc} />
 
         <ControlBar>
           <ReplayControl seconds={10} order={1.1} />

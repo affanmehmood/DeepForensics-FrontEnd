@@ -1,18 +1,256 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-var */
+/* eslint-disable import/order */
+/* eslint-disable no-else-return */
+/* eslint-disable promise/always-return */
+/* eslint-disable promise/catch-or-return */
+/* eslint-disable no-console */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-useless-escape */
 /* eslint-disable prefer-template */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import Player from './Player';
+import votsrc from '../images/vot2.png';
 import './VOTFront.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { statTrackingFile, getProgress, stopProcess } from '../API';
+
+var TimerMixin = require('react-timer-mixin');
+const nodeConsole = require('console');
+
+const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function VotFront(): JSX.Element {
-  const [videoFileUrl, setVideoFileURL] = useState('N)N');
-
+  const [modelState, setModelState] = useState({
+    isProcessing: false,
+    hasProcessedPreviously: false,
+    currentlyTracking: 0,
+    timeRemaining: null,
+    percentageDone: 0,
+    inputPath: null,
+    outputPath: 'outputs/',
+    currentFrame: null,
+  });
+  const [videoFilePath, setVideoFilePath] = useState({
+    path: 'No file selected',
+    isNotEmpty: false,
+    phase1: false,
+    phase2Done: false,
+  });
+  const [intervalProcess, setIntervalProcess] = useState();
   // eslint-disable-next-line
   const handleVideoUpload = () => {
-    setVideoFileURL(document.getElementById('myFile').files[0].path);
+    const path = document.getElementById('myFile').files[0].path;
+    setVideoFilePath({
+      path,
+      isNotEmpty: true,
+      phase1: false,
+      phase2Done: false,
+    });
+  };
+  const getProgressFromApi = () => {
+    getProgress().then((res) => {
+      setModelState(res);
+      setModelState((preVal) => {
+        return {
+          ...preVal,
+          currentFrame: JSON.parse(res.currentFrame),
+        };
+      });
+    });
+  };
+  useEffect(() => {
+    if (modelState.percentageDone == 100) {
+      setVideoFilePath((preVal) => {
+        return {
+          ...preVal,
+          path: 'No file selected',
+          isNotEmpty: false,
+          phase1: false,
+          phase2Done: true,
+        };
+      });
+      TimerMixin.clearTimeout(intervalProcess);
+    }
+  }, [modelState.percentageDone]);
+  const setFilePath = () => {
+    statTrackingFile(videoFilePath).then((res) => {
+      myConsole.log('RESPOSNSE ', res);
+      if (res) {
+        const interval = TimerMixin.setInterval(getProgressFromApi, 1000);
+        setIntervalProcess(interval);
+        setVideoFilePath((preVal) => {
+          return {
+            ...preVal,
+            phase1: true,
+          };
+        });
+      }
+    });
+  };
+  const stopProcessing = () => {
+    stopProcess().then(() => {
+      myConsole.log(intervalProcess);
+      TimerMixin.clearTimeout(intervalProcess);
+    });
+    setVideoFilePath({
+      path: 'No file selected',
+      isNotEmpty: false,
+      phase1: false,
+      phase2Done: false,
+    });
+    setModelState({
+      isProcessing: false,
+      hasProcessedPreviously: false,
+      currentlyTracking: 0,
+      timeRemaining: null,
+      percentageDone: 0,
+      inputPath: null,
+      outputPath: 'outputs/',
+    });
+  };
+  const pickerBlock = () => {
+    if (videoFilePath.phase1) {
+      return (
+        <div className="row mb-4 border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <h6 className="text-center">
+                {videoFilePath.path.replace(/^.*[\\\/]/, '')}
+              </h6>
+            </div>
+          </div>
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <button
+                onClick={stopProcessing}
+                type="button"
+                className="btn btn-danger btn-lg"
+                style={{
+                  paddingLeft: '50px',
+                  paddingRight: '50px',
+                }}
+              >
+                Stop
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="row mb-4 border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <form>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    className="custom-file-input"
+                    id="myFile"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                  />
+                  <label className="custom-file-label">Choose file</label>
+                </div>
+                <h6 className="text-center">
+                  {videoFilePath.path.replace(/^.*[\\\/]/, '')}
+                </h6>
+              </form>
+            </div>
+          </div>
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <button
+                onClick={setFilePath}
+                type="button"
+                className="btn btn-primary btn-lg"
+                style={{
+                  paddingLeft: '50px',
+                  paddingRight: '50px',
+                }}
+              >
+                Start
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
+  const statsBlock = () => {
+    if (
+      !modelState.isProcessing &&
+      !videoFilePath.phase1 &&
+      !videoFilePath.phase2Done
+    ) {
+      return (
+        <div className="row border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <h6>No Stats to show</h6>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (!modelState.isProcessing && videoFilePath.phase1) {
+      return (
+        <div className="row border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <h6>Processing...</h6>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (!modelState.isProcessing && videoFilePath.phase2Done) {
+      return (
+        <div className="row border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <h6>Processing Done</h6>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (modelState.isProcessing) {
+      return (
+        <div className="row border border-dark rounded-left">
+          <div className="col-md-12 col-lg-12">
+            <div className="row justify-content-center p-4">
+              <ProgressBar
+                style={{
+                  padding: 0,
+                }}
+                className="col-md-12 col-lg-12 border-dark"
+                animated
+                now={modelState.percentageDone}
+                label={`${modelState.percentageDone}%`}
+              />
+            </div>
+          </div>
+          <div className="col-md-12 col-lg-12">
+            <div className="row pr-4 pl-4">
+              <h6>
+                EST:
+                {modelState.timeRemaining}
+              </h6>
+            </div>
+            <div className="row pr-4 pl-4 pb-4">
+              <h6>
+                No. of objects tracking:
+                {modelState.currentlyTracking}
+              </h6>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return <></>;
   };
   return (
     <>
@@ -27,68 +265,19 @@ export default function VotFront(): JSX.Element {
             <div className="col-10 mx-auto">
               <div className="row">
                 <div className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column">
-                  <Player vidsrc={videoFileUrl} />
-                  <h6>{videoFileUrl}</h6>
+                  <img
+                    src={
+                      modelState.currentFrame != null
+                        ? modelState.currentFrame
+                        : votsrc
+                    }
+                    alt="objdect"
+                  />
                 </div>
                 <div className="col-lg-4 col-md-4 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
                   <div className="col-md-12 col-lg-12">
-                    <div className="row mb-4 border border-dark rounded-left">
-                      <div className="col-md-12 col-lg-12">
-                        <div className="row justify-content-center p-4">
-                          <form>
-                            <div className="custom-file">
-                              <input
-                                type="file"
-                                className="custom-file-input"
-                                id="myFile"
-                                accept="video/*"
-                                onChange={handleVideoUpload}
-                              />
-                              <label className="custom-file-label">
-                                Choose file
-                              </label>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                      <div className="col-md-12 col-lg-12">
-                        <div className="row justify-content-center p-4">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-lg"
-                            style={{
-                              paddingLeft: '50px',
-                              paddingRight: '50px',
-                            }}
-                          >
-                            Start
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row border border-dark rounded-left">
-                      <div className="col-md-12 col-lg-12">
-                        <div className="row justify-content-center p-4">
-                          <ProgressBar
-                            style={{
-                              padding: 0,
-                            }}
-                            className="col-md-12 col-lg-12 border-dark"
-                            animated
-                            now={45}
-                            label={`${45}%`}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-12 col-lg-12">
-                        <div className="row pr-4 pl-4">
-                          <h6>EST: 00:10:00</h6>
-                        </div>
-                        <div className="row pr-4 pl-4 pb-4">
-                          <h6>No. of objects tracking: 5</h6>
-                        </div>
-                      </div>
-                    </div>
+                    {pickerBlock()}
+                    {statsBlock()}
                   </div>
                 </div>
               </div>
