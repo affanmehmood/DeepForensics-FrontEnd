@@ -60,6 +60,12 @@ export default function VotFront(): JSX.Element {
     getProgress().then((res) => {
       setModelState(res);
     });
+    getFrames().then((frame) => {
+      if (frame.ImageBytes != null) {
+        document.getElementById('cframe').src =
+          'data:image/jpeg;base64,' + frame.ImageBytes;
+      }
+    });
   };
 
   useEffect(() => {
@@ -75,11 +81,6 @@ export default function VotFront(): JSX.Element {
       });
       TimerMixin.clearTimeout(intervalProcess);
       document.getElementById('cframe').src = votsrc;
-    } else if (modelState.isProcessing && modelState.percentageDone > 1) {
-      getFrames().then((frame) => {
-        document.getElementById('cframe').src =
-          'data:image/jpeg;base64,' + frame.ImageBytes;
-      });
     }
   }, [modelState.percentageDone]);
 
@@ -87,7 +88,7 @@ export default function VotFront(): JSX.Element {
     statTrackingFile(videoFilePath).then((res) => {
       myConsole.log('RESPOSNSE ', res);
       if (res) {
-        const interval = TimerMixin.setInterval(getProgressFromApi, 1000);
+        const interval = TimerMixin.setInterval(getProgressFromApi, 200);
         setIntervalProcess(interval);
 
         setVideoFilePath((preVal) => {
@@ -276,7 +277,7 @@ export default function VotFront(): JSX.Element {
                   className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column"
                 >
                   <img
-                    src={modelState.isProcessing ? null : votsrc}
+                    src={modelState.isProcessing ? votsrc : votsrc}
                     style={{ width: '100%', height: '100%' }}
                     id="cframe"
                   />
