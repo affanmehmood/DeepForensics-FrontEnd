@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable promise/no-nesting */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-var */
@@ -17,7 +21,7 @@ import Player from './Player';
 import votsrc from '../images/vot2.png';
 import './VOTFront.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { statTrackingFile, getProgress, stopProcess } from '../API';
+import { statTrackingFile, getProgress, stopProcess, getFrames } from '../API';
 
 var TimerMixin = require('react-timer-mixin');
 const nodeConsole = require('console');
@@ -33,7 +37,6 @@ export default function VotFront(): JSX.Element {
     percentageDone: 0,
     inputPath: null,
     outputPath: 'outputs/',
-    currentFrame: null,
   });
   const [videoFilePath, setVideoFilePath] = useState({
     path: 'No file selected',
@@ -42,6 +45,7 @@ export default function VotFront(): JSX.Element {
     phase2Done: false,
   });
   const [intervalProcess, setIntervalProcess] = useState();
+
   // eslint-disable-next-line
   const handleVideoUpload = () => {
     const path = document.getElementById('myFile').files[0].path;
@@ -55,14 +59,9 @@ export default function VotFront(): JSX.Element {
   const getProgressFromApi = () => {
     getProgress().then((res) => {
       setModelState(res);
-      setModelState((preVal) => {
-        return {
-          ...preVal,
-          currentFrame: JSON.parse(res.currentFrame),
-        };
-      });
     });
   };
+
   useEffect(() => {
     if (modelState.percentageDone == 100) {
       setVideoFilePath((preVal) => {
@@ -75,14 +74,22 @@ export default function VotFront(): JSX.Element {
         };
       });
       TimerMixin.clearTimeout(intervalProcess);
+      document.getElementById('cframe').src = votsrc;
+    } else if (modelState.isProcessing && modelState.percentageDone > 1) {
+      getFrames().then((frame) => {
+        document.getElementById('cframe').src =
+          'data:image/jpeg;base64,' + frame.ImageBytes;
+      });
     }
   }, [modelState.percentageDone]);
+
   const setFilePath = () => {
     statTrackingFile(videoFilePath).then((res) => {
       myConsole.log('RESPOSNSE ', res);
       if (res) {
         const interval = TimerMixin.setInterval(getProgressFromApi, 1000);
         setIntervalProcess(interval);
+
         setVideoFilePath((preVal) => {
           return {
             ...preVal,
@@ -264,14 +271,14 @@ export default function VotFront(): JSX.Element {
           <div className="row">
             <div className="col-10 mx-auto">
               <div className="row">
-                <div className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column">
+                <div
+                  id="framecont"
+                  className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column"
+                >
                   <img
-                    src={
-                      modelState.currentFrame != null
-                        ? modelState.currentFrame
-                        : votsrc
-                    }
-                    alt="objdect"
+                    src={modelState.isProcessing ? null : votsrc}
+                    style={{ width: '100%', height: '100%' }}
+                    id="cframe"
                   />
                 </div>
                 <div className="col-lg-4 col-md-4 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">

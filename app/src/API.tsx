@@ -26,7 +26,20 @@ const getProgress = async () => {
   });
   return data;
 };
+const getFrames = async () => {
+  var data = null;
+  await axios({
+    method: 'GET',
+    url: `http://127.0.0.1:5000/up-frame`,
+    headers: {
+      'content-type': 'application/json',
+    },
+  }).then((res) => {
+    data = res.data;
+  });
 
+  return data;
+};
 const stopProcess = async () => {
   var data = null;
   await axios.get('http://127.0.0.1:5000/finish-process').then((res) => {
@@ -34,6 +47,12 @@ const stopProcess = async () => {
   });
   return data;
 };
-
+const getFString = async () => {
+  var data = null;
+  axios.get('http://127.0.0.1:5000/newframe').then((res) => {
+    data = res.data;
+  });
+  return data;
+};
 // eslint-disable-next-line import/prefer-default-export
-export { statTrackingFile, getProgress, stopProcess };
+export { statTrackingFile, getProgress, stopProcess, getFrames, getFString };
