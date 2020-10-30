@@ -17,119 +17,44 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import { ProgressBar } from 'react-bootstrap';
-import Player from './Player';
 import votsrc from '../images/vot2.png';
 import './VOTFront.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { statTrackingFile, getProgress, stopProcess, getFrames } from '../API';
+import socket from '../socketIoBase';
 
-var TimerMixin = require('react-timer-mixin');
 const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function VotFront(): JSX.Element {
-  const [modelState, setModelState] = useState({
-    isProcessing: false,
-    hasProcessedPreviously: false,
-    currentlyTracking: 0,
-    timeRemaining: null,
-    percentageDone: 0,
-    inputPath: null,
-    outputPath: 'outputs/',
-  });
-  const [videoFilePath, setVideoFilePath] = useState({
-    path: 'No file selected',
-    isNotEmpty: false,
-    phase1: false,
-    phase2Done: false,
-  });
-  const [intervalProcess, setIntervalProcess] = useState();
-
+  // 0 state means noting has happened
+  // 1 state means initializing model
+  // 2 state means started processing
+  // 3 state means processing finished
+  const [state, setState] = useState(0);
+  const [videoFilePath, setVideoFilePath] = useState(null);
   // eslint-disable-next-line
-  const handleVideoUpload = () => {
-    const path = document.getElementById('myFile').files[0].path;
-    setVideoFilePath({
-      path,
-      isNotEmpty: true,
-      phase1: false,
-      phase2Done: false,
-    });
-  };
-  const getProgressFromApi = () => {
-    getProgress().then((res) => {
-      setModelState(res);
-    });
-    getFrames().then((frame) => {
-      if (frame.ImageBytes != null) {
-        document.getElementById('cframe').src =
-          'data:image/jpeg;base64,' + frame.ImageBytes;
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (modelState.percentageDone == 100) {
-      setVideoFilePath((preVal) => {
-        return {
-          ...preVal,
-          path: 'No file selected',
-          isNotEmpty: false,
-          phase1: false,
-          phase2Done: true,
-        };
-      });
-      TimerMixin.clearTimeout(intervalProcess);
-      document.getElementById('cframe').src = votsrc;
-    }
-  }, [modelState.percentageDone]);
-
   const setFilePath = () => {
-    statTrackingFile(videoFilePath).then((res) => {
-      myConsole.log('RESPOSNSE ', res);
-      if (res) {
-        const interval = TimerMixin.setInterval(getProgressFromApi, 200);
-        setIntervalProcess(interval);
-
-        setVideoFilePath((preVal) => {
-          return {
-            ...preVal,
-            phase1: true,
-          };
-        });
-      }
-    });
+    const path = document.getElementById('myFile').files[0].path;
+    setVideoFilePath(path);
   };
-  const stopProcessing = () => {
-    stopProcess().then(() => {
-      myConsole.log(intervalProcess);
-      TimerMixin.clearTimeout(intervalProcess);
-    });
-    setVideoFilePath({
-      path: 'No file selected',
-      isNotEmpty: false,
-      phase1: false,
-      phase2Done: false,
-    });
-    setModelState({
-      isProcessing: false,
-      hasProcessedPreviously: false,
-      currentlyTracking: 0,
-      timeRemaining: null,
-      percentageDone: 0,
-      inputPath: null,
-      outputPath: 'outputs/',
-    });
+  const startProcessing = () => {
+    try {
+      socket.emit('processing-requested', { filepath: videoFilePath });
+      myConsole.log('Emmitted start process request');
+    } catch (error) {
+      myConsole.log('processing-requested =>', error);
+    }
   };
+  const stopProcessing = () => {};
   const pickerBlock = () => {
-    if (videoFilePath.phase1) {
+    if (false) {
       return (
         <div className="row mb-4 border border-dark rounded-left">
           <div className="col-md-12 col-lg-12">
             <div className="row justify-content-center p-4">
-              <h6 className="text-center">
-                {videoFilePath.path.replace(/^.*[\\\/]/, '')}
-              </h6>
+              <h6 className="text-center">Cars.mp3</h6>
             </div>
           </div>
           <div className="col-md-12 col-lg-12">
@@ -161,20 +86,18 @@ export default function VotFront(): JSX.Element {
                     className="custom-file-input"
                     id="myFile"
                     accept="video/*"
-                    onChange={handleVideoUpload}
+                    onChange={setFilePath}
                   />
                   <label className="custom-file-label">Choose file</label>
                 </div>
-                <h6 className="text-center">
-                  {videoFilePath.path.replace(/^.*[\\\/]/, '')}
-                </h6>
+                <h6 className="text-center">cars.mp3</h6>
               </form>
             </div>
           </div>
           <div className="col-md-12 col-lg-12">
             <div className="row justify-content-center p-4">
               <button
-                onClick={setFilePath}
+                onClick={startProcessing}
                 type="button"
                 className="btn btn-primary btn-lg"
                 style={{
@@ -191,11 +114,7 @@ export default function VotFront(): JSX.Element {
     }
   };
   const statsBlock = () => {
-    if (
-      !modelState.isProcessing &&
-      !videoFilePath.phase1 &&
-      !videoFilePath.phase2Done
-    ) {
+    if (true) {
       return (
         <div className="row border border-dark rounded-left">
           <div className="col-md-12 col-lg-12">
@@ -205,17 +124,17 @@ export default function VotFront(): JSX.Element {
           </div>
         </div>
       );
-    } else if (!modelState.isProcessing && videoFilePath.phase1) {
+    } else if (true) {
       return (
         <div className="row border border-dark rounded-left">
           <div className="col-md-12 col-lg-12">
             <div className="row justify-content-center p-4">
-              <h6>Processing...</h6>
+              <h6>initializing model...</h6>
             </div>
           </div>
         </div>
       );
-    } else if (!modelState.isProcessing && videoFilePath.phase2Done) {
+    } else if (true) {
       return (
         <div className="row border border-dark rounded-left">
           <div className="col-md-12 col-lg-12">
@@ -225,7 +144,7 @@ export default function VotFront(): JSX.Element {
           </div>
         </div>
       );
-    } else if (modelState.isProcessing) {
+    } else if (true) {
       return (
         <div className="row border border-dark rounded-left">
           <div className="col-md-12 col-lg-12">
@@ -236,23 +155,17 @@ export default function VotFront(): JSX.Element {
                 }}
                 className="col-md-12 col-lg-12 border-dark"
                 animated
-                now={modelState.percentageDone}
-                label={`${modelState.percentageDone}%`}
+                now={80}
+                label="80%"
               />
             </div>
           </div>
           <div className="col-md-12 col-lg-12">
             <div className="row pr-4 pl-4">
-              <h6>
-                EST:
-                {modelState.timeRemaining}
-              </h6>
+              <h6>EST:24</h6>
             </div>
             <div className="row pr-4 pl-4 pb-4">
-              <h6>
-                No. of objects tracking:
-                {modelState.currentlyTracking}
-              </h6>
+              <h6>No. of objects tracking: 8</h6>
             </div>
           </div>
         </div>
@@ -260,6 +173,30 @@ export default function VotFront(): JSX.Element {
     }
     return <></>;
   };
+  useEffect(() => {
+    // Anything in here is fired on component mount.
+    socket.on('processing-requested');
+    socket.on('initialization-start', () => {
+      myConsole.log('initialization-start');
+    });
+    socket.on('work-start', () => {
+      myConsole.log('work-start');
+    });
+    socket.on('work-progress', (data) => {
+      myConsole.log('work-progress', data);
+    });
+    socket.on('work-end', () => {
+      myConsole.log('work-end');
+    });
+    return () => {
+      // Anything in here is fired on component unmount.
+      socket.off('processing-requested');
+      socket.off('initialization-start');
+      socket.off('work-start');
+      socket.off('work-progress');
+      socket.off('work-end');
+    };
+  }, []);
   return (
     <>
       <section id="header" className="d-flex align-items-center home-section">
@@ -277,7 +214,7 @@ export default function VotFront(): JSX.Element {
                   className="votIconDiv col-md-8 col-lg-8 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column"
                 >
                   <img
-                    src={modelState.isProcessing ? votsrc : votsrc}
+                    src={votsrc}
                     style={{ width: '100%', height: '100%' }}
                     id="cframe"
                   />
