@@ -20,7 +20,6 @@ import { ProgressBar } from 'react-bootstrap';
 import votsrc from '../images/vot2.png';
 import './VOTFront.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { statTrackingFile, getProgress, stopProcess, getFrames } from '../API';
 import socket from '../socketIoBase';
 
 const nodeConsole = require('console');
@@ -200,11 +199,6 @@ export default function VotFront(): JSX.Element {
   return (
     <>
       <section id="header" className="d-flex align-items-center home-section">
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-        />
         <div className="container-fluid ">
           <div className="row">
             <div className="col-10 mx-auto">

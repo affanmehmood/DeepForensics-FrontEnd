@@ -3,8 +3,7 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Contact(): JSX.Element {
   const [state, setstate] = useState({
