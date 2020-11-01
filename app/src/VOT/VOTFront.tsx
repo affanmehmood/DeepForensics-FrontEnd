@@ -214,10 +214,7 @@ export default function VotFront(): JSX.Element {
                   />
                 </div>
                 <div className="col-lg-4 col-md-4 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
-                  <div className="col-md-12 col-lg-12">
-                    {pickerBlock()}
-                    {statsBlock()}
-                  </div>
+                  <div className="col-md-12 col-lg-12">{pickerBlock()}</div>
                 </div>
               </div>
             </div>

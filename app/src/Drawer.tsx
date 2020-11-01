@@ -31,16 +31,16 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 // nav icons
-import SearchIcon from '@material-ui/icons/SearchRounded';
-import AnalyzeIcon from '@material-ui/icons/AssessmentRounded';
+import AnalyzeIcon from '@material-ui/icons/SearchRounded';
+import ProgressIcon from '@material-ui/icons/AssessmentRounded';
 import SettingIcon from '@material-ui/icons/SettingsApplicationsRounded';
 import DefaultIcon from '@material-ui/icons/ReorderRounded';
 import logo1 from './images/deep.png';
 
 // main components
-import Home from './Home';
-import VotFront from './VOT/VOTFront';
-import Contact from './Contact';
+import Analyze from './Analyze/Analyze';
+import Progress from './Progress';
+import Setting from './Setting';
 import Footer from './ReusableCompnents/footer';
 
 // custom styles
@@ -117,11 +117,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const getIcon = (name: string) => {
     switch (name) {
-      case 'Search': {
-        return <SearchIcon />;
+      case 'Progress': {
+        return <ProgressIcon />;
       }
       case 'Analyze': {
         return <AnalyzeIcon />;
@@ -137,11 +137,11 @@ export default function MiniDrawer() {
 
   const getRoutes = (name: string): string => {
     switch (name) {
-      case 'Search': {
-        return '/';
+      case 'Progress': {
+        return '/progress';
       }
       case 'Analyze': {
-        return '/analyze';
+        return '/';
       }
       case 'Setting': {
         return '/setting';
@@ -227,7 +227,7 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Search', 'Analyze'].map((text, index) => (
+          {['Analyze', 'Progress'].map((text, index) => (
             <NavLink
               style={{ textDecoration: 'none', color: 'grey' }}
               to={getRoutes(text)}
@@ -259,9 +259,9 @@ export default function MiniDrawer() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/analyze" component={VotFront} />
-          <Route exact path="/setting" component={Contact} />
+          <Route exact path="/" component={Analyze} />
+          <Route exact path="/progress" component={Progress} />
+          <Route exact path="/setting" component={Setting} />
         </Switch>
         <Footer />
       </main>
