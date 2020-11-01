@@ -52,7 +52,6 @@ const chevron = '#ffffff';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: themeColor,
       display: 'flex',
     },
     appBar: {
@@ -78,7 +77,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'none',
     },
     drawer: {
-      backgroundColor: themeColor,
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
@@ -102,7 +100,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     toolbar: {
-      backgroundColor: themeColor,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
@@ -222,9 +219,9 @@ export default function MiniDrawer() {
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
-              <ChevronRightIcon style={{ color: chevron }} />
+              <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon style={{ color: chevron }} />
+              <ChevronLeftIcon />
             )}
           </IconButton>
         </div>
