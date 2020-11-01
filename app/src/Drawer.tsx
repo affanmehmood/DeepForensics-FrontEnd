@@ -41,15 +41,22 @@ import logo1 from './images/deep.png';
 import Home from './Home';
 import VotFront from './VOT/VOTFront';
 import Contact from './Contact';
+import Footer from './ReusableCompnents/footer';
 
+// custom styles
 const drawerWidth = 240;
+const themeColor = '#394457';
+const dividerTheme = '#232e43';
+const chevron = '#ffffff';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      backgroundColor: themeColor,
       display: 'flex',
     },
     appBar: {
+      backgroundColor: themeColor,
       zIndex: theme.zIndex.drawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -71,6 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'none',
     },
     drawer: {
+      backgroundColor: themeColor,
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
@@ -94,6 +102,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     toolbar: {
+      backgroundColor: themeColor,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
@@ -112,7 +121,6 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
   const getIcon = (name: string) => {
     switch (name) {
       case 'Search': {
@@ -157,6 +165,12 @@ export default function MiniDrawer() {
 
   return (
     <div className={classes.root}>
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossOrigin="anonymous"
+      />
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -208,9 +222,9 @@ export default function MiniDrawer() {
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
+              <ChevronRightIcon style={{ color: chevron }} />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon style={{ color: chevron }} />
             )}
           </IconButton>
         </div>
@@ -222,7 +236,7 @@ export default function MiniDrawer() {
               to={getRoutes(text)}
               key={text}
             >
-              <ListItem button key={text}>
+              <ListItem button key={text} style={{ paddingLeft: '23px' }}>
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -237,7 +251,7 @@ export default function MiniDrawer() {
               to={getRoutes(text)}
               key={text}
             >
-              <ListItem button key={text}>
+              <ListItem button key={text} style={{ paddingLeft: '23px' }}>
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -247,17 +261,12 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <link
-          rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossOrigin="anonymous"
-        />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/analyze" component={VotFront} />
           <Route exact path="/setting" component={Contact} />
         </Switch>
+        <Footer />
       </main>
     </div>
   );
