@@ -140,7 +140,6 @@ export default function MiniDrawer() {
   const handleClickOpen = () => {
     setOpen2(true);
   };
-
   const handleClose = () => {
     setOpen2(false);
   };
@@ -268,7 +267,11 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          <ListItem button style={{ paddingLeft: '23px' }}>
+          <ListItem
+            onClick={handleClickOpen}
+            button
+            style={{ paddingLeft: '23px' }}
+          >
             <ListItemIcon>
               <SettingIcon />
             </ListItemIcon>
