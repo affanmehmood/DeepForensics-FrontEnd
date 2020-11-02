@@ -9,9 +9,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 
+const themeColor = '#394457';
 const useStyles = makeStyles(
   {
     list: {
@@ -31,10 +33,18 @@ const useStyles = makeStyles(
   }
 );
 
+const useStyles2 = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 type Anchor = 'right';
 
 export default function SwipeableTemporaryDrawer() {
   const classes = useStyles();
+  const classes2 = useStyles2();
   const [state, setState] = React.useState({
     right: false,
   });
@@ -91,15 +101,15 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {(['right'] as Anchor[]).map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button
-            onClick={toggleDrawer(anchor, true)}
-            variant="outlined"
-            color="primary"
-            className={classes.button}
-            startIcon={<ArrowLeft />}
-          >
-            Config
-          </Button>
+          <div className={classes2.root}>
+            <IconButton
+              onClick={toggleDrawer(anchor, true)}
+              color="inherit"
+              className={classes.button}
+            >
+              <ChromeReaderMode />
+            </IconButton>
+          </div>
           <SwipeableDrawer
             anchor={anchor}
             open={state[anchor]}

@@ -30,10 +30,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import SaveIcon from '@material-ui/icons/Save';
 
 // nav icons
 import AnalyzeIcon from '@material-ui/icons/SearchRounded';
@@ -296,9 +296,14 @@ export default function MiniDrawer() {
             <Typography variant="h6" className={classes2.title}>
               Setting
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="save"
+              onClick={handleClose}
+            >
+              <SaveIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <List>
