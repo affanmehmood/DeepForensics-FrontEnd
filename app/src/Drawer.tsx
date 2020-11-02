@@ -151,9 +151,6 @@ export default function MiniDrawer() {
       case 'Analyze': {
         return <AnalyzeIcon />;
       }
-      case 'Setting': {
-        return <SettingIcon />;
-      }
       default: {
         return <DefaultIcon />;
       }
@@ -167,9 +164,6 @@ export default function MiniDrawer() {
       }
       case 'Analyze': {
         return '/';
-      }
-      case 'Setting': {
-        return '/setting';
       }
       default: {
         return '/';
@@ -270,7 +264,11 @@ export default function MiniDrawer() {
           <ListItem
             onClick={handleClickOpen}
             button
-            style={{ paddingLeft: '23px' }}
+            style={{
+              textDecoration: 'none',
+              color: 'grey',
+              paddingLeft: '23px',
+            }}
           >
             <ListItemIcon>
               <SettingIcon />
