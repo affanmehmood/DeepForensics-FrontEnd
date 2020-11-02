@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
 // not working
@@ -29,6 +30,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
 
 // nav icons
 import AnalyzeIcon from '@material-ui/icons/SearchRounded';
@@ -40,7 +45,6 @@ import logo1 from './images/deep.png';
 // main components
 import Analyze from './Analyze/Analyze';
 import Progress from './Progress';
-import Setting from './Setting';
 import Footer from './ReusableCompnents/footer';
 
 // custom styles
@@ -113,11 +117,33 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+const useStyles2 = makeStyles((theme) => ({
+  appBar: {
+    backgroundColor: themeColor,
+    position: 'relative',
+  },
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
+}));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 export default function MiniDrawer() {
   const classes = useStyles();
+  const classes2 = useStyles2();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const [open2, setOpen2] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen2(true);
+  };
+
+  const handleClose = () => {
+    setOpen2(false);
+  };
   const getIcon = (name: string) => {
     switch (name) {
       case 'Progress': {
@@ -242,26 +268,56 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {['Setting'].map((text, index) => (
-            <NavLink
-              style={{ textDecoration: 'none', color: 'grey' }}
-              to={getRoutes(text)}
-              key={text}
-            >
-              <ListItem button key={text} style={{ paddingLeft: '23px' }}>
-                <ListItemIcon>{getIcon(text)}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            </NavLink>
-          ))}
+          <ListItem button style={{ paddingLeft: '23px' }}>
+            <ListItemIcon>
+              <SettingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItem>
         </List>
       </Drawer>
+      <Dialog
+        fullScreen
+        open={open2}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes2.appBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes2.title}>
+              Setting
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleClose}>
+              save
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <List>
+          <ListItem button>
+            <ListItemText primary="Phone ringtone" secondary="Titania" />
+          </ListItem>
+          <Divider />
+          <ListItem button>
+            <ListItemText
+              primary="Default notification ringtone"
+              secondary="Tethys"
+            />
+          </ListItem>
+        </List>
+      </Dialog>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
           <Route exact path="/" component={Analyze} />
           <Route exact path="/progress" component={Progress} />
-          <Route exact path="/setting" component={Setting} />
         </Switch>
         <Footer />
       </main>
