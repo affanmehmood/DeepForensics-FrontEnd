@@ -23,14 +23,13 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Icon from '@material-ui/core/Icon';
 
-import { ProgressBar } from 'react-bootstrap';
-import votsrc from './images/vot2.png';
+import Paper from '@material-ui/core/Paper';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import socket from '../socketIoBase';
 import OptionalDrawer from './OptionsDrawer';
 import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -43,13 +42,24 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
+const useStyles2 = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+  },
+}));
 const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function VotFront(): JSX.Element {
   const classes = useStyles();
+  const classes2 = useStyles2();
   // 0 state means noting has happened
   // 1 state means initializing model
   // 2 state means started processing
@@ -74,43 +84,45 @@ export default function VotFront(): JSX.Element {
     switch (state) {
       case 0: {
         return (
-          <div className="row mb-4 mt-4 border border-dark rounded-left">
-            <div className="col-md-12 col-lg-12">
-              <div className="row justify-content-center pt-3">
-                <div className={classes.root}>
-                  <input
-                    accept="video/*"
-                    className={classes.input}
-                    id="contained-button-file"
-                    type="file"
-                  />
-                  <label htmlFor="contained-button-file">
-                    <Button
-                      variant="contained"
-                      color="default"
-                      component="span"
-                      className={classes.button}
-                      startIcon={<CloudUploadIcon />}
-                    >
-                      Upload
-                    </Button>
-                  </label>
+          <div className={classes2.root + 'row mb-4 mt-4 rounded-left'}>
+            <Paper elevation={3}>
+              <div className="col-md-12 col-lg-12">
+                <div className="row justify-content-center pt-3">
+                  <div className={classes.root}>
+                    <input
+                      accept="video/*"
+                      className={classes.input}
+                      id="contained-button-file"
+                      type="file"
+                    />
+                    <label htmlFor="contained-button-file">
+                      <Button
+                        variant="contained"
+                        color="default"
+                        component="span"
+                        className={classes.button}
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        Upload
+                      </Button>
+                    </label>
+                  </div>
+                </div>
+                <h6 className="pt-3 text-center">cars.mp3</h6>
+              </div>
+              <div className="pt-3 pb-3 col-md-12 col-lg-12">
+                <div className="row justify-content-center p-4">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<PlayCircleOutline />}
+                  >
+                    Start
+                  </Button>
                 </div>
               </div>
-              <h6 className="pt-3 text-center">cars.mp3</h6>
-            </div>
-            <div className="pt-3 pb-3 col-md-12 col-lg-12">
-              <div className="row justify-content-center p-4">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  endIcon={<PlayCircleOutline />}
-                >
-                  Start
-                </Button>
-              </div>
-            </div>
+            </Paper>
           </div>
         );
       }
