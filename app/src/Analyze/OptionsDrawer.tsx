@@ -9,9 +9,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+
+import Zoom from '@material-ui/core/Zoom';
 import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
+import LeftArrow from '@material-ui/icons/ArrowLeftTwoTone';
+import NavigationIcon from '@material-ui/icons/Navigation';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const themeColor = '#394457';
 const useStyles = makeStyles(
@@ -33,13 +38,18 @@ const useStyles = makeStyles(
   }
 );
 
-const useStyles2 = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
+const useStyles2 = makeStyles((theme: Theme) =>
+  createStyles({
+    fab: {
+      margin: theme.spacing(2),
     },
-  },
-}));
+    absolute: {
+      position: 'absolute',
+      bottom: theme.spacing(2),
+      right: theme.spacing(-7),
+    },
+  })
+);
 type Anchor = 'right';
 
 export default function SwipeableTemporaryDrawer() {
@@ -101,14 +111,20 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {(['right'] as Anchor[]).map((anchor) => (
         <React.Fragment key={anchor}>
-          <div className={classes2.root}>
-            <IconButton
-              onClick={toggleDrawer(anchor, true)}
-              color="inherit"
-              className={classes.button}
+          <div className="d-flex align-items-right justify-content-right float-right">
+            <Tooltip
+              TransitionComponent={Zoom}
+              title="configure"
+              aria-label="configure"
             >
-              <ChromeReaderMode />
-            </IconButton>
+              <Fab
+                onClick={toggleDrawer(anchor, true)}
+                color="secondary"
+                className={classes2.absolute}
+              >
+                <LeftArrow className="m-0" />
+              </Fab>
+            </Tooltip>
           </div>
           <SwipeableDrawer
             anchor={anchor}

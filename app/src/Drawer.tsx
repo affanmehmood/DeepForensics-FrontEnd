@@ -236,6 +236,12 @@ export default function MiniDrawer() {
         }}
       >
         <div className={classes.toolbar}>
+          <ListItem
+            className="text-center ml-2"
+            style={{ textDecoration: 'none', color: 'grey' }}
+          >
+            <ListItemText primary="Menu" />
+          </ListItem>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />

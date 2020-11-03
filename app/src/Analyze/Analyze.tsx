@@ -151,9 +151,18 @@ export default function VotFront(): JSX.Element {
     switch (state) {
       case '0': {
         return (
-          <div className={classes2.root + 'row mb-4 mt-4 rounded-left'}>
-            <Paper elevation={3}>
-              <div className="pt-3 col-md-12 col-lg-12">
+          <div className={classes2.root + 'row mb-4 mt-4 '}>
+            <Paper
+              elevation={3}
+              className="rounded-left"
+              style={{
+                paddingTop: '50px',
+                paddingBottom: '50px',
+                paddingLeft: '80px',
+                paddingRight: '80px',
+              }}
+            >
+              <div className=" col-md-12 col-lg-12">
                 <div className="row justify-content-center pt-3">
                   <div className={classes.root}>
                     <input
@@ -201,7 +210,7 @@ export default function VotFront(): JSX.Element {
       }
       default: {
         return (
-          <div className={classes2.root + 'row mb-4 mt-4 rounded-left'}>
+          <div className={classes2.root + 'row mb-4 mt-4  p-6 rounded-left'}>
             <Paper elevation={3}>
               <div className="col-md-12 col-lg-12">
                 <h6 className="pt-3 text-center">
@@ -235,6 +244,7 @@ export default function VotFront(): JSX.Element {
     socket.on('initialization-start', () => {
       setState('1');
       sessionStorage.setItem('processState', '1');
+      closeAlertInfo();
       openAlertSucess();
       myConsole.log('initialization-start');
     });
@@ -266,10 +276,12 @@ export default function VotFront(): JSX.Element {
             <div className="col-12 mx-auto">
               <div className="row">
                 <div className="col-lg-11 col-md-11 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
-                  <div className="col-md-4 col-lg-4">{pickerBlock()}</div>
+                  <div className="col-md-7 col-lg-7">{pickerBlock()}</div>
                 </div>
                 <div className="col-md-1 col-lg-1  order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
-                  <OptionalDrawer />
+                  <div className="col-md-2 col-lg-2 float-right">
+                    <OptionalDrawer />
+                  </div>
                 </div>
               </div>
             </div>
