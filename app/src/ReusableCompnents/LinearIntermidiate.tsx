@@ -6,9 +6,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      '& > * + *': {
-        marginTop: theme.spacing(2),
-      },
+      marginTop: '35px',
+      paddingTop: '10px',
+      paddingBottom: '10px',
+      paddingLeft: '4px',
+      paddingRight: '4px',
     },
   })
 );

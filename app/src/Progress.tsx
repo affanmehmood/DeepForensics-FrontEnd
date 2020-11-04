@@ -43,6 +43,11 @@ function LinearProgressWithLabel(
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    marginTop: '35px',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '4px',
+    paddingRight: '4px',
   },
 });
 export default function Home(): JSX.Element {
@@ -130,8 +135,13 @@ export default function Home(): JSX.Element {
         setState('2');
         sessionStorage.setItem('processState', '2');
       }
-      setProgressState(data);
-      myConsole.log('work-progress Progress', data);
+      document.getElementById('cframe').src =
+        'data:image/jpeg;base64,' + data.frame;
+      setProgressState({
+        progress: data.progress,
+        estimated: data.estimated,
+        count: data.count,
+      });
     });
     socket.on('work-end', () => {
       setState('3');

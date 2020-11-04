@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -11,7 +13,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
 import Zoom from '@material-ui/core/Zoom';
-import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import LeftArrow from '@material-ui/icons/ArrowLeftTwoTone';
@@ -117,13 +119,25 @@ export default function SwipeableTemporaryDrawer() {
               title="configure"
               aria-label="configure"
             >
-              <Fab
+              <Button
+                style={{
+                  position: 'fixed',
+                  right: '0%',
+                  top: '45%',
+                  paddingTop: '60px',
+                  paddingBottom: '60px',
+                  paddingLeft: '0px',
+                  paddingRight: '0px',
+                  backgroundColor: '#394457',
+                  borderRadius: '4px',
+                }}
                 onClick={toggleDrawer(anchor, true)}
-                color="secondary"
-                className={classes2.absolute}
+                variant="contained"
+                color="primary"
+                className={classes.button}
               >
-                <LeftArrow className="m-0" />
-              </Fab>
+                <ArrowLeft style={{ color: 'white' }} />
+              </Button>
             </Tooltip>
           </div>
           <SwipeableDrawer
