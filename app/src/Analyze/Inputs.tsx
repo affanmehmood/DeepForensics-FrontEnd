@@ -315,8 +315,8 @@ export default function SwitchesGroup() {
                 Ignored Classes
               </InputLabel>
               <Select
-                labelId="demo-mutiple-checkbox-label"
-                id="demo-mutiple-checkbox"
+                labelId="demo-mutiple-chip-label"
+                id="demo-mutiple-chip"
                 multiple
                 value={personName}
                 onChange={handleChangeClasses}
