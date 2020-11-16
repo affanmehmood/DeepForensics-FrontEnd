@@ -146,6 +146,7 @@ export default function Home(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
+      document.getElementById('cframe').src = votsrc;
       myConsole.log('work-end Progress');
     });
     return () => {

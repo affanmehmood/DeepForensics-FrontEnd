@@ -19,6 +19,7 @@ import Fab from '@material-ui/core/Fab';
 import LeftArrow from '@material-ui/icons/ArrowLeftTwoTone';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import Tooltip from '@material-ui/core/Tooltip';
+import Inputs from './Inputs';
 
 const themeColor = '#394457';
 const useStyles = makeStyles(
@@ -82,30 +83,10 @@ export default function SwipeableTemporaryDrawer() {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      // onClick={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <Inputs />
     </div>
   );
 
