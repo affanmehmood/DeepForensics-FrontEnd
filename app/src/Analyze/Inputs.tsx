@@ -3,21 +3,155 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import { withStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import {
+  useTheme,
+  createStyles,
+  withStyles,
+  Theme,
+  makeStyles,
+} from '@material-ui/core/styles';
 import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import Slider from '@material-ui/core/Slider';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import Chip from '@material-ui/core/Chip';
 
+// for 80 classes
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 150,
+      maxWidth: 300,
+    },
+    chips: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    chip: {
+      margin: 2,
+    },
+    noLabel: {
+      marginTop: theme.spacing(3),
+    },
+  })
+);
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  'person',
+  'bicycle',
+  'car',
+  'motorbike',
+  'aeroplane',
+  'bus',
+  'train',
+  'truck',
+  'boat',
+  'traffic light',
+  'fire hydrant',
+  'stop sign',
+  'parking meter',
+  'bench',
+  'bird',
+  'cat',
+  'dog',
+  'horse',
+  'sheep',
+  'cow',
+  'elephant',
+  'bear',
+  'zebra',
+  'giraffe',
+  'backpack',
+  'umbrella',
+  'handbag',
+  'tie',
+  'suitcase',
+  'frisbee',
+  'skis',
+  'snowboard',
+  'sports ball',
+  'kite',
+  'baseball bat',
+  'baseball glove',
+  'skateboard',
+  'surfboard',
+  'tennis racket',
+  'bottle',
+  'wine glass',
+  'cup',
+  'fork',
+  'knife',
+  'spoon',
+  'bowl',
+  'banana',
+  'apple',
+  'sandwich',
+  'orange',
+  'broccoli',
+  'carrot',
+  'hot dog',
+  'pizza',
+  'donut',
+  'cake',
+  'chair',
+  'sofa',
+  'potted plant',
+  'bed',
+  'dining table',
+  'toilet',
+  'tvmonitor',
+  'laptop',
+  'mouse',
+  'remote',
+  'keyboard',
+  'cell phone',
+  'microwave',
+  'oven',
+  'toaster',
+  'sink',
+  'refrigerator',
+  'book',
+  'clock',
+  'vase',
+  'scissors',
+  'teddy bear',
+  'hair drier',
+  'toothbrush',
+];
+
+function getStyles(name: string, personName: string[], theme: Theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+// for sliders
 const useStylesSlider = makeStyles({
   root: {
     width: 300,
@@ -38,6 +172,16 @@ const HtmlTooltip = withStyles((theme: Theme) => ({
 }))(Tooltip);
 
 export default function SwitchesGroup() {
+  // for 80 classes
+  const classes = useStyles();
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState<string[]>([]);
+
+  const handleChangeClasses = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setPersonName(event.target.value as string[]);
+  };
   const [state, setState] = React.useState({
     tiny: true,
     iou: 0,
@@ -53,8 +197,8 @@ export default function SwitchesGroup() {
         <div className="col-12 justify-content-center">
           <ListSubheader>Configure Backend</ListSubheader>
         </div>
-        <div className="row ml-0 pl-0 mr-0 pr-0">
-          <div className="col-6 justify-content-center">
+        <div className="row ml-0 pl-0 mt-3" style={{ width: 350 }}>
+          <div className="col-6">
             <FormControlLabel
               control={
                 <Switch
@@ -67,7 +211,7 @@ export default function SwitchesGroup() {
               label="Tiny"
             />
           </div>
-          <div className="col-2 ml-4 justify-content-center">
+          <div className="col-2 ml-0 pl-0 ">
             <HtmlTooltip
               title={
                 <>
@@ -92,7 +236,7 @@ export default function SwitchesGroup() {
             <FormControlLabel
               control={
                 <Slider
-                  style={{ width: '160px' }}
+                  style={{ width: '200px' }}
                   defaultValue={45}
                   getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
@@ -130,7 +274,7 @@ export default function SwitchesGroup() {
             <FormControlLabel
               control={
                 <Slider
-                  style={{ width: '160px' }}
+                  style={{ width: '200px' }}
                   defaultValue={50}
                   getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
@@ -153,6 +297,62 @@ export default function SwitchesGroup() {
                   <em>Confedence Threshold</em>.<br />
                   {'The minimum confidence the detections should have.'}
                   {'It will ignore the detections that have lower confidence'}
+                </>
+              }
+            >
+              <HelpOutlineIcon
+                className="aligin-self-center mt-2"
+                fontSize="small"
+              />
+            </HtmlTooltip>
+          </div>
+        </div>
+        <Divider className="col-12" variant="middle" />
+        <div className="row ml-3 pl-0 mt-3">
+          <div className="col-9">
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-chip-label">
+                Ignored Classes
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChangeClasses}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={(selected) => (
+                  <div className={classes.chips}>
+                    {(selected as string[]).map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.chip}
+                      />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+                {names.map((name) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="col-3 ml-0 pl-0">
+            <HtmlTooltip
+              title={
+                <>
+                  <Typography color="inherit">Ignored Classes</Typography>
+                  <em>Select unwanted classes</em>.<br />
+                  {'The classes selected here will be ignored by the backend.'}
                 </>
               }
             >

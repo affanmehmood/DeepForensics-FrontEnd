@@ -4,28 +4,18 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 
 import Zoom from '@material-ui/core/Zoom';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
-import LeftArrow from '@material-ui/icons/ArrowLeftTwoTone';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import Tooltip from '@material-ui/core/Tooltip';
 import Inputs from './Inputs';
 
-const themeColor = '#394457';
+// const themeColor = '#394457';
 const useStyles = makeStyles(
   {
     list: {
-      width: 250,
+      width: 300,
     },
     fullList: {
       width: 'auto',
