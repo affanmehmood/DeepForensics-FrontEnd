@@ -46,6 +46,7 @@ import logo1 from './images/deep.png';
 import Analyze from './Analyze/Analyze';
 import Progress from './Progress';
 import Footer from './ReusableCompnents/footer';
+import Settings from './Settings/Settings';
 
 // custom styles
 const drawerWidth = 240;
@@ -137,10 +138,10 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(false);
-  const handleClickOpen = () => {
+  const handleClickOpen2 = () => {
     setOpen2(true);
   };
-  const handleClose = () => {
+  const handleClose2 = () => {
     setOpen2(false);
   };
   const getIcon = (name: string) => {
@@ -268,7 +269,7 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           <ListItem
-            onClick={handleClickOpen}
+            onClick={handleClickOpen2}
             button
             style={{
               textDecoration: 'none',
@@ -279,52 +280,43 @@ export default function MiniDrawer() {
             <ListItemIcon>
               <SettingIcon />
             </ListItemIcon>
-            <ListItemText primary="Setting" />
+            <ListItemText primary="Settings" />
           </ListItem>
         </List>
       </Drawer>
-      <Dialog
-        fullScreen
-        open={open2}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar className={classes2.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes2.title}>
-              Setting
-            </Typography>
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-label="save"
-              onClick={handleClose}
-            >
-              <SaveIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <List>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List>
-      </Dialog>
+      <div>
+        <Dialog
+          fullScreen
+          open={open2}
+          onClose={handleClose2}
+          TransitionComponent={Transition}
+        >
+          <AppBar className={classes2.appBar}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={handleClose2}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className={classes2.title}>
+                Settings
+              </Typography>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="save"
+                onClick={handleClose2}
+              >
+                <SaveIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <Settings />
+        </Dialog>
+      </div>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>

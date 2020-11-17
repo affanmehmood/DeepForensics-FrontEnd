@@ -53,7 +53,7 @@ const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      maxHeight: '100%',
       width: 250,
     },
   },
@@ -197,7 +197,7 @@ export default function SwitchesGroup() {
         <div className="col-12 justify-content-center">
           <ListSubheader>Configure Backend</ListSubheader>
         </div>
-        <div className="row ml-0 pl-0 mt-3" style={{ width: 350 }}>
+        <div className="row ml-0 pl-0 mt-3" style={{ width: 275 }}>
           <div className="col-6">
             <FormControlLabel
               control={
@@ -274,7 +274,7 @@ export default function SwitchesGroup() {
             <FormControlLabel
               control={
                 <Slider
-                  style={{ width: '200px' }}
+                  style={{ width: '203px' }}
                   defaultValue={50}
                   getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"

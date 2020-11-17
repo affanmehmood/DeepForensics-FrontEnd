@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       display: 'none',
     },
+    button: {
+      margin: theme.spacing(1),
+    },
   })
 );
 const useStyles2 = makeStyles((theme) => ({
@@ -74,6 +77,7 @@ const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 export default function VotFront(): JSX.Element {
   const classes = useStyles();
   const classes2 = useStyles2();
+  const [isDisabled, setIsDisabled] = useState(false);
   // 0 state means noting has happened
   // 1 state means initializing model
   // 2 state means started processing
@@ -134,16 +138,19 @@ export default function VotFront(): JSX.Element {
     setVideoFilePath(path);
   };
   const startProcessing = () => {
+    setIsDisabled(true);
     try {
       if (videoFilePath == null) {
         myConsole.log('RAN');
         openAlertError();
+        setIsDisabled(false);
         return;
       }
       socket.emit('processing-requested', { filepath: videoFilePath });
       openAlertInfo();
     } catch (error) {
       openAlertError();
+      setIsDisabled(false);
     }
   };
   const stopProcessing = () => {};
@@ -171,6 +178,7 @@ export default function VotFront(): JSX.Element {
                       className={classes.input}
                       id="myFile"
                       type="file"
+                      disabled={isDisabled}
                     />
                     <label htmlFor="myFile">
                       <Button
@@ -179,6 +187,7 @@ export default function VotFront(): JSX.Element {
                         component="span"
                         className={classes.button}
                         startIcon={<CloudUploadIcon />}
+                        disabled={isDisabled}
                       >
                         Upload
                       </Button>
@@ -194,6 +203,7 @@ export default function VotFront(): JSX.Element {
               <div className="pt-3 pb-3 col-md-12 col-lg-12">
                 <div className="row justify-content-center p-4">
                   <Button
+                    disabled={isDisabled}
                     onClick={startProcessing}
                     variant="contained"
                     color="primary"
@@ -255,7 +265,7 @@ export default function VotFront(): JSX.Element {
     });
     socket.on('work-end', () => {
       setState('0');
-
+      setIsDisabled(false);
       sessionStorage.setItem('processState', '0');
       myConsole.log('work-end');
     });
