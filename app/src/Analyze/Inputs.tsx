@@ -27,13 +27,12 @@ import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 
 // for 80 classes
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 150,
-      maxWidth: 300,
+      minWidth: 561,
+      maxWidth: 561,
     },
     chips: {
       display: 'flex',
@@ -54,7 +53,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: '100%',
-      width: 250,
+      width: '30%',
     },
   },
 };
@@ -171,7 +170,7 @@ const HtmlTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-export default function SwitchesGroup() {
+export default function InputGroup() {
   // for 80 classes
   const classes = useStyles();
   const theme = useTheme();
@@ -194,49 +193,12 @@ export default function SwitchesGroup() {
   return (
     <div className="row">
       <List>
-        <div className="col-12 justify-content-center">
-          <ListSubheader>Configure Backend</ListSubheader>
-        </div>
-        <div className="row ml-0 pl-0 mt-3" style={{ width: 275 }}>
-          <div className="col-6">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={state.tiny}
-                  onChange={handleChange}
-                  name="tiny"
-                />
-              }
-              labelPlacement="start"
-              label="Tiny"
-            />
-          </div>
-          <div className="col-2 ml-0 pl-0 ">
-            <HtmlTooltip
-              title={
-                <>
-                  <Typography color="inherit">Tiny Model</Typography>
-                  <em>Tiny model: speed{'>'}accuracy</em>.<br />
-                  {
-                    'If you want to do a fast but less accurate report then keep this on.'
-                  }
-                </>
-              }
-            >
-              <HelpOutlineIcon
-                className="aligin-self-center mt-2"
-                fontSize="small"
-              />
-            </HtmlTooltip>
-          </div>
-        </div>
-        <Divider className="col-12" variant="middle" />
-        <div className="row ml-3 pl-0 mt-3">
-          <div className={classSlider.root + 'col-10'}>
+        <div className="row ml-2">
+          <div className={classSlider.root + 'col-6'}>
             <FormControlLabel
               control={
                 <Slider
-                  style={{ width: '200px' }}
+                  style={{ width: '250px' }}
                   defaultValue={45}
                   getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
@@ -250,8 +212,6 @@ export default function SwitchesGroup() {
               labelPlacement="top"
               label="IOU Threshold"
             />
-          </div>
-          <div className="col-2 ml-0 justify-content-center">
             <HtmlTooltip
               title={
                 <>
@@ -267,14 +227,11 @@ export default function SwitchesGroup() {
               />
             </HtmlTooltip>
           </div>
-        </div>
-        <Divider className="col-12" variant="middle" />
-        <div className="row ml-3 pl-0 mt-3">
-          <div className={classSlider.root + 'col-10'}>
+          <div className={classSlider.root + 'col-6'}>
             <FormControlLabel
               control={
                 <Slider
-                  style={{ width: '203px' }}
+                  style={{ width: '250px' }}
                   defaultValue={50}
                   getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
@@ -288,8 +245,6 @@ export default function SwitchesGroup() {
               labelPlacement="top"
               label="Score Threshold"
             />
-          </div>
-          <div className="col-2 ml-0 justify-content-center">
             <HtmlTooltip
               title={
                 <>
@@ -308,8 +263,8 @@ export default function SwitchesGroup() {
           </div>
         </div>
         <Divider className="col-12" variant="middle" />
-        <div className="row ml-3 pl-0 mt-3">
-          <div className="col-9">
+        <div className="row mt-3 ml-1">
+          <div className="col-11">
             <FormControl className={classes.formControl}>
               <InputLabel id="demo-mutiple-chip-label">
                 Ignored Classes
@@ -346,13 +301,47 @@ export default function SwitchesGroup() {
               </Select>
             </FormControl>
           </div>
-          <div className="col-3 ml-0 pl-0">
+          <div className="col-1 ml-0 pl-0">
             <HtmlTooltip
               title={
                 <>
                   <Typography color="inherit">Ignored Classes</Typography>
                   <em>Select unwanted classes</em>.<br />
                   {'The classes selected here will be ignored by the backend.'}
+                </>
+              }
+            >
+              <HelpOutlineIcon
+                className="aligin-self-center mt-2"
+                fontSize="small"
+              />
+            </HtmlTooltip>
+          </div>
+        </div>
+        <Divider className="col-12" variant="middle" />
+        <div className="row mt-3 ml-0">
+          <div className="col-2">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={state.tiny}
+                  onChange={handleChange}
+                  name="tiny"
+                />
+              }
+              labelPlacement="start"
+              label="Tiny"
+            />
+          </div>
+          <div className="col-1 ml-2 pl-0 ">
+            <HtmlTooltip
+              title={
+                <>
+                  <Typography color="inherit">Tiny Model</Typography>
+                  <em>Tiny model: speed{'>'}accuracy</em>.<br />
+                  {
+                    'If you want to do a fast but less accurate report then keep this on.'
+                  }
                 </>
               }
             >

@@ -45,7 +45,6 @@ import logo1 from './images/deep.png';
 // main components
 import Analyze from './Analyze/Analyze';
 import Progress from './Progress';
-import Footer from './ReusableCompnents/footer';
 import Settings from './Settings/Settings';
 
 // custom styles
@@ -323,7 +322,6 @@ export default function MiniDrawer() {
           <Route exact path="/" component={Analyze} />
           <Route exact path="/progress" component={Progress} />
         </Switch>
-        <Footer />
       </main>
     </div>
   );

@@ -91,6 +91,20 @@ export default function Home(): JSX.Element {
           </div>
           <div className="col-md-12 col-lg-12">
             <div className="row pr-4 pl-4">
+              <div
+                className="text-center mb-0 p-0"
+                style={{
+                  whiteSpace: 'nowrap',
+                  width: '300px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                Video Name:
+                {' ' + sessionStorage.getItem('curruntVideoName')}
+              </div>
+            </div>
+            <div className="row pr-4 pl-4">
               <h6>
                 EST:
                 {progressState.estimated}
