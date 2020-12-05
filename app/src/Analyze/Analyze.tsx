@@ -78,7 +78,12 @@ const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function VotFront(): JSX.Element {
   const history = useHistory();
-
+  const [inputState, setInputState] = useState({
+    tiny: true,
+    iou: 45,
+    score: 50,
+    classes: [],
+  });
   const classes = useStyles();
   const classes2 = useStyles2();
   const [isDisabled, setIsDisabled] = useState(false);
@@ -151,7 +156,10 @@ export default function VotFront(): JSX.Element {
         setIsDisabled(false);
         return;
       }
-      socket.emit('processing-requested', { filepath: videoFilePath });
+      socket.emit('processing-requested', {
+        filepath: videoFilePath,
+        config: inputState,
+      });
       openAlertInfo();
       sessionStorage.setItem(
         'curruntVideoName',
@@ -254,7 +262,10 @@ export default function VotFront(): JSX.Element {
       socket.off('work-end');
     };
   }, []);
-
+  const getInputState = (inputs: any) => {
+    myConsole.log(inputs);
+    setInputState(inputs);
+  };
   return (
     <>
       <section id="header" className="home-section">
@@ -322,7 +333,7 @@ export default function VotFront(): JSX.Element {
               <div className="row mt-2 ml-3">
                 <div className="col-lg-12 col-md-12 d-flex align-items-center">
                   <div className="row">
-                    <InputGroup />
+                    <InputGroup sendInputState={getInputState} />
                   </div>
                 </div>
               </div>

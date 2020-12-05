@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prefer-template */
 /* eslint-disable promise/always-return */
 import React, { useState, useEffect } from 'react';
@@ -96,6 +97,7 @@ export default function CustomizedTables() {
     fetchData();
   }, [classes]);
   function beauifyTime(time) {
+    if (!time) return;
     const arr = time.split(':');
     return arr[0] + 'h ' + arr[1] + 'm ' + arr[2].split('.')[0] + 's';
   }

@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable promise/always-return */
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-curly-brace-presence */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -25,6 +28,10 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+
+const nodeConsole = require('console');
+
+const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 // for 80 classes
 const useStyles = makeStyles((theme: Theme) =>
@@ -170,25 +177,54 @@ const HtmlTooltip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-export default function InputGroup() {
+export default function InputGroup(props) {
   // for 80 classes
   const classes = useStyles();
   const theme = useTheme();
   const [personName, setPersonName] = React.useState<string[]>([]);
 
+  const [state, setState] = React.useState({
+    tiny: true,
+    iou: 45,
+    score: 50,
+    classes: [],
+  });
+  const classSlider = useStylesSlider();
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    myConsole.log(state);
+  };
+  const iouChange = (event: any, newValue: number | number[]) => {
+    setState((preVal) => {
+      return {
+        ...preVal,
+        iou: newValue,
+      };
+    });
+  };
+  const scoreChange = (event: any, newValue: number | number[]) => {
+    setState((preVal) => {
+      return {
+        ...preVal,
+        score: newValue,
+      };
+    });
+  };
   const handleChangeClasses = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    setPersonName(event.target.value as string[]);
+    // setPersonName(event.target.value as string[]);
+    setState((preVal) => {
+      return {
+        ...preVal,
+        classes: event.target.value as string[],
+      };
+    });
+    // myConsole.log(state);
   };
-  const [state, setState] = React.useState({
-    tiny: true,
-    iou: 0,
+  useEffect(() => {
+    props.sendInputState(state);
   });
-  const classSlider = useStylesSlider();
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
 
   return (
     <div className="row">
@@ -200,8 +236,9 @@ export default function InputGroup() {
                 <Slider
                   style={{ width: '250px' }}
                   defaultValue={45}
+                  onChange={iouChange}
                   getAriaValueText={valuetext}
-                  aria-labelledby="discrete-slider"
+                  aria-labelledby="iou-slider"
                   valueLabelDisplay="auto"
                   step={5}
                   marks
@@ -234,9 +271,10 @@ export default function InputGroup() {
                   style={{ width: '250px' }}
                   defaultValue={50}
                   getAriaValueText={valuetext}
-                  aria-labelledby="discrete-slider"
+                  aria-labelledby="score-slider"
                   valueLabelDisplay="auto"
                   step={5}
+                  onChange={scoreChange}
                   marks
                   min={0}
                   max={100}
@@ -273,7 +311,7 @@ export default function InputGroup() {
                 labelId="demo-mutiple-chip-label"
                 id="demo-mutiple-chip"
                 multiple
-                value={personName}
+                value={state.classes}
                 onChange={handleChangeClasses}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={(selected) => (
@@ -293,7 +331,7 @@ export default function InputGroup() {
                   <MenuItem
                     key={name}
                     value={name}
-                    style={getStyles(name, personName, theme)}
+                    style={getStyles(name, state.classes, theme)}
                   >
                     {name}
                   </MenuItem>
@@ -325,7 +363,7 @@ export default function InputGroup() {
               control={
                 <Switch
                   checked={state.tiny}
-                  onChange={handleChange}
+                  onChange={handleCheck}
                   name="tiny"
                 />
               }
