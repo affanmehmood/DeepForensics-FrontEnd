@@ -37,6 +37,7 @@ import StopIcon from '@material-ui/icons/Stop';
 import ReportTable from './ReportTable';
 import './Analyze.css';
 import sideimage from '../images/video.svg';
+import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

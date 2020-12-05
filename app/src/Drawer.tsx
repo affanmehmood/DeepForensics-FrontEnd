@@ -135,7 +135,7 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const classes2 = useStyles2();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const handleClickOpen2 = () => {
     setOpen2(true);

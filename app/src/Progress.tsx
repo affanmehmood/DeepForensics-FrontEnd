@@ -1,57 +1,62 @@
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-template */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-else-return */
 import React, { useEffect, useState } from 'react';
-// bar 1
-import LinearProgress, {
-  LinearProgressProps,
-} from '@material-ui/core/LinearProgress';
+// circle 1
+import CircularProgress, {
+  CircularProgressProps,
+} from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
 
-// bar 2
-import LinearIndeterminate from './ReusableCompnents/LinearIntermidiate';
+// circle 2
+import CircularIntermidiate from './ReusableCompnents/CircularIntermidiate';
 
-import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import votsrc from './images/vot2.png';
-
 import socket from './socketIoBase';
 
-const nodeConsole = require('console');
+import Timeline from './ReusableCompnents/Timeline';
 
-const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
-
-function LinearProgressWithLabel(
-  props: LinearProgressProps & { value: number }
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number }
 ) {
   return (
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">
-          {`${Math.round(props.value)}%`}
-        </Typography>
+    <Box position="relative" display="inline-flex">
+      <CircularProgress
+        style={{ width: '50px', height: '50px' }}
+        variant="determinate"
+        {...props}
+      />
+      <Box
+        style={{ width: '50px', height: '50px' }}
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="textSecondary"
+        >{`${Math.round(props.value)}%`}</Typography>
       </Box>
     </Box>
   );
 }
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-    marginTop: '35px',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingLeft: '4px',
-    paddingRight: '4px',
-  },
-});
+const nodeConsole = require('console');
+
+const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
+
 export default function Home(): JSX.Element {
-  const classes = useStyles();
   const processState = sessionStorage.getItem('processState');
   const [state, setState] = useState(processState == null ? '0' : processState);
   const [progressState, setProgressState] = useState({
@@ -60,71 +65,96 @@ export default function Home(): JSX.Element {
     count: 0,
   });
 
+  function beauifyTime(time: string) {
+    if (!time) return;
+    const arr = time.split(':');
+    return arr[0] + 'h ' + arr[1] + 'm ' + arr[2] + 's';
+  }
   const statsBlock = () => {
     if (state == '0') {
       return (
-        <div className="row border border-dark rounded-left">
+        <div className="row d-flex align-items-center">
           <div className="col-md-12 col-lg-12">
-            <div className="row justify-content-center p-4">
-              <h6>No Stats to show</h6>
+            <div className="row d-flex align-items-center justify-content-center ">
+              <h4>No Stats to show, please start a process.</h4>
             </div>
           </div>
         </div>
       );
     } else if (state == '1') {
       return (
-        <div className="row border border-dark rounded-left">
-          <div className="col-md-12 col-lg-12">
-            <div className="row justify-content-center p-4">
-              <h6>initializing model...</h6>
+        <div className="row d-flex align-items-center justify-content-center">
+          <div className="col-md-5 col-lg-5 col-xl-5">
+            <div className="row d-flex justify-content-center align-items-center">
+              <h4 className="mr-4 mb-0 text-center align-self-center">
+                Initializing model...
+              </h4>
+              <CircularIntermidiate />
             </div>
+          </div>
+
+          <div className="col-md-5 col-lg-5 col-xl-5">
+            <Timeline state="init" />
           </div>
         </div>
       );
     } else if (state == '2') {
       return (
-        <div className="row border border-dark rounded-left">
-          <div className="col-md-12 col-lg-12">
-            <div className="row justify-content-center pt-3 pb-2">
-              <h6>Stats</h6>
-            </div>
-          </div>
-          <div className="col-md-12 col-lg-12">
-            <div className="row pr-4 pl-4">
-              <div
-                className="mb-0 p-0"
-                style={{
-                  whiteSpace: 'nowrap',
-                  width: '350px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                Video Name:
-                {' ' + sessionStorage.getItem('curruntVideoName')}
+        <div className="col-12">
+          <div className="row  d-flex justify-content-center ">
+            <div className="col-md-12 col-lg-12 col-xl-12">
+              <div className="row d-flex justify-content-center">
+                <div
+                  className="mb-0 p-0"
+                  style={{
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                    width: '550px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    fontSize: '22px',
+                    color: 'grey',
+                  }}
+                >
+                  Video being processesd:{' '}
+                  {sessionStorage.getItem('curruntVideoName')}
+                </div>
               </div>
             </div>
-            <div className="row pr-4 pl-4">
-              <h6>
-                EST:
-                {progressState.estimated}
-              </h6>
-            </div>
-            <div className="row pr-4 pl-4 pb-4">
-              <h6>
-                No. of objects tracking:
-                {progressState.count}
-              </h6>
+          </div>
+
+          <div className="row  d-flex justify-content-center align-items-center">
+            <div className="col-md-12 col-lg-12 mt-5">
+              <div className="row d-flex justify-content-center">
+                <div className="col-5 text-center">
+                  <h6>No. of object being tracked:</h6>
+                  <h5 className="text-center">{progressState.count}</h5>
+                </div>
+              </div>
+              <div className="row mt-3 d-flex justify-content-center align-items-center">
+                <div className="col-5 text-center align-items-center">
+                  <h5>Estimated Time Remaining</h5>
+                  <div className="row d-flex align-items-center justify-content-center">
+                    <h4 className="text-center mb-0 mr-4 p-0">
+                      {beauifyTime(progressState.estimated)}
+                    </h4>
+                    <CircularProgressWithLabel value={progressState.progress} />
+                  </div>
+                </div>
+                <div className="col-md-5 col-lg-5 col-xl-5">
+                  <Timeline state="track" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       );
     } else if (state == '3') {
       return (
-        <div className="row border border-dark rounded-left">
+        <div className="row d-flex align-items-center">
           <div className="col-md-12 col-lg-12">
-            <div className="row justify-content-center p-4">
-              <h6>Processing Done</h6>
+            <div className="row d-flex align-items-center justify-content-center ">
+              <h4>Processing Done!</h4>
             </div>
           </div>
         </div>
@@ -149,8 +179,6 @@ export default function Home(): JSX.Element {
         setState('2');
         sessionStorage.setItem('processState', '2');
       }
-      document.getElementById('cframe').src =
-        'data:image/jpeg;base64,' + data.frame;
       setProgressState({
         progress: data.progress,
         estimated: data.estimated,
@@ -160,7 +188,6 @@ export default function Home(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
-      document.getElementById('cframe').src = votsrc;
       myConsole.log('work-end Progress');
     });
     return () => {
@@ -171,45 +198,16 @@ export default function Home(): JSX.Element {
       socket.off('work-end');
     };
   }, []);
-  const getProgressBar = () => {
-    if (state == '1') {
-      return <LinearIndeterminate />;
-    } else if (state == '2') {
-      return (
-        <div className={classes.root}>
-          <LinearProgressWithLabel value={progressState.progress} />
-        </div>
-      );
-    } else {
-      return <></>;
-    }
-  };
+
   return (
     <>
       <section id="header" className="d-flex align-items-center home-section">
-        <div className="container-fluid ">
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-12 mx-auto">
+            <div className="col-12">
               <div className="row">
-                {' '}
-                <div
-                  id="framecont"
-                  className="votIconDiv col-md-7 col-lg-7 pt-lg-0 order-2 order-lg-1 d-flex align-items-center justify-content-center flex-column"
-                >
-                  <img
-                    alt="frame"
-                    src={votsrc}
-                    style={{ width: '100%', height: '100%' }}
-                    id="cframe"
-                  />
-                </div>
-                <div className="col-lg-3 col-md-3 order-1 order-lg-2 header-img d-flex align-items-center justify-content-center">
+                <div className="col-lg-12 col-md-12">
                   <div className="col-md-12 col-lg-12">{statsBlock()}</div>
-                </div>
-              </div>
-              <div className="row order-2 order-lg-1 d-flex align-items-center justify-content-center">
-                <div className="col-md-8 col-lg-8 order-2 order-lg-1 d-flex align-items-center justify-content-center">
-                  {getProgressBar()}
                 </div>
               </div>
             </div>
