@@ -181,7 +181,6 @@ export default function InputGroup(props) {
   // for 80 classes
   const classes = useStyles();
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
 
   const [state, setState] = React.useState({
     tiny: true,
