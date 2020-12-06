@@ -46,7 +46,7 @@ import logo1 from './images/deep.png';
 import Analyze from './Analyze/Analyze';
 import Progress from './Progress';
 import Settings from './Settings/Settings';
-
+import Detections from './Detections/Detections';
 // custom styles
 const drawerWidth = 240;
 const themeColor = '#394457';
@@ -321,6 +321,7 @@ export default function MiniDrawer() {
         <Switch>
           <Route exact path="/" component={Analyze} />
           <Route exact path="/progress" component={Progress} />
+          <Route exact path="/detections/:taskId" component={Detections} />
         </Switch>
       </main>
     </div>

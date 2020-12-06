@@ -2,6 +2,7 @@
 /* eslint-disable prefer-template */
 /* eslint-disable promise/always-return */
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   withStyles,
   Theme,
@@ -17,6 +18,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ViewModule from '@material-ui/icons/ViewModule';
 // API
 import { getTableData } from '../API';
 
@@ -48,11 +52,13 @@ const StyledTableRow = withStyles((theme: Theme) =>
 
 function createData(
   videoname: string,
+  createdAt: string,
   videolength: number,
   numberobjects: number,
-  timetaken: number
+  timetaken: number,
+  id: number
 ) {
-  return { videoname, videolength, numberobjects, timetaken };
+  return { videoname, createdAt, videolength, numberobjects, timetaken, id };
 }
 
 /* const rows = [
@@ -69,9 +75,13 @@ const useStyles = makeStyles({
 });
 
 export default function CustomizedTables() {
+  const history = useHistory();
+
   const classes = useStyles();
   const [rows, setRows] = useState([]);
-
+  const gotoDetection = (id) => {
+    history.push('/detections/' + id);
+  };
   const fetchData = () => {
     getTableData()
       .then((data) => {
@@ -81,9 +91,11 @@ export default function CustomizedTables() {
           newRows.push(
             createData(
               task.filePath.split('\\').pop().split('/').pop(),
+              task.startTime,
               task.videoLength,
               task.totalObjects,
-              task.timeTaken
+              task.timeTaken,
+              task.id
             )
           );
         });
@@ -107,31 +119,64 @@ export default function CustomizedTables() {
         <TableHead>
           <TableRow>
             <StyledTableCell>Video Name</StyledTableCell>
-            <StyledTableCell align="right">Video Length</StyledTableCell>
-            <StyledTableCell align="right">Total Objects</StyledTableCell>
-            <StyledTableCell align="right">Time Taken</StyledTableCell>
-            <StyledTableCell align="right">Open Report</StyledTableCell>
+            <StyledTableCell align="center">Created At</StyledTableCell>
+            <StyledTableCell align="center">Video Length</StyledTableCell>
+            <StyledTableCell align="center">Total Objects</StyledTableCell>
+            <StyledTableCell align="center">Time Taken</StyledTableCell>
+            <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.videoname}>
+          {rows.reverse().map((row) => (
+            <StyledTableRow
+              className={row.timetaken ? '' : 'bg-dark'}
+              key={row.videoname}
+            >
               <StyledTableCell component="th" scope="row">
-                {row.videoname}
+                <div
+                  className={row.timetaken ? 'mb-0 p-0' : 'mb-0 p-0 inthedark'}
+                  style={{
+                    whiteSpace: 'nowrap',
+                    width: '150px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {row.videoname}
+                </div>
               </StyledTableCell>
-              <StyledTableCell align="right">
-                {beauifyTime(row.videolength)}
+
+              <StyledTableCell align="center">
+                <div className={row.timetaken ? '' : ' p-0 inthedark'}>
+                  {beauifyTime(row.createdAt)}
+                </div>
               </StyledTableCell>
-              <StyledTableCell align="right">
-                {row.numberobjects}
+              <StyledTableCell align="center">
+                <div>{beauifyTime(row.videolength)}</div>
               </StyledTableCell>
-              <StyledTableCell align="right">
-                {beauifyTime(row.timetaken)}
+              <StyledTableCell align="center">
+                <div>{row.numberobjects}</div>
               </StyledTableCell>
-              <StyledTableCell align="right">
-                <Button variant="outlined" color="primary">
-                  Open
-                </Button>
+              <StyledTableCell align="center">
+                <div>{beauifyTime(row.timetaken)}</div>
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {row.timetaken ? (
+                  <IconButton
+                    onClick={() => {
+                      gotoDetection(row.id);
+                    }}
+                    color="primary"
+                    aria-label="open"
+                  >
+                    <ViewModule />
+                  </IconButton>
+                ) : (
+                  <></>
+                )}
+                <IconButton color="secondary" aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
               </StyledTableCell>
             </StyledTableRow>
           ))}

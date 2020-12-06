@@ -18,6 +18,9 @@
 .brand-name {
   color: #3498db !important;
 }
+.inthedark {
+  color: white;
+}
 .navbar a {
   font-size: 1.3rem;
   text-transform: capitalize;
@@ -126,4 +129,89 @@ body {
       width: 70%;
     }
   }
+}
+
+/* Grid system starts */
+.column-container {
+  width: 100%;
+  height: 100%;
+  margin: 0.3em auto;
+  padding: 0;
+  display: block;
+  padding-bottom: 20px;
+}
+.flex-i img {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+.cols {
+  -moz-column-count: 7;
+  -moz-column-gap: 1.2%;
+  -moz-column-width: 30%;
+  -webkit-column-count: 7;
+  -webkit-column-gap: 1.2%;
+  -webkit-column-width: 30%;
+  column-count: 7;
+  column-gap: 1.2%;
+  column-width: 30%;
+  column-fill: balance-all;
+}
+.box {
+  height: 160px;
+}
+.text-sm {
+  color: white;
+  font-size: 11px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.bottom-div:hover {
+  background-color: #f4511e;
+}
+.bottom-div:hover .button {
+  display: inline-block;
+}
+.bottom-div:hover .sub-text {
+  display: none;
+}
+.live-track:hover {
+  text-decoration: underline;
+}
+.button {
+  background-color: #f4511e;
+  display: none;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 14px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 15px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
 }

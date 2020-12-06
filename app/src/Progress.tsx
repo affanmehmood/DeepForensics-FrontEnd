@@ -56,7 +56,7 @@ const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
-export default function Home(): JSX.Element {
+export default function Progress(): JSX.Element {
   const processState = sessionStorage.getItem('processState');
   const [state, setState] = useState(processState == null ? '0' : processState);
   const [progressState, setProgressState] = useState({
@@ -76,7 +76,7 @@ export default function Home(): JSX.Element {
         <div className="row d-flex align-items-center">
           <div className="col-md-12 col-lg-12">
             <div className="row d-flex align-items-center justify-content-center ">
-              <h4>No Stats to show, please start a process.</h4>
+              <h4>No stats to show, please start a process.</h4>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function Home(): JSX.Element {
     } else if (state == '2') {
       return (
         <div className="col-12">
-          <div className="row  d-flex justify-content-center ">
+          <div className="row  d-flex justify-content-center">
             <div className="col-md-12 col-lg-12 col-xl-12">
               <div className="row d-flex justify-content-center">
                 <div
@@ -120,17 +120,17 @@ export default function Home(): JSX.Element {
                   {sessionStorage.getItem('curruntVideoName')}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="row  d-flex justify-content-center align-items-center">
-            <div className="col-md-12 col-lg-12 mt-5">
-              <div className="row d-flex justify-content-center">
+              <div className="row mt-5 d-flex justify-content-center">
                 <div className="col-5 text-center">
                   <h6>No. of object being tracked:</h6>
                   <h5 className="text-center">{progressState.count}</h5>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="row  d-flex justify-content-center align-items-center">
+            <div className="col-md-12 col-lg-12 ">
               <div className="row mt-3 d-flex justify-content-center align-items-center">
                 <div className="col-5 text-center align-items-center">
                   <h5>Estimated Time Remaining</h5>
@@ -141,7 +141,7 @@ export default function Home(): JSX.Element {
                     <CircularProgressWithLabel value={progressState.progress} />
                   </div>
                 </div>
-                <div className="col-md-5 col-lg-5 col-xl-5">
+                <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
                   <Timeline state="track" />
                 </div>
               </div>
@@ -206,8 +206,8 @@ export default function Home(): JSX.Element {
           <div className="row">
             <div className="col-12">
               <div className="row">
-                <div className="col-lg-12 col-md-12">
-                  <div className="col-md-12 col-lg-12">{statsBlock()}</div>
+                <div className="col-lg-12 col-md-12 col-xl-12">
+                  {statsBlock()}
                 </div>
               </div>
             </div>
