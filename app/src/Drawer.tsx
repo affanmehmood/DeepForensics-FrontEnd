@@ -47,6 +47,7 @@ import Analyze from './Analyze/Analyze';
 import Progress from './Progress';
 import Settings from './Settings/Settings';
 import Detections from './Detections/Detections';
+
 // custom styles
 const drawerWidth = 240;
 const themeColor = '#394457';

@@ -19,7 +19,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
-
 import options from '../ReusableCompnents/classes';
 
 const nodeConsole = require('console');
@@ -128,45 +127,43 @@ export default function Detections(): JSX.Element {
                 </div>
                 <div className="row mt-3 justify-content-center">
                   {getProgressBar()}
-                  <div className="column-container cols flex-i">
-                    {detectionData
-                      .filter((detection) => {
-                        if (value === 'All' || value === null) return true;
-                        return detection.class === value;
-                      })
-                      .map((val, ind) => {
-                        return (
-                          <Grow
-                            in
-                            style={{ transformOrigin: '0 0 0' }}
-                            {...{ timeout: 100 * ind }}
+                  {detectionData
+                    .filter((detection) => {
+                      if (value === 'All' || value === null) return true;
+                      return detection.class === value;
+                    })
+                    .map((val, ind) => {
+                      return (
+                        <Grow
+                          in
+                          style={{ transformOrigin: '0 0 0' }}
+                          {...{ timeout: 100 * ind }}
+                        >
+                          <div
+                            className="col-1 flex-i-a d-inline-block m-0 p-0 border rounded mb-3"
+                            style={{ backgroundColor: '#394457' }}
                           >
-                            <div
-                              className="col d-inline-block m-0 p-0 border rounded mb-3"
-                              style={{ backgroundColor: '#394457' }}
-                            >
-                              <div className="box one">
-                                <img
-                                  alt="i"
-                                  src={'data:image/jpeg;base64,' + val.image}
-                                />
-                              </div>
-                              <div className="bottom-div row m-0 d-flex justify-content-center">
-                                <h6 className="sub-text text-sm m-0 ">
-                                  100% confident, {' ' + val.class}
-                                </h6>
-                                <button
-                                  className="button m-0"
-                                  style={{ verticalAlign: 'middle' }}
-                                >
-                                  <span>live tracking</span>
-                                </button>
-                              </div>
+                            <div className="box one">
+                              <img
+                                alt="i"
+                                src={'data:image/jpeg;base64,' + val.image}
+                              />
                             </div>
-                          </Grow>
-                        );
-                      })}
-                  </div>
+                            <div className="bottom-div row m-0 d-flex justify-content-center">
+                              <h6 className="sub-text text-sm m-0 ">
+                                100% confident, {' ' + val.class}
+                              </h6>
+                              <button
+                                className="button m-0"
+                                style={{ verticalAlign: 'middle' }}
+                              >
+                                <span>live tracking</span>
+                              </button>
+                            </div>
+                          </div>
+                        </Grow>
+                      );
+                    })}
                 </div>
               </div>
             </div>

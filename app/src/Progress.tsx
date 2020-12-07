@@ -101,9 +101,9 @@ export default function Progress(): JSX.Element {
     } else if (state == '2') {
       return (
         <div className="col-12">
-          <div className="row  d-flex justify-content-center">
-            <div className="col-md-12 col-lg-12 col-xl-12">
-              <div className="row d-flex justify-content-center">
+          <div className="row ml-0  d-flex justify-content-center">
+            <div className="col-md-12 ml-0 col-lg-12 col-xl-12">
+              <div className="row ml-0 d-flex justify-content-center">
                 <div
                   className="mb-0 p-0"
                   style={{
@@ -120,7 +120,7 @@ export default function Progress(): JSX.Element {
                   {sessionStorage.getItem('curruntVideoName')}
                 </div>
               </div>
-              <div className="row mt-5 d-flex justify-content-center">
+              <div className="row ml-0 mt-5 d-flex justify-content-center">
                 <div className="col-5 text-center">
                   <h6>No. of object being tracked:</h6>
                   <h5 className="text-center">{progressState.count}</h5>
@@ -151,7 +151,7 @@ export default function Progress(): JSX.Element {
       );
     } else if (state == '3') {
       return (
-        <div className="row d-flex align-items-center">
+        <div className="row ml-0 d-flex align-items-center">
           <div className="col-md-12 col-lg-12">
             <div className="row d-flex align-items-center justify-content-center ">
               <h4>Processing Done!</h4>

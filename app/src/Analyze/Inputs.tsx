@@ -28,6 +28,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import names from '../ReusableCompnents/classes';
 
 const nodeConsole = require('console');
 
@@ -54,8 +55,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -64,89 +65,6 @@ const MenuProps = {
     },
   },
 };
-
-const names = [
-  'person',
-  'bicycle',
-  'car',
-  'motorbike',
-  'aeroplane',
-  'bus',
-  'train',
-  'truck',
-  'boat',
-  'traffic light',
-  'fire hydrant',
-  'stop sign',
-  'parking meter',
-  'bench',
-  'bird',
-  'cat',
-  'dog',
-  'horse',
-  'sheep',
-  'cow',
-  'elephant',
-  'bear',
-  'zebra',
-  'giraffe',
-  'backpack',
-  'umbrella',
-  'handbag',
-  'tie',
-  'suitcase',
-  'frisbee',
-  'skis',
-  'snowboard',
-  'sports ball',
-  'kite',
-  'baseball bat',
-  'baseball glove',
-  'skateboard',
-  'surfboard',
-  'tennis racket',
-  'bottle',
-  'wine glass',
-  'cup',
-  'fork',
-  'knife',
-  'spoon',
-  'bowl',
-  'banana',
-  'apple',
-  'sandwich',
-  'orange',
-  'broccoli',
-  'carrot',
-  'hot dog',
-  'pizza',
-  'donut',
-  'cake',
-  'chair',
-  'sofa',
-  'potted plant',
-  'bed',
-  'dining table',
-  'toilet',
-  'tvmonitor',
-  'laptop',
-  'mouse',
-  'remote',
-  'keyboard',
-  'cell phone',
-  'microwave',
-  'oven',
-  'toaster',
-  'sink',
-  'refrigerator',
-  'book',
-  'clock',
-  'vase',
-  'scissors',
-  'teddy bear',
-  'hair drier',
-  'toothbrush',
-];
 
 function getStyles(name: string, personName: string[], theme: Theme) {
   return {

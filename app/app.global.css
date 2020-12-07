@@ -215,3 +215,11 @@ body {
   opacity: 1;
   right: 0;
 }
+
+/* Alternative grid system */
+
+.flex-i-a {
+  height: 100px;
+  width: 100px;
+  object-fit: fill;
+}
