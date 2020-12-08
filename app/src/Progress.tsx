@@ -12,6 +12,10 @@ import CircularProgress, {
 } from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import TaskTableIcon from '@material-ui/icons/ListAlt';
+import Button from '@material-ui/core/Button';
+
+import { useHistory } from 'react-router-dom';
 
 // circle 2
 import CircularIntermidiate from './ReusableCompnents/CircularIntermidiate';
@@ -57,8 +61,10 @@ const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function Progress(): JSX.Element {
+  const history = useHistory();
   const processState = sessionStorage.getItem('processState');
   const [state, setState] = useState(processState == null ? '0' : processState);
+  const [faceExtractionStarted, setFaceExtractionStarted] = useState(false);
   const [progressState, setProgressState] = useState({
     progress: 0,
     estimated: 'calculating',
@@ -70,6 +76,53 @@ export default function Progress(): JSX.Element {
     const arr = time.split(':');
     return arr[0] + 'h ' + arr[1] + 'm ' + arr[2] + 's';
   }
+  const gotoTaskTable = () => {
+    history.push('/tasktable');
+  };
+  const getStatsForFace = () => {
+    if (!faceExtractionStarted) {
+      return (
+        <div className="row  d-flex justify-content-center align-items-center">
+          <div className="col-md-12 col-lg-12 ">
+            <div className="row mt-3 d-flex justify-content-center align-items-center">
+              <div className="col-5 text-center align-items-center">
+                <h5>Estimated Time Remaining</h5>
+                <div className="row d-flex align-items-center justify-content-center">
+                  <h4 className="text-center mb-0 mr-4 p-0">
+                    {beauifyTime(progressState.estimated)}
+                  </h4>
+                  <CircularProgressWithLabel value={progressState.progress} />
+                </div>
+              </div>
+              <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
+                <Timeline state="track" />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="row  d-flex justify-content-center align-items-center">
+          <div className="col-md-12 col-lg-12 ">
+            <div className="row mt-3 d-flex justify-content-center align-items-center">
+              <div className="col-5 text-center align-items-center">
+                <div className="row d-flex align-items-center justify-content-center">
+                  <h4 className="text-center mb-0 mr-4 p-0">
+                    Extracting Faces
+                  </h4>
+                  <CircularProgress />
+                </div>
+              </div>
+              <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
+                <Timeline state="face" />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
   const statsBlock = () => {
     if (state == '0') {
       return (
@@ -100,7 +153,7 @@ export default function Progress(): JSX.Element {
       );
     } else if (state == '2') {
       return (
-        <div className="col-12">
+        <div className="col-12 ml-0">
           <div className="row ml-0  d-flex justify-content-center">
             <div className="col-md-12 ml-0 col-lg-12 col-xl-12">
               <div className="row ml-0 d-flex justify-content-center">
@@ -120,41 +173,42 @@ export default function Progress(): JSX.Element {
                   {sessionStorage.getItem('curruntVideoName')}
                 </div>
               </div>
-              <div className="row ml-0 mt-5 d-flex justify-content-center">
-                <div className="col-5 text-center">
-                  <h6>No. of object being tracked:</h6>
-                  <h5 className="text-center">{progressState.count}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row  d-flex justify-content-center align-items-center">
-            <div className="col-md-12 col-lg-12 ">
-              <div className="row mt-3 d-flex justify-content-center align-items-center">
-                <div className="col-5 text-center align-items-center">
-                  <h5>Estimated Time Remaining</h5>
-                  <div className="row d-flex align-items-center justify-content-center">
-                    <h4 className="text-center mb-0 mr-4 p-0">
-                      {beauifyTime(progressState.estimated)}
-                    </h4>
-                    <CircularProgressWithLabel value={progressState.progress} />
+              {!faceExtractionStarted ? (
+                <div className="row ml-0 mt-5 d-flex justify-content-center">
+                  <div className="col-5 text-center">
+                    <h6>No. of object being tracked:</h6>
+                    <h5 className="text-center">{progressState.count}</h5>
                   </div>
                 </div>
-                <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
-                  <Timeline state="track" />
+              ) : (
+                <div className="row ml-0 mt-5 d-flex justify-content-center">
+                  <div className="col-5 text-center">
+                    <h6>Tracking Finished</h6>
+                    <h5 className="text-center">
+                      Waiting for other processes to finish
+                    </h5>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
+          {getStatsForFace()}
         </div>
       );
     } else if (state == '3') {
       return (
         <div className="row ml-0 d-flex align-items-center">
-          <div className="col-md-12 col-lg-12">
-            <div className="row d-flex align-items-center justify-content-center ">
-              <h4>Processing Done!</h4>
+          <div className="col-md-12 col-lg-12 ml-0">
+            <div className="row d-flex align-items-center justify-content-center ml-0">
+              <h4 className="mr-4 mb-0">Processing Done!</h4>
+              <Button
+                onClick={gotoTaskTable}
+                variant="outlined"
+                color="default"
+                endIcon={<TaskTableIcon />}
+              >
+                Task Table
+              </Button>
             </div>
           </div>
         </div>
@@ -163,6 +217,7 @@ export default function Progress(): JSX.Element {
       return <></>;
     }
   };
+
   useEffect(() => {
     // Anything in here is fired on component mount.
     socket.on('initialization-start', () => {
@@ -185,10 +240,12 @@ export default function Progress(): JSX.Element {
         count: data.count,
       });
     });
+    socket.on('face-extraction-started', () => {
+      setFaceExtractionStarted(true);
+    });
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
-      myConsole.log('work-end Progress');
     });
     return () => {
       // Anything in here is fired on component unmount.

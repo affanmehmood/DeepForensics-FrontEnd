@@ -16,5 +16,25 @@ const getTableData = async () => {
   });
   return data;
 };
+const getDetections = async (taskId: number) => {
+  var data = null;
+  await axios
+    .get('http://127.0.0.1:5000/get-detections?taskId=' + taskId.toString())
+    .then((res) => {
+      // myConsole.log(res.detections);
+      data = res.data;
+    });
+  return data;
+};
+const getFaces = async (taskId: number) => {
+  var data = null;
+  await axios
+    .get('http://127.0.0.1:5000/get-faces?taskId=' + taskId.toString())
+    .then((res) => {
+      // myConsole.log(res.detections);
+      data = res.data;
+    });
+  return data;
+};
 // eslint-disable-next-line import/prefer-default-export
-export { getTableData };
+export { getTableData, getDetections, getFaces };

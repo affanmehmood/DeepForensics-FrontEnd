@@ -275,7 +275,7 @@ export default function InputGroup(props) {
         </div>
         <Divider className="col-12" variant="middle" />
         <div className="row mt-3 ml-0">
-          <div className="col-2">
+          <div className="col-3">
             <FormControlLabel
               control={
                 <Switch
@@ -288,7 +288,7 @@ export default function InputGroup(props) {
               label="Tiny"
             />
           </div>
-          <div className="col-1 ml-2 pl-0 ">
+          <div className="col-1 pl-0 " style={{ marginLeft: '-7px' }}>
             <HtmlTooltip
               title={
                 <>
@@ -296,6 +296,31 @@ export default function InputGroup(props) {
                   <em>Tiny model: speed{'>'}accuracy</em>.<br />
                   {
                     'If you want to do a fast but less accurate report then keep this on.'
+                  }
+                </>
+              }
+            >
+              <HelpOutlineIcon
+                className="aligin-self-center mt-2"
+                fontSize="small"
+              />
+            </HtmlTooltip>
+          </div>
+          <div className="ml-4 col-4">
+            <FormControlLabel
+              control={<Switch disabled name="fast" />}
+              labelPlacement="start"
+              label="Save Memory"
+            />
+          </div>
+          <div className="col-1 ml-0 pl-0 ">
+            <HtmlTooltip
+              title={
+                <>
+                  <Typography color="inherit">Save Memory</Typography>
+                  <em>Save RAM memory</em>.<br />
+                  {
+                    'Switching this on will save memory but decrease the processing speed.'
                   }
                 </>
               }

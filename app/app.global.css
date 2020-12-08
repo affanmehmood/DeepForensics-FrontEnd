@@ -143,7 +143,7 @@ body {
 .flex-i img {
   height: 100%;
   width: 100%;
-  object-fit: fill;
+  object-fit: contain;
 }
 .cols {
   -moz-column-count: 7;
@@ -214,12 +214,4 @@ body {
 .button:hover span:after {
   opacity: 1;
   right: 0;
-}
-
-/* Alternative grid system */
-
-.flex-i-a {
-  height: 100px;
-  width: 100px;
-  object-fit: fill;
 }

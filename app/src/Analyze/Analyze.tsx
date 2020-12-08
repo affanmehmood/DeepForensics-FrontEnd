@@ -34,7 +34,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import socket from '../socketIoBase';
 import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
 import StopIcon from '@material-ui/icons/Stop';
-import ReportTable from './ReportTable';
+import ReportTable from './Table';
 import './Analyze.css';
 import sideimage from '../images/video.svg';
 import Slide from '@material-ui/core/Slide';
@@ -252,7 +252,6 @@ export default function VotFront(): JSX.Element {
       setState('0');
       setIsDisabled(false);
       sessionStorage.setItem('processState', '0');
-      myConsole.log('work-end');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -264,7 +263,6 @@ export default function VotFront(): JSX.Element {
     };
   }, []);
   const getInputState = (inputs: any) => {
-    myConsole.log(inputs);
     setInputState(inputs);
   };
   return (

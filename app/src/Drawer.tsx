@@ -36,20 +36,22 @@ import Slide from '@material-ui/core/Slide';
 import SaveIcon from '@material-ui/icons/Save';
 
 // nav icons
-import AnalyzeIcon from '@material-ui/icons/SearchRounded';
-import ProgressIcon from '@material-ui/icons/AssessmentRounded';
+import AnalyzeIcon from '@material-ui/icons/HomeRounded';
+import ListAltIcon from '@material-ui/icons/ListAltRounded';
 import SettingIcon from '@material-ui/icons/SettingsApplicationsRounded';
 import DefaultIcon from '@material-ui/icons/ReorderRounded';
 import logo1 from './images/deep.png';
 
 // main components
 import Analyze from './Analyze/Analyze';
+import TaskTable from './TaskTable/TaskTable';
 import Progress from './Progress';
 import Settings from './Settings/Settings';
 import Detections from './Detections/Detections';
+import Faces from './Detections/Faces';
 
 // custom styles
-const drawerWidth = 240;
+const drawerWidth = 190;
 const themeColor = '#394457';
 const dividerTheme = '#232e43';
 const chevron = '#ffffff';
@@ -76,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
     },
     menuButton: {
-      marginRight: 36,
+      marginRight: 30,
     },
     hide: {
       display: 'none',
@@ -99,9 +101,9 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
+      width: theme.spacing(5) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: theme.spacing(7) + 1,
       },
     },
     toolbar: {
@@ -146,8 +148,8 @@ export default function MiniDrawer() {
   };
   const getIcon = (name: string) => {
     switch (name) {
-      case 'Progress': {
-        return <ProgressIcon />;
+      case 'Task Table': {
+        return <ListAltIcon />;
       }
       case 'Analyze': {
         return <AnalyzeIcon />;
@@ -160,8 +162,8 @@ export default function MiniDrawer() {
 
   const getRoutes = (name: string): string => {
     switch (name) {
-      case 'Progress': {
-        return '/progress';
+      case 'Task Table': {
+        return '/tasktable';
       }
       case 'Analyze': {
         return '/';
@@ -253,13 +255,17 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Analyze', 'Progress'].map((text, index) => (
+          {['Analyze', 'Task Table'].map((text, index) => (
             <NavLink
               style={{ textDecoration: 'none', color: 'grey' }}
               to={getRoutes(text)}
               key={text}
             >
-              <ListItem button key={text} style={{ paddingLeft: '23px' }}>
+              <ListItem
+                button
+                key={text}
+                style={{ paddingLeft: '15px', paddingRight: '-7' }}
+              >
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -274,7 +280,8 @@ export default function MiniDrawer() {
             style={{
               textDecoration: 'none',
               color: 'grey',
-              paddingLeft: '23px',
+              paddingLeft: '15px',
+              paddingRight: '-7',
             }}
           >
             <ListItemIcon>
@@ -321,8 +328,10 @@ export default function MiniDrawer() {
         <div className={classes.toolbar} />
         <Switch>
           <Route exact path="/" component={Analyze} />
+          <Route exact path="/tasktable" component={TaskTable} />
           <Route exact path="/progress" component={Progress} />
           <Route exact path="/detections/:taskId" component={Detections} />
+          <Route exact path="/faces/:taskId" component={Faces} />
         </Switch>
       </main>
     </div>

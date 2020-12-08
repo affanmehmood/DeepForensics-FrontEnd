@@ -102,7 +102,7 @@ export default function CustomizedTables() {
         setRows(newRows);
       })
       .catch((err) => {
-        myConsole.log(err);
+        myConsole.log(err.response);
       });
   };
   useEffect(() => {
