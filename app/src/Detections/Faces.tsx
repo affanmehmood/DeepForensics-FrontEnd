@@ -152,7 +152,9 @@ export default function Faces(): JSX.Element {
                         <Grow
                           in
                           style={{ transformOrigin: '0 0 0' }}
-                          {...{ timeout: 100 * ind }}
+                          {...{
+                            timeout: (200 * ind) / (facesData.length / 2),
+                          }}
                         >
                           <div
                             className="col d-inline-block m-0 p-0 border rounded mb-3"

@@ -19,16 +19,16 @@
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-
+import { useParams, useHistory } from 'react-router-dom';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import socket from '../socketIoBase';
 
 const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
-
 export default function TaskTable(): JSX.Element {
+  const { taskId } = useParams();
   const history = useHistory();
 
   // 0 state means noting has happened
@@ -64,15 +64,15 @@ export default function TaskTable(): JSX.Element {
 
   return (
     <>
-      <section id="header" className="home-section">
-        <div className="container-fluid pb-4">
+      <section id="header" className="home-section ml-0">
+        <div className="container-fluid pb-4 ml-0">
           <div className="row mt-2 ml-0">
             <div className="col-lg-12 col-md-12 d-flex align-items-center ml-0">
-              <h5 className="ml-0">Quantitative analysis report</h5>
+              <h4 className="ml-0">Quantitative analysis report</h4>
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="col-lg-12 col-md-12 d-flex align-items-center"></div>
+          <div className="row mt-4" style={{ width: '100%' }}>
+            <div className="col-lg-12 col-md-12 bg-light"></div>
           </div>
         </div>
       </section>

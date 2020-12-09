@@ -49,7 +49,7 @@ import Progress from './Progress';
 import Settings from './Settings/Settings';
 import Detections from './Detections/Detections';
 import Faces from './Detections/Faces';
-
+import Report from './ReportDashboard/Report';
 // custom styles
 const drawerWidth = 190;
 const themeColor = '#394457';
@@ -332,6 +332,7 @@ export default function MiniDrawer() {
           <Route exact path="/progress" component={Progress} />
           <Route exact path="/detections/:taskId" component={Detections} />
           <Route exact path="/faces/:taskId" component={Faces} />
+          <Route exact path="/report/:taskId" component={Report} />
         </Switch>
       </main>
     </div>

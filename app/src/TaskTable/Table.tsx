@@ -18,6 +18,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ViewModule from '@material-ui/icons/ViewModule';
@@ -82,6 +83,9 @@ export default function CustomizedTables() {
   const gotoDetection = (id) => {
     history.push('/detections/' + id);
   };
+  const gotoReport = (id) => {
+    history.push('/report/' + id);
+  };
   const fetchData = () => {
     getTableData()
       .then((data) => {
@@ -129,15 +133,19 @@ export default function CustomizedTables() {
         <TableBody>
           {rows.reverse().map((row) => (
             <StyledTableRow
-              className={row.timetaken ? '' : 'bg-dark'}
+              className={row.timetaken ? '' : 'bg-dark pt-1 pb-1 mt-0 mb-0'}
               key={row.videoname}
             >
-              <StyledTableCell component="th" scope="row">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                component="th"
+                scope="row"
+              >
                 <div
                   className={row.timetaken ? 'mb-0 p-0' : 'mb-0 p-0 inthedark'}
                   style={{
                     whiteSpace: 'nowrap',
-                    width: '150px',
+                    width: '140px',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                   }}
@@ -146,31 +154,57 @@ export default function CustomizedTables() {
                 </div>
               </StyledTableCell>
 
-              <StyledTableCell align="center">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                align="center"
+              >
                 <div className={row.timetaken ? '' : ' p-0 inthedark'}>
                   {beauifyTime(row.createdAt)}
                 </div>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                align="center"
+              >
                 <div>{beauifyTime(row.videolength)}</div>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                align="center"
+              >
                 <div>{row.numberobjects}</div>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                align="center"
+              >
                 <div>{beauifyTime(row.timetaken)}</div>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell
+                className={row.timetaken ? '' : 'pt-0 pb-0 mt-0 mb-0'}
+                align="center"
+              >
                 {row.timetaken ? (
-                  <IconButton
-                    onClick={() => {
-                      gotoDetection(row.id);
-                    }}
-                    color="primary"
-                    aria-label="open"
-                  >
-                    <ViewModule />
-                  </IconButton>
+                  <>
+                    <IconButton
+                      onClick={() => {
+                        gotoDetection(row.id);
+                      }}
+                      color="primary"
+                      aria-label="open"
+                    >
+                      <ViewModule />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        gotoReport(row.id);
+                      }}
+                      color="primary"
+                      aria-label="report"
+                    >
+                      <AssessmentIcon />
+                    </IconButton>
+                  </>
                 ) : (
                   <></>
                 )}

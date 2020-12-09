@@ -19,7 +19,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import ViewModule from '@material-ui/icons/ViewModule';
 // API
 import { getTableData } from '../API';
@@ -81,6 +81,9 @@ export default function CustomizedTables() {
   const [rows, setRows] = useState([]);
   const gotoDetection = (id) => {
     history.push('/detections/' + id);
+  };
+  const gotoReport = (id) => {
+    history.push('/report/' + id);
   };
   const fetchData = () => {
     getTableData()
@@ -162,21 +165,30 @@ export default function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell align="center">
                 {row.timetaken ? (
-                  <IconButton
-                    onClick={() => {
-                      gotoDetection(row.id);
-                    }}
-                    color="primary"
-                    aria-label="open"
-                  >
-                    <ViewModule />
-                  </IconButton>
+                  <>
+                    <IconButton
+                      onClick={() => {
+                        gotoDetection(row.id);
+                      }}
+                      color="primary"
+                      aria-label="open"
+                    >
+                      <ViewModule />
+                    </IconButton>
+
+                    <IconButton
+                      onClick={() => {
+                        gotoReport(row.id);
+                      }}
+                      color="primary"
+                      aria-label="report"
+                    >
+                      <AssessmentIcon />
+                    </IconButton>
+                  </>
                 ) : (
                   <></>
                 )}
-                <IconButton color="secondary" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
               </StyledTableCell>
             </StyledTableRow>
           ))}

@@ -71,7 +71,7 @@ export default function TaskTable(): JSX.Element {
         <div className="container-fluid pb-4">
           <div className="row mt-2 ml-0">
             <div className="col-lg-12 col-md-12 d-flex align-items-center ml-0">
-              <h5 className="ml-0">Processed Video Table</h5>
+              <h4 className="ml-0">Processed Video Table</h4>
             </div>
           </div>
           <div className="row mt-4">
