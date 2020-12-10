@@ -84,6 +84,7 @@ export default function Faces(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
+      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -171,7 +172,7 @@ export default function Faces(): JSX.Element {
                                 className="button m-0"
                                 style={{ verticalAlign: 'middle' }}
                               >
-                                <span>Download</span>
+                                <span>live tracking</span>
                               </button>
                             </div>
                           </div>

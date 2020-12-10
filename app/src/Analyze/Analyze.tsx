@@ -252,6 +252,7 @@ export default function VotFront(): JSX.Element {
       setState('0');
       setIsDisabled(false);
       sessionStorage.setItem('processState', '0');
+      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.

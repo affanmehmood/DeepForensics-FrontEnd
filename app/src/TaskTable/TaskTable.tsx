@@ -54,6 +54,7 @@ export default function TaskTable(): JSX.Element {
     });
     socket.on('work-end', () => {
       sessionStorage.setItem('processState', '0');
+      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.

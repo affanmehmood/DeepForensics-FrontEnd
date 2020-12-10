@@ -64,7 +64,10 @@ export default function Progress(): JSX.Element {
   const history = useHistory();
   const processState = sessionStorage.getItem('processState');
   const [state, setState] = useState(processState == null ? '0' : processState);
-  const [faceExtractionStarted, setFaceExtractionStarted] = useState(false);
+
+  const [faceExtractionStarted, setFaceExtractionStarted] = useState(
+    sessionStorage.getItem('faceExt') === 'true'
+  );
   const [progressState, setProgressState] = useState({
     progress: 0,
     estimated: 'calculating',
@@ -242,9 +245,11 @@ export default function Progress(): JSX.Element {
     });
     socket.on('face-extraction-started', () => {
       setFaceExtractionStarted(true);
+      sessionStorage.setItem('faceExt', 'true');
     });
     socket.on('work-end', () => {
       setState('3');
+      sessionStorage.removeItem('faceExt');
       sessionStorage.setItem('processState', '3');
     });
     return () => {
