@@ -220,7 +220,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
-                          Bar chart
+                          Donut chart
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
@@ -234,7 +234,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
-                          Bar chart
+                          Donut Chart
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
@@ -248,7 +248,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
-                          Bar chart
+                          Donut Chart
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
@@ -262,7 +262,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
-                          Bar chart
+                          Donut Chart
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
