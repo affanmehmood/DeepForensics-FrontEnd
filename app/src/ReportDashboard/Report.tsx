@@ -56,7 +56,6 @@ export default function TaskTable(): JSX.Element {
     });
     socket.on('work-end', () => {
       sessionStorage.setItem('processState', '0');
-      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -71,16 +70,16 @@ export default function TaskTable(): JSX.Element {
     <>
       <section id="header" className="home-section ml-0">
         <div className="container-fluid pb-4 ml-0">
-          <div className="row mt-2 ml-0">
-            <div className="col-lg-12 col-md-12 d-flex align-items-center ml-0">
+          <div className="row mt-1 ml-0">
+            <div className="col-lg-12 col-md-12 col-xl-12 d-flex align-items-center ml-0">
               <h4 className="ml-0">Quantitative analysis report</h4>
             </div>
           </div>
-          <div className="row mt-4" style={{ width: '100%' }}>
-            <div className="col-lg-12 col-md-12">
+          <div className="row mt-2">
+            <div className="col-lg-12 col-md-12 col-xl-12">
               <div className="row m-0 mt-2">
                 <div className="col-3 pr-1 pl-1">
-                  <div className="row bg-light pt-3 pb-3 m-0">
+                  <div className="row report-title-color pt-3 pb-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
@@ -99,7 +98,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3 pr-1 pl-1">
-                  <div className="row bg-light pt-3 pb-3 m-0">
+                  <div className="row report-title-color pt-3 pb-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
@@ -118,7 +117,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 pb-3 m-0">
+                  <div className="row report-title-color pt-3 pb-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
@@ -137,7 +136,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 pb-3 m-0">
+                  <div className="row report-title-color pt-3 pb-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
@@ -158,7 +157,7 @@ export default function TaskTable(): JSX.Element {
               </div>
               <div className="row m-0 mt-2">
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -172,7 +171,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3 pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -186,7 +185,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -200,7 +199,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -216,7 +215,7 @@ export default function TaskTable(): JSX.Element {
               </div>
               <div className="row m-0 mt-2">
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -230,7 +229,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3 pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -244,7 +243,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>
@@ -258,7 +257,7 @@ export default function TaskTable(): JSX.Element {
                   </div>
                 </div>
                 <div className="col-3  pr-1 pl-1">
-                  <div className="row bg-light pt-3 m-0">
+                  <div className="row report-title-color pt-3 m-0">
                     <div className="col-12 align-items-center">
                       <div className="row p-0 m-0">
                         <h6 className="mb-0 ml-2" style={{ color: '#583d72' }}>

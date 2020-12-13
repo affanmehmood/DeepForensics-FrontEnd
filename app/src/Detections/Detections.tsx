@@ -87,7 +87,6 @@ export default function Detections(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
-      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -117,6 +116,10 @@ export default function Detections(): JSX.Element {
   function extractFaces() {
     history.push('/faces/' + taskId);
   }
+
+  const gotoTracker = (trackId) => {
+    history.push('/track/' + taskId + '/' + trackId);
+  };
   return (
     <>
       <section id="header" className="d-flex home-section">
@@ -191,6 +194,9 @@ export default function Detections(): JSX.Element {
                                   confident {' ' + val.class}
                                 </h6>
                                 <button
+                                  onClick={() => {
+                                    gotoTracker(val.id);
+                                  }}
                                   className="button m-0"
                                   style={{ verticalAlign: 'middle' }}
                                 >

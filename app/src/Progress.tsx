@@ -250,7 +250,6 @@ export default function Progress(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.removeItem('faceExt');
-      sessionStorage.setItem('processState', '3');
     });
     return () => {
       // Anything in here is fired on component unmount.

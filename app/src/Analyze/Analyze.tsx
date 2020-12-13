@@ -149,6 +149,7 @@ export default function VotFront(): JSX.Element {
     setVideoFilePath(path);
   };
   const startProcessing = () => {
+    sessionStorage.removeItem('faceExt');
     setIsDisabled(true);
     try {
       if (videoFilePath == null) {

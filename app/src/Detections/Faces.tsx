@@ -84,7 +84,6 @@ export default function Faces(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
-      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -112,6 +111,9 @@ export default function Faces(): JSX.Element {
   function goBack() {
     history.push('/detections/' + taskId);
   }
+  const gotoTracker = (trackId) => {
+    history.push('/track/' + taskId + '/' + trackId);
+  };
   return (
     <>
       <section id="header" className="d-flex home-section">
@@ -169,6 +171,9 @@ export default function Faces(): JSX.Element {
                                 {Math.round(100 * val.score) + '% confident'}
                               </h6>
                               <button
+                                onClick={() => {
+                                  gotoTracker(val.id);
+                                }}
                                 className="button m-0"
                                 style={{ verticalAlign: 'middle' }}
                               >

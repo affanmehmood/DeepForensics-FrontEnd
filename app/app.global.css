@@ -219,3 +219,6 @@ body {
 .report-chart-dblue {
   color: '#583d72';
 }
+.report-title-color {
+  background-color: rgb(247, 242, 242);
+}
