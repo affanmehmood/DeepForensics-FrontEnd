@@ -36,5 +36,15 @@ const getFaces = async (taskId: number) => {
     });
   return data;
 };
+const getReport = async (taskId: number) => {
+  var data = null;
+  await axios
+    .get('http://127.0.0.1:5000/generate-report?taskId=' + taskId.toString())
+    .then((res) => {
+      // myConsole.log(res.detections);
+      data = res.data.res;
+    });
+  return data;
+};
 // eslint-disable-next-line import/prefer-default-export
-export { getTableData, getDetections, getFaces };
+export { getTableData, getDetections, getFaces, getReport };

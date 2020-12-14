@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 
-export default function Barchart(): JSX.Element {
+const nodeConsole = require('console');
+
+const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
+export default function Barchart(props): JSX.Element {
   const [state, setState] = useState({
     options: {
       chart: {
@@ -15,36 +18,17 @@ export default function Barchart(): JSX.Element {
         },
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996],
+        categories: props.cdata ? props.cdata.categories : [],
       },
     },
-    series: [
-      {
-        name: 'Cars',
-        data: [12, 23, 54],
-      },
-      {
-        name: 'Motorbike',
-        data: [4, 27, 45],
-      },
-      {
-        name: 'Bus',
-        data: [8, 20, 50],
-      },
-      {
-        name: 'Truck',
-        data: [15, 25, 35],
-      },
-    ],
   });
-
   return (
     <div className="app">
       <div className="row">
         <div className="mixed-chart">
           <Chart
             options={state.options}
-            series={state.series}
+            series={props.cdata ? props.cdata.series : []}
             type="bar"
             height="300"
           />

@@ -249,17 +249,22 @@ export default function VotFront(): JSX.Element {
       sessionStorage.setItem('processState', '2');
       myConsole.log('work-start');
     });
+    socket.on('face-extraction-started', () => {
+      sessionStorage.setItem('faceExt', 'true');
+    });
     socket.on('work-end', () => {
       setState('0');
       setIsDisabled(false);
       sessionStorage.setItem('processState', '0');
       sessionStorage.removeItem('faceExt');
+      sessionStorage.removeItem('repExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
       socket.off('processing-requested');
       socket.off('initialization-start');
       socket.off('halt-requested');
+      socket.off('face-extraction-started');
       socket.off('work-start');
       socket.off('work-end');
     };

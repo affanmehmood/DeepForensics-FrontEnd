@@ -87,6 +87,8 @@ export default function Detections(): JSX.Element {
     socket.on('work-end', () => {
       setState('3');
       sessionStorage.setItem('processState', '3');
+      sessionStorage.removeItem('repExt');
+      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.

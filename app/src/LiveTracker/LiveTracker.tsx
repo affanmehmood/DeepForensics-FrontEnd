@@ -86,6 +86,8 @@ export default function LiveTracker(): JSX.Element {
     });
     socket.on('work-end', () => {
       sessionStorage.setItem('processState', '0');
+      sessionStorage.removeItem('repExt');
+      sessionStorage.removeItem('faceExt');
     });
     return () => {
       // Anything in here is fired on component unmount.

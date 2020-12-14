@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 
-export default function Donut(): JSX.Element {
+export default function Donut(props): JSX.Element {
   const [state, setState] = useState({
     responsive: [
       {
@@ -25,9 +25,8 @@ export default function Donut(): JSX.Element {
           },
         },
       },
-      labels: ['A Team', 'B Team', 'C Team'],
+      labels: props.cdata ? props.cdata.labels : [],
     },
-    series: [240, 120, 60],
   });
   return (
     <div className="app mt-3 mb-3">
@@ -36,7 +35,7 @@ export default function Donut(): JSX.Element {
           <Chart
             options={state.options}
             height={400}
-            series={state.series}
+            series={props.cdata ? props.cdata.series : []}
             type="donut"
           />
         </div>

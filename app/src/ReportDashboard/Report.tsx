@@ -28,11 +28,116 @@ import Donutchart from './Charts/Donut';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import socket from '../socketIoBase';
+import { getReport } from '../API';
 
 const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 export default function TaskTable(): JSX.Element {
+  const [chartData, setChartData] = useState({
+    barcharts: {
+      barChart1: {
+        categories: ['1st half', '2nd half', '3rd half'],
+        series: [
+          {
+            name: 'Cars',
+            data: [],
+          },
+          {
+            name: 'Motorbike',
+            data: [],
+          },
+          {
+            name: 'Truck',
+            data: [],
+          },
+        ],
+      },
+      barChart2: {
+        categories: ['1st half', '2nd half', '3rd half'],
+        series: [
+          {
+            name: 'Cars',
+            data: [],
+          },
+          {
+            name: 'Motorbike',
+            data: [],
+          },
+          {
+            name: 'Truck',
+            data: [],
+          },
+        ],
+      },
+      barChart3: {
+        categories: ['1st half', '2nd half', '3rd half'],
+        series: [
+          {
+            name: 'Person',
+            data: [],
+          },
+          {
+            name: 'Handbag',
+            data: [],
+          },
+          {
+            name: 'Person',
+            data: [],
+          },
+          {
+            name: 'Knife',
+            data: [],
+          },
+        ],
+      },
+      barChart4: {
+        categories: ['1st half', '2nd half', '3rd half'],
+        series: [
+          {
+            name: 'Person',
+            data: [],
+          },
+          {
+            name: 'Handbag',
+            data: [],
+          },
+          {
+            name: 'Person',
+            data: [],
+          },
+          {
+            name: 'Knife',
+            data: [],
+          },
+        ],
+      },
+    },
+    donuts: {
+      donut1: {
+        labels: ['Cars', 'Motorbike', 'Truck'],
+        series: [],
+      },
+      donut2: {
+        labels: ['Cars', 'Motorbike', 'Truck'],
+        series: [],
+      },
+      donut3: {
+        labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
+        series: [],
+      },
+      donut4: {
+        labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
+        series: [],
+      },
+    },
+  });
+  const [titles, setTitles] = useState({
+    countRV: 0,
+    avgRV: '',
+    countObjs: 0,
+    avgObjs: '',
+  });
   const { taskId } = useParams();
   const history = useHistory();
   // 0 state means noting has happened
@@ -47,12 +152,156 @@ export default function TaskTable(): JSX.Element {
 
   useEffect(() => {
     // Anything in here is fired on component mount.
+    getReport(taskId).then((data) => {
+      setTitles({
+        countRV:
+          data.totalOccurrences.car +
+          data.totalOccurrences.truck +
+          data.totalOccurrences.motorbike,
+        avgRV: (
+          data.averageOccurrences.car +
+          data.averageOccurrences.truck +
+          data.averageOccurrences.motorbike
+        ).toFixed(2),
+        countObjs:
+          data.totalOccurrences.person +
+          data.totalOccurrences.backpack +
+          data.totalOccurrences.knife +
+          data.totalOccurrences.handbag,
+        avgObjs: (
+          data.averageOccurrences.person +
+          data.averageOccurrences.backpack +
+          data.averageOccurrences.knife +
+          data.averageOccurrences.handbag
+        ).toFixed(2),
+      });
+      // column 1 fill
+      setChartData({
+        barcharts: {
+          barChart1: {
+            categories: ['1st half', '2nd half', '3rd half'],
+            series: [
+              {
+                name: 'Cars',
+                data: data.occurrences.car,
+              },
+              {
+                name: 'Motorbike',
+                data: data.occurrences.motorbike,
+              },
+              {
+                name: 'Truck',
+                data: data.occurrences.truck,
+              },
+            ],
+          },
+          barChart2: {
+            categories: ['1st half', '2nd half', '3rd half'],
+            series: [
+              {
+                name: 'Cars',
+                data: data.averages.car,
+              },
+              {
+                name: 'Motorbike',
+                data: data.averages.motorbike,
+              },
+              {
+                name: 'Truck',
+                data: data.averages.truck,
+              },
+            ],
+          },
+          barChart3: {
+            categories: ['1st half', '2nd half', '3rd half'],
+            series: [
+              {
+                name: 'Person',
+                data: data.occurrences.person,
+              },
+              {
+                name: 'Handbag',
+                data: data.occurrences.handbag,
+              },
+              {
+                name: 'Backpack',
+                data: data.occurrences.backpack,
+              },
+              {
+                name: 'Knife',
+                data: data.occurrences.knife,
+              },
+            ],
+          },
+          barChart4: {
+            categories: ['1st half', '2nd half', '3rd half'],
+            series: [
+              {
+                name: 'Person',
+                data: data.averages.person,
+              },
+              {
+                name: 'Handbag',
+                data: data.averages.handbag,
+              },
+              {
+                name: 'Backpack',
+                data: data.averages.backpack,
+              },
+              {
+                name: 'Knife',
+                data: data.averages.knife,
+              },
+            ],
+          },
+        },
+        donuts: {
+          donut1: {
+            labels: ['Cars', 'Motorbike', 'Truck'],
+            series: [
+              data.totalOccurrences.car,
+              data.totalOccurrences.motorbike,
+              data.totalOccurrences.truck,
+            ],
+          },
+          donut2: {
+            labels: ['Cars', 'Motorbike', 'Truck'],
+            series: [
+              data.averageOccurrences.car,
+              data.averageOccurrences.motorbike,
+              data.averageOccurrences.truck,
+            ],
+          },
+          donut3: {
+            labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
+            series: [
+              data.totalOccurrences.person,
+              data.totalOccurrences.handbag,
+              data.totalOccurrences.backpack,
+              data.totalOccurrences.knife,
+            ],
+          },
+          donut4: {
+            labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
+            series: [
+              data.averageOccurrences.person,
+              data.averageOccurrences.handbag,
+              data.averageOccurrences.backpack,
+              data.averageOccurrences.knife,
+            ],
+          },
+        },
+      });
+    });
     socket.on('processing-requested');
     socket.on('initialization-start', () => {
       sessionStorage.setItem('processState', '1');
     });
     socket.on('work-start', () => {
       sessionStorage.setItem('processState', '2');
+    });
+    socket.on('face-extraction-started', () => {
+      sessionStorage.setItem('faceExt', 'true');
     });
     socket.on('work-end', () => {
       sessionStorage.setItem('processState', '0');
@@ -91,7 +340,7 @@ export default function TaskTable(): JSX.Element {
                           style={{ fontSize: 58, color: '#583d72' }}
                         />
                         <h1 style={{ color: '#583d72' }} className="ml-1 mb-0">
-                          10454
+                          {titles.countRV}
                         </h1>
                       </div>
                     </div>
@@ -110,7 +359,7 @@ export default function TaskTable(): JSX.Element {
                           style={{ fontSize: 58, color: '#583d72' }}
                         />
                         <h1 style={{ color: '#583d72' }} className="ml-1 mb-0">
-                          00:34:35
+                          {titles.avgRV}
                         </h1>
                       </div>
                     </div>
@@ -121,7 +370,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
-                          # of Pedestrians
+                          # of Objects
                         </h5>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
@@ -129,7 +378,7 @@ export default function TaskTable(): JSX.Element {
                           style={{ fontSize: 58, color: '#583d72' }}
                         />
                         <h1 style={{ color: '#583d72' }} className="ml-1 mb-0">
-                          451
+                          {titles.countObjs}
                         </h1>
                       </div>
                     </div>
@@ -140,7 +389,7 @@ export default function TaskTable(): JSX.Element {
                     <div className="col-12 align-items-center">
                       <div className="row d-flex justify-content-center p-0 m-0">
                         <h5 className="mb-0" style={{ color: '#583d72' }}>
-                          Avg Duration Pedestrians
+                          Avg Duration Objects
                         </h5>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
@@ -148,7 +397,7 @@ export default function TaskTable(): JSX.Element {
                           style={{ fontSize: 58, color: '#583d72' }}
                         />
                         <h1 style={{ color: '#583d72' }} className="ml-1 mb-0">
-                          00:30:52
+                          {titles.avgObjs}
                         </h1>
                       </div>
                     </div>
@@ -165,7 +414,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Barchart />
+                        <Barchart cdata={chartData.barcharts.barChart1} />
                       </div>
                     </div>
                   </div>
@@ -179,7 +428,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Barchart />
+                        <Barchart cdata={chartData.barcharts.barChart2} />
                       </div>
                     </div>
                   </div>
@@ -193,7 +442,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Barchart />
+                        <Barchart cdata={chartData.barcharts.barChart3} />
                       </div>
                     </div>
                   </div>
@@ -207,7 +456,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Barchart />
+                        <Barchart cdata={chartData.barcharts.barChart4} />
                       </div>
                     </div>
                   </div>
@@ -223,7 +472,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Donutchart />
+                        <Donutchart cdata={chartData.donuts.donut1} />
                       </div>
                     </div>
                   </div>
@@ -237,7 +486,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Donutchart />
+                        <Donutchart cdata={chartData.donuts.donut2} />
                       </div>
                     </div>
                   </div>
@@ -251,7 +500,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Donutchart />
+                        <Donutchart cdata={chartData.donuts.donut3} />
                       </div>
                     </div>
                   </div>
@@ -265,7 +514,7 @@ export default function TaskTable(): JSX.Element {
                         </h6>
                       </div>
                       <div className="row d-flex justify-content-center  p-0 m-0">
-                        <Donutchart />
+                        <Donutchart cdata={chartData.donuts.donut4} />
                       </div>
                     </div>
                   </div>

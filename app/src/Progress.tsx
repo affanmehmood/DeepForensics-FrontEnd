@@ -68,6 +68,9 @@ export default function Progress(): JSX.Element {
   const [faceExtractionStarted, setFaceExtractionStarted] = useState(
     sessionStorage.getItem('faceExt') === 'true'
   );
+  const [reportStarted, setReportStarted] = useState(
+    sessionStorage.getItem('repExt') === 'true'
+  );
   const [progressState, setProgressState] = useState({
     progress: 0,
     estimated: 'calculating',
@@ -83,7 +86,7 @@ export default function Progress(): JSX.Element {
     history.push('/tasktable');
   };
   const getStatsForFace = () => {
-    if (!faceExtractionStarted) {
+    if (!faceExtractionStarted && !reportStarted) {
       return (
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
@@ -104,7 +107,7 @@ export default function Progress(): JSX.Element {
           </div>
         </div>
       );
-    } else {
+    } else if (faceExtractionStarted && !reportStarted) {
       return (
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
@@ -119,6 +122,26 @@ export default function Progress(): JSX.Element {
               </div>
               <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
                 <Timeline state="face" />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (reportStarted) {
+      return (
+        <div className="row  d-flex justify-content-center align-items-center">
+          <div className="col-md-12 col-lg-12 ">
+            <div className="row mt-3 d-flex justify-content-center align-items-center">
+              <div className="col-5 text-center align-items-center">
+                <div className="row d-flex align-items-center justify-content-center">
+                  <h4 className="text-center mb-0 mr-4 p-0">
+                    Generating a report
+                  </h4>
+                  <CircularProgress />
+                </div>
+              </div>
+              <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
+                <Timeline state="r" />
               </div>
             </div>
           </div>
@@ -176,7 +199,7 @@ export default function Progress(): JSX.Element {
                   {sessionStorage.getItem('curruntVideoName')}
                 </div>
               </div>
-              {!faceExtractionStarted ? (
+              {!faceExtractionStarted && !reportStarted ? (
                 <div className="row ml-0 mt-5 d-flex justify-content-center">
                   <div className="col-5 text-center">
                     <h6>No. of object being tracked:</h6>
@@ -247,9 +270,15 @@ export default function Progress(): JSX.Element {
       setFaceExtractionStarted(true);
       sessionStorage.setItem('faceExt', 'true');
     });
+    socket.on('report-started', () => {
+      setReportStarted(true);
+      sessionStorage.setItem('repExt', 'true');
+    });
     socket.on('work-end', () => {
       setState('3');
+      sessionStorage.setItem('processState', '0');
       sessionStorage.removeItem('faceExt');
+      sessionStorage.removeItem('repExt');
     });
     return () => {
       // Anything in here is fired on component unmount.
