@@ -25,7 +25,7 @@ import { getDetections } from '../Api';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
 
-import options from '../ReusableCompnents/classes';
+import optionsHard from '../ReusableCompnents/classes';
 
 const nodeConsole = require('console');
 
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Detections(): JSX.Element {
+  const [options, setOptions] = useState(['All']);
   const history = useHistory();
   const classes = useStyles();
   const { taskId } = useParams();
@@ -65,6 +66,11 @@ export default function Detections(): JSX.Element {
       .then((data) => {
         setDetectionData(data.detections);
         if (data.detections.length === 0) setNoneState(true);
+        const tempArr = ['All'];
+        data.detections.forEach((detection) => {
+          if (!tempArr.includes(detection.class)) tempArr.push(detection.class);
+        });
+        setOptions(tempArr);
       })
       .catch((err) => {
         myConsole.log(err.response);
@@ -180,7 +186,7 @@ export default function Detections(): JSX.Element {
                             in
                             style={{ transformOrigin: '0 0 0' }}
                             {...{
-                              timeout: (200 * ind) / (detectionData.length / 2),
+                              timeout: (200 * ind) / (detectionData.length / 3),
                             }}
                           >
                             <div
