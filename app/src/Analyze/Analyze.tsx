@@ -361,7 +361,7 @@ export default function VotFront(): JSX.Element {
           </div>
           <div className="row mt-2 ml-0">
             <div className="col-lg-12 col-md-12 d-flex align-items-center ml-0">
-              <h5 className="ml-0">Processed Video Table</h5>
+              <h5 className="ml-0">Last 5 Processed Videos</h5>
             </div>
           </div>
           <div className="row mt-4">

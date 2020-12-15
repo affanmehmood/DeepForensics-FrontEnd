@@ -22,7 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import ViewModule from '@material-ui/icons/ViewModule';
 // API
-import { getTableData } from '../API';
+import { getTop5TableData } from '../API';
 
 const nodeConsole = require('console');
 
@@ -86,7 +86,7 @@ export default function CustomizedTables() {
     history.push('/report/' + id);
   };
   const fetchData = () => {
-    getTableData()
+    getTop5TableData()
       .then((data) => {
         const newRows = [];
         data.tasks.forEach((task) => {
@@ -130,7 +130,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.reverse().map((row) => (
+          {rows.map((row) => (
             <StyledTableRow
               className={row.timetaken ? '' : 'bg-dark'}
               key={row.videoname}

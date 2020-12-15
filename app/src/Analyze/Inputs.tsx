@@ -285,15 +285,19 @@ export default function InputGroup(props) {
                 />
               }
               labelPlacement="start"
-              label="Tiny"
+              label="Quick"
             />
           </div>
           <div className="col-1 pl-0 " style={{ marginLeft: '-7px' }}>
             <HtmlTooltip
               title={
                 <>
-                  <Typography color="inherit">Tiny Model</Typography>
-                  <em>Tiny model: speed{'>'}accuracy</em>.<br />
+                  <Typography color="inherit">Quick Processing</Typography>
+                  <em>
+                    Quick processing improves speed but produces less accurate
+                    results
+                  </em>
+                  .<br />
                   {
                     'If you want to do a fast but less accurate report then keep this on.'
                   }

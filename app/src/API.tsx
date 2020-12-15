@@ -16,6 +16,14 @@ const getTableData = async () => {
   });
   return data;
 };
+const getTop5TableData = async () => {
+  var data = null;
+  await axios.get('http://127.0.0.1:5000/get-tasks?top5=true').then((res) => {
+    // myConsole.log(res.data);
+    data = res.data;
+  });
+  return data;
+};
 const getDetections = async (taskId: number) => {
   var data = null;
   await axios
@@ -47,4 +55,4 @@ const getReport = async (taskId: number) => {
   return data;
 };
 // eslint-disable-next-line import/prefer-default-export
-export { getTableData, getDetections, getFaces, getReport };
+export { getTableData, getDetections, getFaces, getReport, getTop5TableData };

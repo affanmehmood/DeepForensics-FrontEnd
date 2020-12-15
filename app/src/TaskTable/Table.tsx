@@ -131,7 +131,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.reverse().map((row) => (
+          {rows.map((row) => (
             <StyledTableRow
               className={row.timetaken ? '' : 'bg-dark pt-1 pb-1 mt-0 mb-0'}
               key={row.videoname}
