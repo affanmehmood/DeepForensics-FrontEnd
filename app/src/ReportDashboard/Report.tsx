@@ -37,7 +37,7 @@ export default function TaskTable(): JSX.Element {
   const [chartData, setChartData] = useState({
     barcharts: {
       barChart1: {
-        categories: ['1st half', '2nd half', '3rd half'],
+        categories: ['1st Quater', '2nd Quater', '3rd Quater'],
         series: [
           {
             name: 'Cars',
@@ -54,7 +54,7 @@ export default function TaskTable(): JSX.Element {
         ],
       },
       barChart2: {
-        categories: ['1st half', '2nd half', '3rd half'],
+        categories: ['1st Quater', '2nd Quater', '3rd Quater'],
         series: [
           {
             name: 'Cars',
@@ -71,7 +71,7 @@ export default function TaskTable(): JSX.Element {
         ],
       },
       barChart3: {
-        categories: ['1st half', '2nd half', '3rd half'],
+        categories: ['1st Quater', '2nd Quater', '3rd Quater'],
         series: [
           {
             name: 'Person',
@@ -92,7 +92,7 @@ export default function TaskTable(): JSX.Element {
         ],
       },
       barChart4: {
-        categories: ['1st half', '2nd half', '3rd half'],
+        categories: ['1st Quater', '2nd Quater', '3rd Quater'],
         series: [
           {
             name: 'Person',
@@ -133,9 +133,9 @@ export default function TaskTable(): JSX.Element {
     },
   });
   const [titles, setTitles] = useState({
-    countRV: 0,
+    countRV: '',
     avgRV: '',
-    countObjs: 0,
+    countObjs: '',
     avgObjs: '',
   });
   const { taskId } = useParams();
@@ -149,108 +149,95 @@ export default function TaskTable(): JSX.Element {
     processState = '0';
     sessionStorage.setItem('processState', '0');
   }
-
+  function roundToTwo(num) {
+    return +(Math.round(num + 'e+2') + 'e-2');
+  }
   useEffect(() => {
     // Anything in here is fired on component mount.
     getReport(taskId).then((data) => {
+      myConsole.log(data);
       setTitles({
-        countRV:
-          data.totalOccurrences.car +
-          data.totalOccurrences.truck +
-          data.totalOccurrences.motorbike,
-        avgRV: (
-          data.averageOccurrences.car +
-          data.averageOccurrences.truck +
-          data.averageOccurrences.motorbike
-        ).toFixed(2),
-        countObjs:
-          data.totalOccurrences.person +
-          data.totalOccurrences.backpack +
-          data.totalOccurrences.knife +
-          data.totalOccurrences.handbag,
-        avgObjs: (
-          data.averageOccurrences.person +
-          data.averageOccurrences.backpack +
-          data.averageOccurrences.knife +
-          data.averageOccurrences.handbag
-        ).toFixed(2),
+        countRV: data.column1.total,
+        avgRV: data.column2.totalHMS,
+        countObjs: data.column3.total,
+        avgObjs: data.column4.totalHMS,
       });
       // column 1 fill
       setChartData({
         barcharts: {
           barChart1: {
-            categories: ['1st half', '2nd half', '3rd half'],
+            categories: ['1st Quater', '2nd Quater', '3rd Quater'],
             series: [
               {
                 name: 'Cars',
-                data: data.occurrences.car,
+                data: data.column1.car,
               },
               {
                 name: 'Motorbike',
-                data: data.occurrences.motorbike,
+                data: data.column1.motorbike,
               },
               {
                 name: 'Truck',
-                data: data.occurrences.truck,
+                data: data.column1.truck,
               },
             ],
           },
           barChart2: {
-            categories: ['1st half', '2nd half', '3rd half'],
+            categories: ['1st Quater', '2nd Quater', '3rd Quater'],
             series: [
               {
                 name: 'Cars',
-                data: data.averages.car,
+                data: data.column2.car,
               },
               {
                 name: 'Motorbike',
-                data: data.averages.motorbike,
+                data: data.column2.motorbike,
               },
               {
                 name: 'Truck',
-                data: data.averages.truck,
+                data: data.column2.truck,
               },
             ],
           },
           barChart3: {
-            categories: ['1st half', '2nd half', '3rd half'],
+            categories: ['1st Quater', '2nd Quater', '3rd Quater'],
             series: [
               {
                 name: 'Person',
-                data: data.occurrences.person,
+                data: data.column3.person,
               },
               {
                 name: 'Handbag',
-                data: data.occurrences.handbag,
+                data: data.column3.handbag,
               },
               {
                 name: 'Backpack',
-                data: data.occurrences.backpack,
+                data: data.column3.backpack,
               },
               {
                 name: 'Knife',
-                data: data.occurrences.knife,
+                data: data.column3.knife,
               },
             ],
           },
           barChart4: {
-            categories: ['1st half', '2nd half', '3rd half'],
+            categories: ['1st Quater', '2nd Quater', '3rd Quater'],
             series: [
               {
                 name: 'Person',
-                data: data.averages.person,
+                data: data.column4.person,
               },
               {
                 name: 'Handbag',
-                data: data.averages.handbag,
+                data: data.column4.handbag,
               },
               {
                 name: 'Backpack',
-                data: data.averages.backpack,
+                data: data.column4.backpack,
               },
               {
                 name: 'Knife',
-                data: data.averages.knife,
+                data: data.column4.knife,
               },
             ],
           },
@@ -259,35 +246,35 @@ export default function TaskTable(): JSX.Element {
           donut1: {
             labels: ['Cars', 'Motorbike', 'Truck'],
             series: [
-              data.totalOccurrences.car,
-              data.totalOccurrences.motorbike,
-              data.totalOccurrences.truck,
+              data.column1.carTotal,
+              data.column1.motorbikeTotal,
+              data.column1.truckTotal,
             ],
           },
           donut2: {
             labels: ['Cars', 'Motorbike', 'Truck'],
             series: [
-              data.averageOccurrences.car,
-              data.averageOccurrences.motorbike,
-              data.averageOccurrences.truck,
+              roundToTwo(data.column2.carAverage),
+              roundToTwo(data.column2.motorbikeAverage),
+              roundToTwo(data.column2.truckAverage),
             ],
           },
           donut3: {
             labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
             series: [
-              data.totalOccurrences.person,
-              data.totalOccurrences.handbag,
-              data.totalOccurrences.backpack,
-              data.totalOccurrences.knife,
+              data.column3.personTotal,
+              data.column3.handbagTotal,
+              data.column3.backpackTotal,
+              data.column3.knifeTotal,
             ],
           },
           donut4: {
             labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
             series: [
-              data.averageOccurrences.person,
-              data.averageOccurrences.handbag,
-              data.averageOccurrences.backpack,
-              data.averageOccurrences.knife,
+              roundToTwo(data.column4.personAverage),
+              roundToTwo(data.column4.handbagAverage),
+              roundToTwo(data.column4.backpackAverage),
+              roundToTwo(data.column4.knifeAverage),
             ],
           },
         },
