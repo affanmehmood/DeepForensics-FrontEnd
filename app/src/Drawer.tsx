@@ -1,13 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
+import { bindActionCreators } from 'redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 // not working
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
 // for routing
 import { Switch, Route, NavLink } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 // for drawer design
 import clsx from 'clsx';
 import {
@@ -40,6 +44,7 @@ import AnalyzeIcon from '@material-ui/icons/HomeRounded';
 import ListAltIcon from '@material-ui/icons/ListAltRounded';
 import SettingIcon from '@material-ui/icons/SettingsApplicationsRounded';
 import DefaultIcon from '@material-ui/icons/ReorderRounded';
+import socket from './socketIoBase';
 import logo1 from './images/deep.png';
 
 // main components
@@ -52,6 +57,11 @@ import Faces from './Detections/Faces';
 import Report from './ReportDashboard/Report';
 import LiveTracker from './LiveTracker/LiveTracker';
 
+import createCourse from './redux/actions/courseActions';
+
+const nodeConsole = require('console');
+
+const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 // custom styles
 const drawerWidth = 190;
 const themeColor = '#394457';
@@ -136,7 +146,64 @@ const useStyles2 = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function MiniDrawer() {
+const useStyles3 = makeStyles((theme: Theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+const MiniDrawer = (props) => {
+  // 0 state means noting has happened
+  // 1 state means initializing model
+  // 2 state means started processing
+  // 3 state means processing finished
+
+  const [state, setState] = useState('0');
+
+  // ALERT STARTS HERE
+  const classes3 = useStyles3();
+  function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  // Alert Sucess starts here
+  const [openSucess, setOpenSucess] = React.useState(false);
+  const openAlertSucess = () => {
+    setOpenSucess(true);
+  };
+  const closeAlertSucess = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSucess(false);
+  };
+
+  // Alert Error starts here
+  const [openError, setOpenError] = React.useState(false);
+  const openAlertError = () => {
+    setOpenError(true);
+  };
+  const closeAlertError = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenError(false);
+  };
+
+  // Alert info starts here
+  const [openInfo, setOpenInfo] = React.useState(false);
+  const openAlertInfo = () => {
+    setOpenInfo(true);
+  };
+  const closeAlertInfo = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenInfo(false);
+  };
+  // ALERT END HERE
+
   const classes = useStyles();
   const classes2 = useStyles2();
   const theme = useTheme();
@@ -184,6 +251,40 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    // Anything in here is fired on component mount.
+
+    socket.on('processing-requested');
+    socket.on('halt-requested');
+    socket.on('initialization-start', () => {
+      setState('1');
+      props.actions.createCourse('1');
+      closeAlertInfo();
+      openAlertSucess();
+      myConsole.log('initialization-start DRAWER');
+    });
+    socket.on('work-start', () => {
+      setState('2');
+      props.actions.createCourse('2');
+      myConsole.log('work-start DRAWER');
+    });
+    socket.on('face-extraction-started', () => {
+      props.actions.createCourse('3');
+    });
+    socket.on('work-end', () => {
+      setState('0');
+      props.actions.createCourse('0');
+    });
+    return () => {
+      // Anything in here is fired on component unmount.
+      socket.off('processing-requested');
+      socket.off('initialization-start');
+      socket.off('halt-requested');
+      socket.off('face-extraction-started');
+      socket.off('work-start');
+      socket.off('work-end');
+    };
+  });
   return (
     <div className={classes.root}>
       <link
@@ -215,8 +316,7 @@ export default function MiniDrawer() {
             style={{
               marginTop: '4px',
               marginBottom: '4px',
-              height: '12%',
-              width: '12%',
+              height: '50px',
               borderRadius: '10px',
             }}
             src={logo1}
@@ -243,7 +343,10 @@ export default function MiniDrawer() {
         <div className={classes.toolbar}>
           <ListItem
             className="text-center ml-2"
-            style={{ textDecoration: 'none', color: 'grey' }}
+            style={{
+              textDecoration: 'none',
+              color: 'grey',
+            }}
           >
             <ListItemText primary="Menu" />
           </ListItem>
@@ -259,14 +362,20 @@ export default function MiniDrawer() {
         <List>
           {['Analyze', 'Task Table'].map((text, index) => (
             <NavLink
-              style={{ textDecoration: 'none', color: 'grey' }}
+              style={{
+                textDecoration: 'none',
+                color: 'grey',
+              }}
               to={getRoutes(text)}
               key={text}
             >
               <ListItem
                 button
                 key={text}
-                style={{ paddingLeft: '15px', paddingRight: '-7' }}
+                style={{
+                  paddingLeft: '15px',
+                  paddingRight: '-7',
+                }}
               >
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>
                 <ListItemText primary={text} />
@@ -337,7 +446,54 @@ export default function MiniDrawer() {
           <Route exact path="/report/:taskId" component={Report} />
           <Route exact path="/track/:taskId/:trackId" component={LiveTracker} />
         </Switch>
+        <div className={classes3.root}>
+          <Snackbar
+            open={openSucess}
+            autoHideDuration={6000}
+            onClose={closeAlertSucess}
+          >
+            <Alert onClose={closeAlertSucess} severity="success">
+              Processing Started Successfully!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={openError}
+            autoHideDuration={3000}
+            onClose={closeAlertError}
+          >
+            <Alert onClose={closeAlertError} severity="error">
+              Failed to start processing!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={openInfo}
+            autoHideDuration={6000}
+            onClose={closeAlertInfo}
+          >
+            <Alert onClose={closeAlertInfo} severity="info">
+              Please wait while the system is processing...
+            </Alert>
+          </Snackbar>
+        </div>
       </main>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  myConsole.log('STATE CHANGED in Drawer', state.state[0]);
+  return {
+    newState: state.state[0],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators({ createCourse }, dispatch),
+  };
+};
+
+MiniDrawer.propTypes = {
+  actions: PropTypes.func.isRequired,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MiniDrawer);

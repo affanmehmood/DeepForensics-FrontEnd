@@ -60,7 +60,7 @@ export default function ColorsTimeline(props: any) {
           {getDot(3)}
           <TimelineConnector />
         </TimelineSeparator>
-        <TimelineContent>Face Exteaction</TimelineContent>
+        <TimelineContent>Face Extraction</TimelineContent>
       </TimelineItem>
       <TimelineItem>
         <TimelineSeparator>{getDot(4)}</TimelineSeparator>

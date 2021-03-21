@@ -21,6 +21,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 // material ui
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -36,7 +38,7 @@ import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
 import StopIcon from '@material-ui/icons/Stop';
 import ReportTable from './Table';
 import './Analyze.css';
-import sideimage from '../images/video.svg';
+import sideimage from '../images/people.gif';
 import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -77,7 +79,7 @@ const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
-export default function VotFront(): JSX.Element {
+const VotFront = (props) => {
   const history = useHistory();
   const [inputState, setInputState] = useState({
     tiny: true,
@@ -87,36 +89,22 @@ export default function VotFront(): JSX.Element {
   });
   const classes = useStyles();
   const classes2 = useStyles2();
-  const [isDisabled, setIsDisabled] = useState(false);
   // 0 state means noting has happened
   // 1 state means initializing model
   // 2 state means started processing
   // 3 state means processing finished
-  var processState = sessionStorage.getItem('processState');
-  if (processState == null || processState == '3') {
-    processState = '0';
-    sessionStorage.setItem('processState', '0');
-  }
 
-  const [state, setState] = useState(processState);
+  const [state, setState] = useState('0');
+
   const [videoFilePath, setVideoFilePath] = useState(null);
+
+  const [isDisabled, setIsDisabled] = useState(false);
 
   // ALERT STARTS HERE
   const classes3 = useStyles3();
   function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-  // Alert Sucess starts here
-  const [open1, setOpen1] = React.useState(false);
-  const openAlertSucess = () => {
-    setOpen1(true);
-  };
-  const closeAlertSucess = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen1(false);
-  };
 
   // Alert Error starts here
   const [open2, setOpen2] = React.useState(false);
@@ -148,8 +136,15 @@ export default function VotFront(): JSX.Element {
     const path = document.getElementById('myFile').files[0].path;
     setVideoFilePath(path);
   };
+  useEffect(() => {
+    const { newState } = props;
+    if (newState) {
+      setState(newState);
+      myConsole.log('State NOW', state, newState);
+      if (newState == '0') setIsDisabled(false);
+    }
+  }, [props, state, isDisabled]);
   const startProcessing = () => {
-    sessionStorage.removeItem('faceExt');
     setIsDisabled(true);
     try {
       if (videoFilePath == null) {
@@ -168,15 +163,14 @@ export default function VotFront(): JSX.Element {
         videoFilePath.split('\\').pop().split('/').pop()
       );
     } catch (error) {
+      setIsDisabled(true);
       openAlertError();
-      setIsDisabled(false);
     }
   };
   const stopProcessing = () => {
     socket.emit('halt-requested', () => {
       setState('0');
       setIsDisabled(false);
-      sessionStorage.setItem('processState', '0');
       myConsole.log('process halted!');
     });
   };
@@ -230,45 +224,7 @@ export default function VotFront(): JSX.Element {
       }
     }
   };
-  useEffect(() => {
-    // Anything in here is fired on component mount.
-    if (processState == '1' || processState == '2') {
-      setIsDisabled(true);
-    }
-    socket.on('processing-requested');
-    socket.on('halt-requested');
-    socket.on('initialization-start', () => {
-      setState('1');
-      sessionStorage.setItem('processState', '1');
-      closeAlertInfo();
-      openAlertSucess();
-      myConsole.log('initialization-start');
-    });
-    socket.on('work-start', () => {
-      setState('2');
-      sessionStorage.setItem('processState', '2');
-      myConsole.log('work-start');
-    });
-    socket.on('face-extraction-started', () => {
-      sessionStorage.setItem('faceExt', 'true');
-    });
-    socket.on('work-end', () => {
-      setState('0');
-      setIsDisabled(false);
-      sessionStorage.setItem('processState', '0');
-      sessionStorage.removeItem('faceExt');
-      sessionStorage.removeItem('repExt');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('processing-requested');
-      socket.off('initialization-start');
-      socket.off('halt-requested');
-      socket.off('face-extraction-started');
-      socket.off('work-start');
-      socket.off('work-end');
-    };
-  }, []);
+
   const getInputState = (inputs: any) => {
     setInputState(inputs);
   };
@@ -277,7 +233,7 @@ export default function VotFront(): JSX.Element {
       <section id="header" className="home-section">
         <div className="container-fluid pb-4">
           <div className="row">
-            <div className=" col-lg-8 col-md-8 col-xl-8">
+            <div className=" col-lg-7 col-md-7 col-xl-7">
               <div className="row">
                 <div className="col-lg-12 col-md-12 d-flex align-items-center">
                   <h3>Start Processing Videos!</h3>
@@ -333,7 +289,7 @@ export default function VotFront(): JSX.Element {
               </div>
               <div className="row mt-4 ml-0">
                 <div className="col-lg-12 col-md-12 d-flex align-items-center">
-                  <h5>Model Configureations</h5>
+                  <h5>Model Configurations</h5>
                 </div>
               </div>
               <div className="row mt-2 ml-3">
@@ -354,7 +310,7 @@ export default function VotFront(): JSX.Element {
             <div className=" col-lg-4 col-md-4 col-xl-4 d-flex align-items-center ">
               <img
                 src={sideimage}
-                className="img-fluid animated w-75"
+                className="img-fluid animateds w-100"
                 alt="home"
               />
             </div>
@@ -364,21 +320,12 @@ export default function VotFront(): JSX.Element {
               <h5 className="ml-0">Last 5 Processed Videos</h5>
             </div>
           </div>
-          <div className="row mt-4">
+          <div className="row mt-2">
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
               <ReportTable />
             </div>
           </div>
           <div className={classes3.root}>
-            <Snackbar
-              open={open1}
-              autoHideDuration={6000}
-              onClose={closeAlertSucess}
-            >
-              <Alert onClose={closeAlertSucess} severity="success">
-                Processing Started Successfully!
-              </Alert>
-            </Snackbar>
             <Snackbar
               open={open2}
               autoHideDuration={3000}
@@ -402,4 +349,15 @@ export default function VotFront(): JSX.Element {
       </section>
     </>
   );
-}
+};
+const mapStateToProps = (state) => {
+  myConsole.log('State Change in Analyze', state.state[0]);
+  return {
+    newState: state.state[0],
+  };
+};
+
+VotFront.propTypes = {
+  newState: PropTypes.func.isRequired,
+};
+export default connect(mapStateToProps)(VotFront);
