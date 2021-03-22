@@ -57,7 +57,9 @@ import Faces from './Detections/Faces';
 import Report from './ReportDashboard/Report';
 import LiveTracker from './LiveTracker/LiveTracker';
 
-import createCourse from './redux/actions/courseActions';
+import updateStateAction from './redux/actions/updateStateActions';
+import updateProgressAction from './redux/actions/updateProgressActions';
+import Analyze from './Analyze/Analyze';
 
 const nodeConsole = require('console');
 
@@ -158,9 +160,13 @@ const MiniDrawer = (props) => {
   // 0 state means noting has happened
   // 1 state means initializing model
   // 2 state means started processing
-  // 3 state means processing finished
+  // 3 state means face extraction
+  // 4 state means report started
+  // 5 state means processing finished
 
   const [state, setState] = useState('0');
+
+  const [progress, setProgress] = useState({});
 
   // ALERT STARTS HERE
   const classes3 = useStyles3();
@@ -258,22 +264,42 @@ const MiniDrawer = (props) => {
     socket.on('halt-requested');
     socket.on('initialization-start', () => {
       setState('1');
-      props.actions.createCourse('1');
+      props.actions.updateStateAction('1');
       closeAlertInfo();
       openAlertSucess();
-      myConsole.log('initialization-start DRAWER');
     });
     socket.on('work-start', () => {
       setState('2');
-      props.actions.createCourse('2');
-      myConsole.log('work-start DRAWER');
+      props.actions.updateStateAction('2');
     });
+    socket.on('work-progress', (data) => {
+      if (state !== '2') {
+        setState('2');
+      }
+      /* props.actions.updateProgressAction({
+        progress: data.progress,
+        estimated: data.estimated,
+        count: data.count,
+      }); */
+      setProgress({
+        progress: data.progress,
+        estimated: data.estimated,
+        count: data.count,
+      });
+    });
+
     socket.on('face-extraction-started', () => {
-      props.actions.createCourse('3');
+      setState('3');
+      props.actions.updateStateAction('3');
+    });
+
+    socket.on('report-started', () => {
+      setState('4');
+      props.actions.updateStateAction('4');
     });
     socket.on('work-end', () => {
       setState('0');
-      props.actions.createCourse('0');
+      props.actions.updateStateAction('0');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -438,7 +464,12 @@ const MiniDrawer = (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route exact path="/" component={Analyze} />
+          <Route
+            exact
+            path="/"
+            component={Analyze}
+            render={() => <Analyze state={state} progress={progress} />}
+          />
           <Route exact path="/tasktable" component={TaskTable} />
           <Route exact path="/progress" component={Progress} />
           <Route exact path="/detections/:taskId" component={Detections} />
@@ -481,15 +512,18 @@ const MiniDrawer = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  myConsole.log('STATE CHANGED in Drawer', state.state[0]);
   return {
     newState: state.state[0],
+    newProgress: state.progress,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators({ createCourse }, dispatch),
+    actions: bindActionCreators(
+      { updateStateAction, updateProgressAction },
+      dispatch
+    ),
   };
 };
 

@@ -6,6 +6,8 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-else-return */
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+
 // circle 1
 import CircularProgress, {
   CircularProgressProps,
@@ -17,6 +19,7 @@ import Button from '@material-ui/core/Button';
 
 import { useHistory } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
 // circle 2
 import CircularIntermidiate from './ReusableCompnents/CircularIntermidiate';
 
@@ -60,10 +63,9 @@ const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
-export default function Progress(): JSX.Element {
+const Progress = (props) => {
   const history = useHistory();
-  const processState = sessionStorage.getItem('processState');
-  const [state, setState] = useState(processState == null ? '0' : processState);
+  const [state, setState] = useState('0');
 
   const [faceExtractionStarted, setFaceExtractionStarted] = useState(
     sessionStorage.getItem('faceExt') === 'true'
@@ -244,51 +246,11 @@ export default function Progress(): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    // Anything in here is fired on component mount.
-    socket.on('initialization-start', () => {
-      setState('1');
-      sessionStorage.setItem('processState', '1');
-      myConsole.log('initialization-start Progress');
-    });
-    socket.on('work-start', () => {
-      sessionStorage.setItem('processState', '2');
-      myConsole.log('work-start Progress');
-    });
-    socket.on('work-progress', (data) => {
-      if (state != '2') {
-        setState('2');
-        sessionStorage.setItem('processState', '2');
-      }
-      setProgressState({
-        progress: data.progress,
-        estimated: data.estimated,
-        count: data.count,
-      });
-    });
-    socket.on('face-extraction-started', () => {
-      setFaceExtractionStarted(true);
-      sessionStorage.setItem('faceExt', 'true');
-    });
-    socket.on('report-started', () => {
-      setReportStarted(true);
-      sessionStorage.setItem('repExt', 'true');
-    });
-    socket.on('work-end', () => {
-      setState('3');
-      sessionStorage.setItem('processState', '0');
-      sessionStorage.removeItem('faceExt');
-      sessionStorage.removeItem('repExt');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('initialization-start');
-      socket.off('work-start');
-      socket.off('work-progress');
-      socket.off('work-end');
-    };
-  }, []);
-
+  //useEffect(() => {
+  //setState(props.newState);
+  //setProgressState(props.newProgress);
+  //myConsole.log('State', state, 'Progress', progressState);
+  //}, [state, progressState]);
   return (
     <>
       <section id="header" className="d-flex align-items-center home-section">
@@ -306,4 +268,17 @@ export default function Progress(): JSX.Element {
       </section>
     </>
   );
-}
+};
+const mapStateToProps = (state) => {
+  // myConsole.log('PROGRESS', state);
+  return {
+    newState: state.state[0],
+    // newProgress: state.progress,
+  };
+};
+
+Progress.propTypes = {
+  newState: PropTypes.func.isRequired,
+  newProgress: PropTypes.func.isRequired,
+};
+export default connect(mapStateToProps)(Progress);

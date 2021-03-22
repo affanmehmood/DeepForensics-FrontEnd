@@ -21,6 +21,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // material ui
@@ -40,6 +41,7 @@ import ReportTable from './Table';
 import './Analyze.css';
 import sideimage from '../images/people.gif';
 import Slide from '@material-ui/core/Slide';
+import updateStateAction from '../redux/actions/updateStateActions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -137,11 +139,11 @@ const VotFront = (props) => {
     setVideoFilePath(path);
   };
   useEffect(() => {
+    //myConsole.log('CHECK STATE', props.route.checkState);
     const { newState } = props;
     if (newState) {
       setState(newState);
       myConsole.log('State NOW', state, newState);
-      if (newState == '0') setIsDisabled(false);
     }
   }, [props, state, isDisabled]);
   const startProcessing = () => {
@@ -163,13 +165,14 @@ const VotFront = (props) => {
         videoFilePath.split('\\').pop().split('/').pop()
       );
     } catch (error) {
-      setIsDisabled(true);
+      setIsDisabled(false);
       openAlertError();
     }
   };
   const stopProcessing = () => {
     socket.emit('halt-requested', () => {
       setState('0');
+      props.actions.updateStateAction('0');
       setIsDisabled(false);
       myConsole.log('process halted!');
     });
@@ -351,13 +354,17 @@ const VotFront = (props) => {
   );
 };
 const mapStateToProps = (state) => {
-  myConsole.log('State Change in Analyze', state.state[0]);
   return {
     newState: state.state[0],
   };
 };
-
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators({ updateStateAction }, dispatch),
+  };
+};
 VotFront.propTypes = {
   newState: PropTypes.func.isRequired,
+  actions: PropTypes.func.isRequired,
 };
-export default connect(mapStateToProps)(VotFront);
+export default connect(mapStateToProps, mapDispatchToProps)(VotFront);
