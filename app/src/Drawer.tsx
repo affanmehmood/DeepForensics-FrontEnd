@@ -59,7 +59,6 @@ import LiveTracker from './LiveTracker/LiveTracker';
 
 import updateStateAction from './redux/actions/updateStateActions';
 import updateProgressAction from './redux/actions/updateProgressActions';
-import Analyze from './Analyze/Analyze';
 
 const nodeConsole = require('console');
 
@@ -166,7 +165,11 @@ const MiniDrawer = (props) => {
 
   const [state, setState] = useState('0');
 
-  const [progress, setProgress] = useState({});
+  const [progress, setProgress] = useState({
+    progress: '',
+    estimated: '',
+    count: '',
+  });
 
   // ALERT STARTS HERE
   const classes3 = useStyles3();
@@ -260,22 +263,20 @@ const MiniDrawer = (props) => {
   useEffect(() => {
     // Anything in here is fired on component mount.
 
+    // if (state === '5') setState('0');
     socket.on('processing-requested');
     socket.on('halt-requested');
     socket.on('initialization-start', () => {
       setState('1');
-      props.actions.updateStateAction('1');
+      // props.actions.updateStateAction('1');
       closeAlertInfo();
       openAlertSucess();
     });
     socket.on('work-start', () => {
       setState('2');
-      props.actions.updateStateAction('2');
+      // props.actions.updateStateAction('2');
     });
     socket.on('work-progress', (data) => {
-      if (state !== '2') {
-        setState('2');
-      }
       /* props.actions.updateProgressAction({
         progress: data.progress,
         estimated: data.estimated,
@@ -290,16 +291,16 @@ const MiniDrawer = (props) => {
 
     socket.on('face-extraction-started', () => {
       setState('3');
-      props.actions.updateStateAction('3');
+      //props.actions.updateStateAction('3');
     });
 
     socket.on('report-started', () => {
       setState('4');
-      props.actions.updateStateAction('4');
+      //props.actions.updateStateAction('4');
     });
     socket.on('work-end', () => {
       setState('0');
-      props.actions.updateStateAction('0');
+      //props.actions.updateStateAction('0');
     });
     return () => {
       // Anything in here is fired on component unmount.
@@ -310,7 +311,14 @@ const MiniDrawer = (props) => {
       socket.off('work-start');
       socket.off('work-end');
     };
-  });
+  }, [state]);
+  const haltProcessing = () => {
+    socket.emit('halt-requested', () => {
+      //props.actions.updateStateAction('0');
+      setState('0');
+      myConsole.log('process halted!');
+    });
+  };
   return (
     <div className={classes.root}>
       <link
@@ -467,11 +475,16 @@ const MiniDrawer = (props) => {
           <Route
             exact
             path="/"
-            component={Analyze}
-            render={() => <Analyze state={state} progress={progress} />}
+            render={() => (
+              <Analyze haltProcessing={haltProcessing} state={state} />
+            )}
           />
           <Route exact path="/tasktable" component={TaskTable} />
-          <Route exact path="/progress" component={Progress} />
+          <Route
+            exact
+            path="/progress"
+            render={() => <Progress state={state} progress={progress} />}
+          />
           <Route exact path="/detections/:taskId" component={Detections} />
           <Route exact path="/faces/:taskId" component={Faces} />
           <Route exact path="/report/:taskId" component={Report} />
@@ -511,23 +524,4 @@ const MiniDrawer = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    newState: state.state[0],
-    newProgress: state.progress,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      { updateStateAction, updateProgressAction },
-      dispatch
-    ),
-  };
-};
-
-MiniDrawer.propTypes = {
-  actions: PropTypes.func.isRequired,
-};
-export default connect(mapStateToProps, mapDispatchToProps)(MiniDrawer);
+export default MiniDrawer;

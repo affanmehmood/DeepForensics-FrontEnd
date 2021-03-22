@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable consistent-return */
 /* eslint-disable prefer-template */
 /* eslint-disable react/self-closing-comp */
@@ -67,12 +68,6 @@ const Progress = (props) => {
   const history = useHistory();
   const [state, setState] = useState('0');
 
-  const [faceExtractionStarted, setFaceExtractionStarted] = useState(
-    sessionStorage.getItem('faceExt') === 'true'
-  );
-  const [reportStarted, setReportStarted] = useState(
-    sessionStorage.getItem('repExt') === 'true'
-  );
   const [progressState, setProgressState] = useState({
     progress: 0,
     estimated: 'calculating',
@@ -88,7 +83,7 @@ const Progress = (props) => {
     history.push('/tasktable');
   };
   const getStatsForFace = () => {
-    if (!faceExtractionStarted && !reportStarted) {
+    if (state == '1' || state == '2') {
       return (
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
@@ -109,7 +104,7 @@ const Progress = (props) => {
           </div>
         </div>
       );
-    } else if (faceExtractionStarted && !reportStarted) {
+    } else if (state === '3') {
       return (
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
@@ -129,7 +124,7 @@ const Progress = (props) => {
           </div>
         </div>
       );
-    } else if (reportStarted) {
+    } else if (state === '4') {
       return (
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
@@ -149,15 +144,25 @@ const Progress = (props) => {
           </div>
         </div>
       );
+    } else {
+      return <></>;
     }
   };
   const statsBlock = () => {
     if (state == '0') {
       return (
-        <div className="row d-flex align-items-center">
-          <div className="col-md-12 col-lg-12">
-            <div className="row d-flex align-items-center justify-content-center ">
-              <h4>No stats to show, please start a process.</h4>
+        <div className="row ml-0 d-flex align-items-center">
+          <div className="col-md-12 col-lg-12 ml-0">
+            <div className="row d-flex align-items-center justify-content-center ml-0">
+              <h4 className="mr-4 mb-0">Processing Finished!</h4>
+              <Button
+                onClick={gotoTaskTable}
+                variant="outlined"
+                color="default"
+                endIcon={<TaskTableIcon />}
+              >
+                Task Table
+              </Button>
             </div>
           </div>
         </div>
@@ -201,56 +206,41 @@ const Progress = (props) => {
                   {sessionStorage.getItem('curruntVideoName')}
                 </div>
               </div>
-              {!faceExtractionStarted && !reportStarted ? (
-                <div className="row ml-0 mt-5 d-flex justify-content-center">
-                  <div className="col-5 text-center">
-                    <h6>No. of object being tracked:</h6>
-                    <h5 className="text-center">{progressState.count}</h5>
-                  </div>
+              <div className="row ml-0 mt-5 d-flex justify-content-center">
+                <div className="col-5 text-center">
+                  <h6>No. of object being tracked:</h6>
+                  <h5 className="text-center">{progressState.count}</h5>
                 </div>
-              ) : (
-                <div className="row ml-0 mt-5 d-flex justify-content-center">
-                  <div className="col-5 text-center">
-                    <h6>Tracking Finished</h6>
-                    <h5 className="text-center">
-                      Waiting for other processes to finish
-                    </h5>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
+
           {getStatsForFace()}
         </div>
       );
-    } else if (state == '3') {
+    } else if (state >= '2' && state < '5') {
       return (
-        <div className="row ml-0 d-flex align-items-center">
-          <div className="col-md-12 col-lg-12 ml-0">
-            <div className="row d-flex align-items-center justify-content-center ml-0">
-              <h4 className="mr-4 mb-0">Processing Done!</h4>
-              <Button
-                onClick={gotoTaskTable}
-                variant="outlined"
-                color="default"
-                endIcon={<TaskTableIcon />}
-              >
-                Task Table
-              </Button>
+        <>
+          <div className="row ml-0 mt-5 d-flex justify-content-center">
+            <div className="col-5 text-center">
+              <h6>Tracking Finished</h6>
+              <h5 className="text-center">
+                Waiting for other processes to finish
+              </h5>
             </div>
           </div>
-        </div>
+          {getStatsForFace()}
+        </>
       );
     } else {
       return <></>;
     }
   };
-
-  //useEffect(() => {
-  //setState(props.newState);
-  //setProgressState(props.newProgress);
-  //myConsole.log('State', state, 'Progress', progressState);
-  //}, [state, progressState]);
+  useEffect(() => {
+    // myConsole.log('Drilled props Progress', props);
+    setState(props.state);
+    setProgressState(props.progress);
+  });
   return (
     <>
       <section id="header" className="d-flex align-items-center home-section">
@@ -269,16 +259,5 @@ const Progress = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  // myConsole.log('PROGRESS', state);
-  return {
-    newState: state.state[0],
-    // newProgress: state.progress,
-  };
-};
 
-Progress.propTypes = {
-  newState: PropTypes.func.isRequired,
-  newProgress: PropTypes.func.isRequired,
-};
-export default connect(mapStateToProps)(Progress);
+export default Progress;

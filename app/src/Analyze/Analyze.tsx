@@ -39,7 +39,7 @@ import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
 import StopIcon from '@material-ui/icons/Stop';
 import ReportTable from './Table';
 import './Analyze.css';
-import sideimage from '../images/people.gif';
+import sideimage from '../images/people.png';
 import Slide from '@material-ui/core/Slide';
 import updateStateAction from '../redux/actions/updateStateActions';
 
@@ -139,13 +139,10 @@ const VotFront = (props) => {
     setVideoFilePath(path);
   };
   useEffect(() => {
-    //myConsole.log('CHECK STATE', props.route.checkState);
-    const { newState } = props;
-    if (newState) {
-      setState(newState);
-      myConsole.log('State NOW', state, newState);
-    }
-  }, [props, state, isDisabled]);
+    // myConsole.log('Drilled props Analize', props);
+    setState(props.state);
+    if (props.state == '0') setIsDisabled(false);
+  }, [props, state]);
   const startProcessing = () => {
     setIsDisabled(true);
     try {
@@ -169,14 +166,7 @@ const VotFront = (props) => {
       openAlertError();
     }
   };
-  const stopProcessing = () => {
-    socket.emit('halt-requested', () => {
-      setState('0');
-      props.actions.updateStateAction('0');
-      setIsDisabled(false);
-      myConsole.log('process halted!');
-    });
-  };
+
   const goToProgress = () => {
     history.push('/progress');
   };
@@ -205,7 +195,7 @@ const VotFront = (props) => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={stopProcessing}
+                onClick={props.haltProcessing}
                 className={classes.button}
                 endIcon={<StopIcon />}
               >
@@ -353,18 +343,5 @@ const VotFront = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    newState: state.state[0],
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators({ updateStateAction }, dispatch),
-  };
-};
-VotFront.propTypes = {
-  newState: PropTypes.func.isRequired,
-  actions: PropTypes.func.isRequired,
-};
-export default connect(mapStateToProps, mapDispatchToProps)(VotFront);
+
+export default VotFront;
