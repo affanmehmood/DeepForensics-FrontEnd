@@ -32,41 +32,6 @@ const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 export default function TaskTable(): JSX.Element {
   const history = useHistory();
 
-  // 0 state means noting has happened
-  // 1 state means initializing model
-  // 2 state means started processing
-  // 3 state means processing finished
-  var processState = sessionStorage.getItem('processState');
-  if (processState == null || processState == '3') {
-    processState = '0';
-    sessionStorage.setItem('processState', '0');
-  }
-
-  useEffect(() => {
-    // Anything in here is fired on component mount.
-    socket.on('processing-requested');
-    socket.on('halt-requested');
-    socket.on('initialization-start', () => {
-      sessionStorage.setItem('processState', '1');
-    });
-    socket.on('work-start', () => {
-      sessionStorage.setItem('processState', '2');
-    });
-    socket.on('work-end', () => {
-      sessionStorage.setItem('processState', '0');
-      sessionStorage.removeItem('repExt');
-      sessionStorage.removeItem('faceExt');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('processing-requested');
-      socket.off('initialization-start');
-      socket.off('halt-requested');
-      socket.off('work-start');
-      socket.off('work-end');
-    };
-  }, []);
-
   return (
     <>
       <section id="header" className="home-section">

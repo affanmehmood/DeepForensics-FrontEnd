@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -171,6 +173,8 @@ const MiniDrawer = (props) => {
     count: '',
   });
 
+  const [videoFilePath, setVideoFilePath] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(false);
   // ALERT STARTS HERE
   const classes3 = useStyles3();
   function Alert(props: AlertProps) {
@@ -259,29 +263,32 @@ const MiniDrawer = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const beginProcessing = (videoFilePath, inputState) => {
+    socket.emit(
+      'processing-requested',
+      {
+        filepath: videoFilePath,
+        config: inputState,
+      },
+      () => {
+        myConsole.log('Started from Drawer');
+        openAlertInfo();
+      }
+    );
+  };
   useEffect(() => {
     // Anything in here is fired on component mount.
-
-    // if (state === '5') setState('0');
     socket.on('processing-requested');
     socket.on('halt-requested');
     socket.on('initialization-start', () => {
       setState('1');
-      // props.actions.updateStateAction('1');
       closeAlertInfo();
       openAlertSucess();
     });
     socket.on('work-start', () => {
       setState('2');
-      // props.actions.updateStateAction('2');
     });
     socket.on('work-progress', (data) => {
-      /* props.actions.updateProgressAction({
-        progress: data.progress,
-        estimated: data.estimated,
-        count: data.count,
-      }); */
       setProgress({
         progress: data.progress,
         estimated: data.estimated,
@@ -291,14 +298,13 @@ const MiniDrawer = (props) => {
 
     socket.on('face-extraction-started', () => {
       setState('3');
-      //props.actions.updateStateAction('3');
     });
 
     socket.on('report-started', () => {
       setState('4');
-      //props.actions.updateStateAction('4');
     });
     socket.on('work-end', () => {
+      setIsDisabled(false);
       setState('0');
       //props.actions.updateStateAction('0');
     });
@@ -316,6 +322,7 @@ const MiniDrawer = (props) => {
     socket.emit('halt-requested', () => {
       //props.actions.updateStateAction('0');
       setState('0');
+      setIsDisabled(false);
       myConsole.log('process halted!');
     });
   };
@@ -476,14 +483,29 @@ const MiniDrawer = (props) => {
             exact
             path="/"
             render={() => (
-              <Analyze haltProcessing={haltProcessing} state={state} />
+              <Analyze
+                videoFilePath={videoFilePath}
+                setVideoFilePath={setVideoFilePath}
+                isDisabled={isDisabled}
+                setIsDisabled={setIsDisabled}
+                openAlertError={openAlertError}
+                beginProcessing={beginProcessing}
+                haltProcessing={haltProcessing}
+                state={state}
+              />
             )}
           />
           <Route exact path="/tasktable" component={TaskTable} />
           <Route
             exact
             path="/progress"
-            render={() => <Progress state={state} progress={progress} />}
+            render={() => (
+              <Progress
+                videoFilePath={videoFilePath}
+                state={state}
+                progress={progress}
+              />
+            )}
           />
           <Route exact path="/detections/:taskId" component={Detections} />
           <Route exact path="/faces/:taskId" component={Faces} />

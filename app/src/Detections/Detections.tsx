@@ -54,8 +54,6 @@ export default function Detections(): JSX.Element {
   const { taskId } = useParams();
   const [value, setValue] = React.useState<string | null>(options[0]);
   const [detectionData, setDetectionData] = useState([]);
-  const processState = sessionStorage.getItem('processState');
-  const [state, setState] = useState(processState == null ? '0' : processState);
   const [noneState, setNoneState] = useState(false);
 
   useEffect(() => {
@@ -75,36 +73,6 @@ export default function Detections(): JSX.Element {
       .catch((err) => {
         myConsole.log(err.response);
       });
-    socket.on('initialization-start', () => {
-      setState('1');
-      sessionStorage.setItem('processState', '1');
-      myConsole.log('initialization-start Progress');
-    });
-    socket.on('work-start', () => {
-      sessionStorage.setItem('processState', '2');
-      myConsole.log('work-start Progress');
-    });
-    socket.on('work-progress', (data) => {
-      if (state != '2') {
-        setState('2');
-        sessionStorage.setItem('processState', '2');
-      }
-    });
-    socket.on('work-end', () => {
-      setState('3');
-      sessionStorage.setItem('processState', '3');
-      sessionStorage.removeItem('repExt');
-      sessionStorage.removeItem('faceExt');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('initialization-start');
-      socket.off('work-start');
-      socket.off('work-progress');
-      socket.off('work-end');
-      socket.off('get-detections');
-      socket.off('detections-extracted');
-    };
   }, []);
   function getNoneMsg() {
     if (noneState) {

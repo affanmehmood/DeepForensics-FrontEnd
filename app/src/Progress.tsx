@@ -203,7 +203,9 @@ const Progress = (props) => {
                   }}
                 >
                   Video being processesd:{' '}
-                  {sessionStorage.getItem('curruntVideoName')}
+                  {props.videoFilePath == null
+                    ? 'Unknown'
+                    : props.videoFilePath.split('\\').pop().split('/').pop()}
                 </div>
               </div>
               <div className="row ml-0 mt-5 d-flex justify-content-center">

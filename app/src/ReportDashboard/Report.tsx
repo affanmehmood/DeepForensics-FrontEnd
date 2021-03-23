@@ -140,15 +140,7 @@ export default function TaskTable(): JSX.Element {
   });
   const { taskId } = useParams();
   const history = useHistory();
-  // 0 state means noting has happened
-  // 1 state means initializing model
-  // 2 state means started processing
-  // 3 state means processing finished
-  var processState = sessionStorage.getItem('processState');
-  if (processState == null || processState == '3') {
-    processState = '0';
-    sessionStorage.setItem('processState', '0');
-  }
+
   function roundToTwo(num) {
     return +(Math.round(num + 'e+2') + 'e-2');
   }
@@ -280,27 +272,7 @@ export default function TaskTable(): JSX.Element {
         },
       });
     });
-    socket.on('processing-requested');
-    socket.on('initialization-start', () => {
-      sessionStorage.setItem('processState', '1');
-    });
-    socket.on('work-start', () => {
-      sessionStorage.setItem('processState', '2');
-    });
-    socket.on('face-extraction-started', () => {
-      sessionStorage.setItem('faceExt', 'true');
-    });
-    socket.on('work-end', () => {
-      sessionStorage.setItem('processState', '0');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('processing-requested');
-      socket.off('initialization-start');
-      socket.off('work-start');
-      socket.off('work-end');
-    };
-  }, []);
+  }, [taskId]);
 
   return (
     <>

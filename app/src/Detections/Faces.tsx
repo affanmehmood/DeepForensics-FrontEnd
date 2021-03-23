@@ -52,8 +52,6 @@ export default function Faces(): JSX.Element {
   const classes = useStyles();
   const { taskId } = useParams();
   const [facesData, setFacesData] = useState([]);
-  const processState = sessionStorage.getItem('processState');
-  const [state, setState] = useState(processState == null ? '0' : processState);
   const [noneState, setNoneState] = useState(false);
 
   useEffect(() => {
@@ -66,43 +64,13 @@ export default function Faces(): JSX.Element {
       .catch((err) => {
         myConsole.log(err.response);
       });
-    socket.on('initialization-start', () => {
-      setState('1');
-      sessionStorage.setItem('processState', '1');
-      myConsole.log('initialization-start Progress');
-    });
-    socket.on('work-start', () => {
-      sessionStorage.setItem('processState', '2');
-      myConsole.log('work-start Progress');
-    });
-    socket.on('work-progress', () => {
-      if (state != '2') {
-        setState('2');
-        sessionStorage.setItem('processState', '2');
-      }
-    });
-    socket.on('work-end', () => {
-      setState('3');
-      sessionStorage.setItem('processState', '3');
-      sessionStorage.removeItem('repExt');
-      sessionStorage.removeItem('faceExt');
-    });
-    return () => {
-      // Anything in here is fired on component unmount.
-      socket.off('initialization-start');
-      socket.off('work-start');
-      socket.off('work-progress');
-      socket.off('work-end');
-      socket.off('get-detections');
-      socket.off('faces-extracted');
-    };
   }, []);
   function getNoneMsg() {
     if (noneState) {
       return (
         <div className="row mt-5 ml-0 mr-0 p-0 d-flex justify-content-center align-items-center">
           <h4 className="mr-4 mb-0 text-center align-self-center">
-            No Objects Detected
+            No Faces Detected
           </h4>
         </div>
       );

@@ -91,10 +91,6 @@ const VotFront = (props) => {
   });
   const classes = useStyles();
   const classes2 = useStyles2();
-  // 0 state means noting has happened
-  // 1 state means initializing model
-  // 2 state means started processing
-  // 3 state means processing finished
 
   const [state, setState] = useState('0');
 
@@ -102,68 +98,32 @@ const VotFront = (props) => {
 
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // ALERT STARTS HERE
-  const classes3 = useStyles3();
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
-  // Alert Error starts here
-  const [open2, setOpen2] = React.useState(false);
-  const openAlertError = () => {
-    setOpen2(true);
-  };
-  const closeAlertError = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen2(false);
-  };
-
-  // Alert info starts here
-  const [open3, setOpen3] = React.useState(false);
-  const openAlertInfo = () => {
-    setOpen3(true);
-  };
-  const closeAlertInfo = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen3(false);
-  };
-  // ALERT END HERE
-
   const themeColor = '#394457';
   const setFilePath = () => {
     const path = document.getElementById('myFile').files[0].path;
-    setVideoFilePath(path);
+    props.setVideoFilePath(path);
   };
   useEffect(() => {
-    // myConsole.log('Drilled props Analize', props);
     setState(props.state);
-    if (props.state == '0') setIsDisabled(false);
-  }, [props, state]);
+    myConsole.log('state in prop', props.state);
+    setVideoFilePath(props.videoFilePath);
+    setIsDisabled(props.isDisabled);
+    // if (props.state == '0') setIsDisabled(false);
+  }, [props]);
   const startProcessing = () => {
-    setIsDisabled(true);
+    props.setIsDisabled(true);
     try {
       if (videoFilePath == null) {
-        myConsole.log('RAN');
-        openAlertError();
-        setIsDisabled(false);
+        // myConsole.log('RAN');
+        props.openAlertError();
+        props.setIsDisabled(false);
         return;
       }
-      socket.emit('processing-requested', {
-        filepath: videoFilePath,
-        config: inputState,
-      });
-      openAlertInfo();
-      sessionStorage.setItem(
-        'curruntVideoName',
-        videoFilePath.split('\\').pop().split('/').pop()
-      );
+      props.beginProcessing(videoFilePath, inputState);
     } catch (error) {
-      setIsDisabled(false);
-      openAlertError();
+      myConsole.log('error');
+      props.setIsDisabled(false);
+      props.props.openAlertError();
     }
   };
 
@@ -317,26 +277,6 @@ const VotFront = (props) => {
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
               <ReportTable />
             </div>
-          </div>
-          <div className={classes3.root}>
-            <Snackbar
-              open={open2}
-              autoHideDuration={3000}
-              onClose={closeAlertError}
-            >
-              <Alert onClose={closeAlertError} severity="error">
-                Failed to start processing!
-              </Alert>
-            </Snackbar>
-            <Snackbar
-              open={open3}
-              autoHideDuration={6000}
-              onClose={closeAlertInfo}
-            >
-              <Alert onClose={closeAlertInfo} severity="info">
-                Please wait while the system is processing...
-              </Alert>
-            </Snackbar>
           </div>
         </div>
       </section>
