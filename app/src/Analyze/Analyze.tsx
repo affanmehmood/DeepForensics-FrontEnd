@@ -105,11 +105,10 @@ const VotFront = (props) => {
   };
   useEffect(() => {
     setState(props.state);
-    myConsole.log('state in prop', props.state);
     setVideoFilePath(props.videoFilePath);
     setIsDisabled(props.isDisabled);
     // if (props.state == '0') setIsDisabled(false);
-  }, [props]);
+  }, [props, state]);
   const startProcessing = () => {
     props.setIsDisabled(true);
     try {

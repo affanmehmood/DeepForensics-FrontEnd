@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable promise/always-return */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -363,9 +364,20 @@ const MiniDrawer = (props) => {
             src={logo1}
             alt="icon"
           />
-          <Typography style={{ marginLeft: 'auto' }} variant="h6" noWrap>
-            v1-beta
-          </Typography>
+
+          <div
+            style={{ marginLeft: 'auto' }}
+            className="text-center d-flex justify-content-center align-items-center"
+          >
+            <h6 className="text-sm mb-0 mr-5">
+              {state === '2' ? progress.progress + '% done' : ''}
+              {state === '3' ? 'Extracting Faces' : ''}
+              {state === '4' ? 'Generating Report' : ''}
+            </h6>
+            <Typography variant="h6" noWrap>
+              v1-beta
+            </Typography>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
