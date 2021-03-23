@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable prefer-template */
 /* eslint-disable promise/always-return */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
+import animation from './images/ripple.svg';
 import { bindActionCreators } from 'redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
@@ -169,9 +170,9 @@ const MiniDrawer = (props) => {
   const [state, setState] = useState('0');
 
   const [progress, setProgress] = useState({
-    progress: '',
-    estimated: '',
-    count: '',
+    progress: '0',
+    estimated: 'unknown',
+    count: '0',
   });
 
   const [videoFilePath, setVideoFilePath] = useState(null);
@@ -307,6 +308,7 @@ const MiniDrawer = (props) => {
     socket.on('work-end', () => {
       setIsDisabled(false);
       setState('0');
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' });
       //props.actions.updateStateAction('0');
     });
     return () => {
@@ -321,9 +323,10 @@ const MiniDrawer = (props) => {
   }, [state]);
   const haltProcessing = () => {
     socket.emit('halt-requested', () => {
-      //props.actions.updateStateAction('0');
+      // props.actions.updateStateAction('0');
       setState('0');
       setIsDisabled(false);
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' });
       myConsole.log('process halted!');
     });
   };
@@ -369,7 +372,13 @@ const MiniDrawer = (props) => {
             style={{ marginLeft: 'auto' }}
             className="text-center d-flex justify-content-center align-items-center"
           >
+            {state !== '0' ? (
+              <img className="icon-sm mr-1" src={animation} />
+            ) : (
+              ''
+            )}
             <h6 className="text-sm mb-0 mr-5">
+              {state === '1' ? 'Initializing' : ''}
               {state === '2' ? progress.progress + '% done' : ''}
               {state === '3' ? 'Extracting Faces' : ''}
               {state === '4' ? 'Generating Report' : ''}
