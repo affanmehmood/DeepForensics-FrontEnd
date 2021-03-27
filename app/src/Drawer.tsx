@@ -60,6 +60,7 @@ import Detections from './Detections/Detections';
 import Faces from './Detections/Faces';
 import Report from './ReportDashboard/Report';
 import LiveTracker from './LiveTracker/LiveTracker';
+import FaceMatching from './FaceMatching/FaceMatching';
 
 import updateStateAction from './redux/actions/updateStateActions';
 import updateProgressAction from './redux/actions/updateProgressActions';
@@ -278,6 +279,20 @@ const MiniDrawer = (props) => {
       }
     );
   };
+  const beginFaceMatching = (videoFilePaths, taskId) => {
+    myConsole.log(videoFilePaths, taskId);
+    socket.emit(
+      'face-matching-requested',
+      {
+        knownFilePaths: videoFilePaths,
+        taskId,
+      },
+      () => {
+        myConsole.log('Started from Drawer');
+        openAlertInfo();
+      }
+    );
+  };
   useEffect(() => {
     // Anything in here is fired on component mount.
     socket.on('processing-requested');
@@ -291,6 +306,7 @@ const MiniDrawer = (props) => {
       setState('2');
     });
     socket.on('work-progress', (data) => {
+      if (state !== '2') setState('2');
       setProgress({
         progress: data.progress,
         estimated: data.estimated,
@@ -309,8 +325,9 @@ const MiniDrawer = (props) => {
       setIsDisabled(false);
       setState('0');
       setProgress({ progress: '0', estimated: 'unknown', count: '0' });
-      //props.actions.updateStateAction('0');
+      // props.actions.updateStateAction('0');
     });
+
     return () => {
       // Anything in here is fired on component unmount.
       socket.off('processing-requested');
@@ -532,6 +549,16 @@ const MiniDrawer = (props) => {
           <Route exact path="/faces/:taskId" component={Faces} />
           <Route exact path="/report/:taskId" component={Report} />
           <Route exact path="/track/:taskId/:trackId" component={LiveTracker} />
+          <Route
+            exact
+            path="/face-match/:taskId"
+            render={() => (
+              <FaceMatching
+                openAlertError={openAlertError}
+                beginFaceMatching={beginFaceMatching}
+              />
+            )}
+          />
         </Switch>
         <div className={classes3.root}>
           <Snackbar

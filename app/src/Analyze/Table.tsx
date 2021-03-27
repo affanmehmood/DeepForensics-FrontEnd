@@ -21,6 +21,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import ViewModule from '@material-ui/icons/ViewModule';
+import FaceIcon from '@material-ui/icons/Face';
 // API
 import { getTop5TableData } from '../API';
 
@@ -81,6 +82,9 @@ export default function CustomizedTables() {
   const [rows, setRows] = useState([]);
   const gotoDetection = (id) => {
     history.push('/detections/' + id);
+  };
+  const gotoFaceMatching = (id) => {
+    history.push('/face-match/' + id);
   };
   const gotoReport = (id) => {
     history.push('/report/' + id);
@@ -174,6 +178,15 @@ export default function CustomizedTables() {
                       aria-label="open"
                     >
                       <ViewModule />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        gotoFaceMatching(row.id);
+                      }}
+                      color="primary"
+                      aria-label="open"
+                    >
+                      <FaceIcon />
                     </IconButton>
 
                     <IconButton
