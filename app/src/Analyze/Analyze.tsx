@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable consistent-return */
 /* eslint-disable default-case */
@@ -274,7 +275,9 @@ const VotFront = (props) => {
           </div>
           <div className="row mt-2">
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
-              <ReportTable />
+              <ReportTable
+                setSelectedRowInTable={props.setSelectedRowInTable}
+              />
             </div>
           </div>
         </div>

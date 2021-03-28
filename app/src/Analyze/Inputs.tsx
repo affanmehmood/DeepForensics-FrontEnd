@@ -17,7 +17,7 @@ import {
   Theme,
   makeStyles,
 } from '@material-ui/core/styles';
-import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';

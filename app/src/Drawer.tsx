@@ -178,6 +178,8 @@ const MiniDrawer = (props) => {
 
   const [videoFilePath, setVideoFilePath] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const [selectedRowInTable, setSelectedRowInTable] = useState({});
   // ALERT STARTS HERE
   const classes3 = useStyles3();
   function Alert(props: AlertProps) {
@@ -530,10 +532,17 @@ const MiniDrawer = (props) => {
                 beginProcessing={beginProcessing}
                 haltProcessing={haltProcessing}
                 state={state}
+                setSelectedRowInTable={setSelectedRowInTable}
               />
             )}
           />
-          <Route exact path="/tasktable" component={TaskTable} />
+          <Route
+            exact
+            path="/tasktable"
+            render={() => (
+              <TaskTable setSelectedRowInTable={setSelectedRowInTable} />
+            )}
+          />
           <Route
             exact
             path="/progress"
@@ -554,6 +563,7 @@ const MiniDrawer = (props) => {
             path="/face-match/:taskId"
             render={() => (
               <FaceMatching
+                selectedRowInTable={selectedRowInTable}
                 openAlertError={openAlertError}
                 beginFaceMatching={beginFaceMatching}
               />

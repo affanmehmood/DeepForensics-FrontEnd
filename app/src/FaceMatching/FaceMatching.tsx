@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable prefer-destructuring */
@@ -24,8 +26,16 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  withStyles,
+} from '@material-ui/core/styles';
 import FaceIcon from '@material-ui/icons/Face';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
@@ -55,11 +65,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const HtmlTooltip = withStyles((theme: Theme) => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
+
 export default function Faces(props): JSX.Element {
   const history = useHistory();
   const classes = useStyles();
   const { taskId } = useParams();
-  const [facesData, setFacesData] = useState([]);
   const [noneState, setNoneState] = useState(false);
   const [isRequested, setIsRequested] = useState(false);
   const [knownImagesPath, setKnownImagesPath] = useState([]);
@@ -102,12 +121,40 @@ export default function Faces(props): JSX.Element {
       socket.off('face-matching-done');
     };
   }, [state]);
+  const stateDefaulter = () => {
+    setNoneState(false);
+    setIsRequested(false);
+    // setKnownImagesPath([]);
+    // setKnownImages([]);
+    setMatchedImages([]);
+    setProgressState({ current: 0, total: 0 });
+  };
   function getInfoMsg() {
     if (knownImagesPath.length == 0) {
       return (
-        <h6 className="mt-4">
-          Select an Image of the person you want to find.
-        </h6>
+        <div className="col-12">
+          <div className="row mt-4 ">
+            <h6 className="mt-2 mr-2">
+              Select images of the person you want to search for.
+            </h6>
+            <HtmlTooltip
+              title={
+                <>
+                  <Typography color="inherit">Suspect Mugshots</Typography>
+                  <em>More knwon images, better results</em>.<br />
+                  More images of the suspect will give more matches. Try to
+                  provide images with diffrent angles of the suspects face for
+                  better results.
+                </>
+              }
+            >
+              <HelpOutlineIcon
+                className="aligin-self-center mt-2"
+                fontSize="small"
+              />
+            </HtmlTooltip>
+          </div>
+        </div>
       );
     } else {
       return <></>;
@@ -135,17 +182,17 @@ export default function Faces(props): JSX.Element {
       return (
         <>
           <div className="row ml-0">
-            <h5>The faces that matched</h5>
+            <h5>Faces matched {'(' + matchedImages.length + ')'}</h5>
           </div>
           {getNoneMsg()}
           <div className="column-container cols flex-i ">
-            {matchedImages.map((val, ind) => {
+            {matchedImages.map((val) => {
               return (
                 <Grow
                   in
                   style={{ transformOrigin: '0 0 0' }}
                   {...{
-                    timeout: (200 * ind) / (matchedImages.length / 2),
+                    timeout: 50,
                   }}
                 >
                   <div
@@ -185,7 +232,7 @@ export default function Faces(props): JSX.Element {
       return (
         <div className="row d-flex justify-content-center align-items-center">
           <h5 className="mr-4 mb-0 text-center align-self-center">
-            Finding Matching Faces...
+            Matching Face {progressState.current} of {progressState.total}
           </h5>
           <img alt="wait" className="icon-sm" src={animation} />
         </div>
@@ -212,7 +259,7 @@ export default function Faces(props): JSX.Element {
     setKnownImages(fileArray);
   };
   const startMatching = () => {
-    // props.setIsDisabled(true);
+    stateDefaulter();
     try {
       if (knownImagesPath.length == 0) {
         props.openAlertError();
@@ -235,17 +282,12 @@ export default function Faces(props): JSX.Element {
           <Collapse in>
             <div className="row">
               <div className="col-12">
-                {/* <div className="row ml-0 mb-3">
-                  <Button
-                    onClick={goBack}
-                    variant="outlined"
-                    color="default"
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                </div> */}
-                <div className="row m-0 mt-5 d-flex justify-content-start">
+                <div className="row ml-0 mt-2 mb-3">
+                  <h5 className="mr-4 mb-0 text-center align-self-center">
+                    Video Name: {props.selectedRowInTable.videoname}
+                  </h5>
+                </div>
+                <div className="row m-0 mt-2 d-flex justify-content-start">
                   {getInfoMsg()}
                   {knownImages.map((url, i) => (
                     <img

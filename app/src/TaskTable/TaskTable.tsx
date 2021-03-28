@@ -29,7 +29,7 @@ const nodeConsole = require('console');
 
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
-export default function TaskTable(): JSX.Element {
+export default function TaskTable(props): JSX.Element {
   const history = useHistory();
 
   return (
@@ -43,7 +43,9 @@ export default function TaskTable(): JSX.Element {
           </div>
           <div className="row mt-4">
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
-              <ReportTable />
+              <ReportTable
+                setSelectedRowInTable={props.setSelectedRowInTable}
+              />
             </div>
           </div>
         </div>

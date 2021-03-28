@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable consistent-return */
 /* eslint-disable prefer-template */
 /* eslint-disable promise/always-return */
@@ -76,13 +77,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CustomizedTables() {
+export default function CustomizedTables(props) {
   const history = useHistory();
 
   const classes = useStyles();
   const [rows, setRows] = useState([]);
-  const gotoFaceMatching = (id) => {
-    history.push('/face-match/' + id);
+  const gotoFaceMatching = (row) => {
+    props.setSelectedRowInTable(row);
+    history.push('/face-match/' + row.id);
   };
   const gotoDetection = (id) => {
     history.push('/detections/' + id);
@@ -201,7 +203,7 @@ export default function CustomizedTables() {
                     </IconButton>
                     <IconButton
                       onClick={() => {
-                        gotoFaceMatching(row.id);
+                        gotoFaceMatching(row);
                       }}
                       color="primary"
                       aria-label="open"
