@@ -21,7 +21,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FaceIcon from '@material-ui/icons/Face';
-import { getDetections } from '../Api';
+import { getDetections } from '../API';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
 

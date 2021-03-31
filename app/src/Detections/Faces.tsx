@@ -23,7 +23,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
 
-import { getFaces } from '../Api';
+import { getFaces } from '../API';
 import Timeline from '../ReusableCompnents/Timeline';
 import options from '../ReusableCompnents/classes';
 
