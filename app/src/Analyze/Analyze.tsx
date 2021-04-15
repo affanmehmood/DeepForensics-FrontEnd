@@ -108,6 +108,7 @@ const VotFront = (props) => {
     setState(props.state);
     setVideoFilePath(props.videoFilePath);
     setIsDisabled(props.isDisabled);
+
     // if (props.state == '0') setIsDisabled(false);
   }, [props, state]);
   const startProcessing = () => {
@@ -277,6 +278,7 @@ const VotFront = (props) => {
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
               <ReportTable
                 setSelectedRowInTable={props.setSelectedRowInTable}
+                shouldUpdateTable = {props.shouldUpdateTable}
               />
             </div>
           </div>

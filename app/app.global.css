@@ -131,33 +131,11 @@ body {
   }
 }
 
-/* Grid system starts */
-.column-container {
-  width: 100%;
-  height: 100%;
-  margin: 0.3em auto;
-  padding: 0;
-  display: block;
-  padding-bottom: 20px;
-}
-.flex-i img {
+/* grid sys starts */
+.img-flex {
   height: 100%;
   width: 100%;
   object-fit: contain;
-}
-.cols {
-  -moz-column-count: 8;
-  -moz-column-gap: 1.2%;
-  -moz-column-width: 30%;
-  -webkit-column-count: 8;
-  -webkit-column-gap: 1.2%;
-  -webkit-column-width: 30%;
-  column-count: 8;
-  column-gap: 1.2%;
-  column-width: 30%;
-  column-fill: auto;
-  -moz-column-fill: auto;
-  -webkit-column-fill: auto;
 }
 .box {
   height: 160px;
@@ -187,8 +165,8 @@ body {
   color: #ffffff;
   text-align: center;
   font-size: 15px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 7px;
+  padding-bottom: 7px;
   width: 100%;
   height: 100%;
   transition: all 0.5s;
@@ -217,6 +195,7 @@ body {
   opacity: 1;
   right: 0;
 }
+/* report starts */
 
 .report-chart-dblue {
   color: '#583d72';

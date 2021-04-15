@@ -140,11 +140,13 @@ export default function Detections(): JSX.Element {
                     )}
                   />
                 </div>
-                <div className="row mt-3 justify-content-center">
-                  {getNoneMsg()}
-                  <div className="column-container cols flex-i">
-                    {detectionData
-                      .filter((detection) => {
+
+      <div className="container-fluid mb-5 mt-3">
+          {getNoneMsg()}
+        <div className="row">
+          <div className="col-12 mx-auto">
+            <div className="row">
+                    {detectionData.filter((detection) => {
                         if (value === 'All' || value === null) return true;
                         return detection.class === value;
                       })
@@ -158,11 +160,11 @@ export default function Detections(): JSX.Element {
                             }}
                           >
                             <div
-                              className="col d-inline-block m-0 p-0 border rounded mb-3"
+                              className="col-2 d-inline-block m-0 p-0 border rounded mb-3"
                               style={{ backgroundColor: '#394457' }}
                             >
                               <div className="box one">
-                                <img alt="i" src={val.filePath} />
+                                <img className="img-flex" alt="i" src={val.filePath} />
                               </div>
                               <div className="bottom-div row m-0 d-flex justify-content-center">
                                 <h6 className="sub-text text-sm m-0 ">
@@ -180,9 +182,11 @@ export default function Detections(): JSX.Element {
                                 </button>
                               </div>
                             </div>
-                          </Grow>
-                        );
+                            </Grow>
+                        )
                       })}
+                      </div>
+                      </div>
                   </div>
                 </div>
               </div>

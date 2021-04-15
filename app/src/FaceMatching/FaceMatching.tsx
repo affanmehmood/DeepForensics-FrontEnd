@@ -102,7 +102,7 @@ export default function Faces(props): JSX.Element {
         tempArray.push(data.progress.imgDetails);
         setMatchedImages(tempArray);
 
-        myConsole.log(matchedImages);
+        // myConsole.log(matchedImages);
       }
       setProgressState({
         current: data.progress.current,
@@ -184,43 +184,50 @@ export default function Faces(props): JSX.Element {
           <div className="row ml-0">
             <h5>Faces matched {'(' + matchedImages.length + ')'}</h5>
           </div>
+          <div className="container-fluid mb-5">
           {getNoneMsg()}
-          <div className="column-container cols flex-i ">
-            {matchedImages.map((val) => {
-              return (
-                <Grow
-                  in
-                  style={{ transformOrigin: '0 0 0' }}
-                  {...{
-                    timeout: 50,
-                  }}
-                >
-                  <div
-                    className="col d-inline-block m-0 p-0 border rounded mb-3"
-                    style={{ backgroundColor: '#394457' }}
-                  >
-                    <div className="box one">
-                      <img alt="i" src={val.path} />
-                    </div>
-                    <div className="bottom-div row m-0 d-flex justify-content-center">
-                      <h6 className="sub-text text-sm m-0 ">
-                        Id: {val.trackingId}
-                      </h6>
-                      <button
-                        onClick={() => {
-                          gotoTracker(val.trackingId);
-                        }}
-                        className="button m-0"
-                        style={{ verticalAlign: 'middle' }}
-                      >
-                        <span>live tracking</span>
-                      </button>
-                    </div>
+        <div className="row">
+          <div className="col-12 mx-auto">
+            <div className="row">
+                    {matchedImages
+                      .map((val, ind) => {
+                        return (
+                          <Grow
+                            in
+                            style={{ transformOrigin: '0 0 0' }}
+                            {...{
+                              timeout: (200 * ind) / (matchedImages.length / 3),
+                            }}
+                          >
+                            <div
+                              className="col-2 d-inline-block m-0 p-0 border rounded mb-3"
+                              style={{ backgroundColor: '#394457' }}
+                            >
+                              <div className="box one">
+                                <img className="img-flex" alt="i" src={val.filePath} />
+                              </div>
+                              <div className="bottom-div row m-0 d-flex justify-content-center">
+                                <h6 className="sub-text text-sm m-0 ">
+                                  Id: {val.id}
+                                </h6>
+                                <button
+                                  onClick={() => {
+                                    gotoTracker(val.id);
+                                  }}
+                                  className="button m-0"
+                                  style={{ verticalAlign: 'middle' }}
+                                >
+                                  <span>live tracking</span>
+                                </button>
+                              </div>
+                            </div>
+                            </Grow>
+                        )
+                      })}
+                      </div>
+                      </div>
                   </div>
-                </Grow>
-              );
-            })}
-          </div>
+                </div>
         </>
       );
     } else {

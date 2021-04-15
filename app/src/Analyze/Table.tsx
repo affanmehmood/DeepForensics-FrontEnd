@@ -84,6 +84,7 @@ export default function CustomizedTables(props) {
   const gotoDetection = (id) => {
     history.push('/detections/' + id);
   };
+
   const gotoFaceMatching = (row) => {
     props.setSelectedRowInTable(row);
     history.push('/face-match/' + row.id);
@@ -115,8 +116,9 @@ export default function CustomizedTables(props) {
       });
   };
   useEffect(() => {
-    fetchData();
-  }, [classes]);
+    myConsole.log("useEffect Table")
+  if(props.shouldUpdateTable || rows.length == 0) fetchData();
+  }, [classes, props.shouldUpdateTable]);
   function beauifyTime(time) {
     if (!time) return;
     const arr = time.split(':');

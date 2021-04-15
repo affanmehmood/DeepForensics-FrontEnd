@@ -225,6 +225,7 @@ const MiniDrawer = (props) => {
   const classes = useStyles();
   const classes2 = useStyles2();
   const theme = useTheme();
+  const [shouldUpdateTable, setShouldUpdateTable] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const handleClickOpen2 = () => {
@@ -300,6 +301,7 @@ const MiniDrawer = (props) => {
     socket.on('processing-requested');
     socket.on('halt-requested');
     socket.on('initialization-start', () => {
+      setShouldUpdateTable(false)
       setState('1');
       closeAlertInfo();
       openAlertSucess();
@@ -327,6 +329,8 @@ const MiniDrawer = (props) => {
       setIsDisabled(false);
       setState('0');
       setProgress({ progress: '0', estimated: 'unknown', count: '0' });
+      myConsole.log("work-end")
+      setShouldUpdateTable(true)
       // props.actions.updateStateAction('0');
     });
 
@@ -341,6 +345,7 @@ const MiniDrawer = (props) => {
     };
   }, [state]);
   const haltProcessing = () => {
+    setShouldUpdateTable(true)
     socket.emit('halt-requested', () => {
       // props.actions.updateStateAction('0');
       setState('0');
@@ -533,6 +538,7 @@ const MiniDrawer = (props) => {
                 haltProcessing={haltProcessing}
                 state={state}
                 setSelectedRowInTable={setSelectedRowInTable}
+                shouldUpdateTable = {shouldUpdateTable}
               />
             )}
           />

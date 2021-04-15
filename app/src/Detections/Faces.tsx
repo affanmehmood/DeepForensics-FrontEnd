@@ -115,45 +115,49 @@ export default function Faces(): JSX.Element {
                     </Button>
                   </div>
                 </div>
-                <div className="row mt-3 justify-content-center">
-                  <div className="col-lg-12 col-md-12 col-xl-12 mt-5">
-                    {getNoneMsg()}
-                  </div>
-                  <div className="column-container cols flex-i">
-                    {facesData.map((val, ind) => {
-                      return (
-                        <Grow
-                          in
-                          style={{ transformOrigin: '0 0 0' }}
-                          {...{
-                            timeout: (200 * ind) / (facesData.length / 2),
-                          }}
-                        >
-                          <div
-                            className="col d-inline-block m-0 p-0 border rounded mb-3"
-                            style={{ backgroundColor: '#394457' }}
+        <div className="container-fluid mb-5">
+          {getNoneMsg()}
+        <div className="row">
+          <div className="col-12 mx-auto">
+            <div className="row">
+                    {facesData
+                      .map((val, ind) => {
+                        return (
+                          <Grow
+                            in
+                            style={{ transformOrigin: '0 0 0' }}
+                            {...{
+                              timeout: (200 * ind) / (facesData.length / 3),
+                            }}
                           >
-                            <div className="box one">
-                              <img alt="i" src={val.filePath} />
+                            <div
+                              className="col-2 d-inline-block m-0 p-0 border rounded mb-3"
+                              style={{ backgroundColor: '#394457' }}
+                            >
+                              <div className="box one">
+                                <img className="img-flex" alt="i" src={val.filePath} />
+                              </div>
+                              <div className="bottom-div row m-0 d-flex justify-content-center">
+                                <h6 className="sub-text text-sm m-0 ">
+                                  {Math.round(100 * val.score) + '% '}
+                                  confident {' ' + val.class}
+                                </h6>
+                                <button
+                                  onClick={() => {
+                                    gotoTracker(val.id);
+                                  }}
+                                  className="button m-0"
+                                  style={{ verticalAlign: 'middle' }}
+                                >
+                                  <span>live tracking</span>
+                                </button>
+                              </div>
                             </div>
-                            <div className="bottom-div row m-0 d-flex justify-content-center">
-                              <h6 className="sub-text text-sm m-0 ">
-                                {Math.round(100 * val.score) + '% confident'}
-                              </h6>
-                              <button
-                                onClick={() => {
-                                  gotoTracker(val.id);
-                                }}
-                                className="button m-0"
-                                style={{ verticalAlign: 'middle' }}
-                              >
-                                <span>live tracking</span>
-                              </button>
-                            </div>
-                          </div>
-                        </Grow>
-                      );
-                    })}
+                            </Grow>
+                        )
+                      })}
+                      </div>
+                      </div>
                   </div>
                 </div>
               </div>
