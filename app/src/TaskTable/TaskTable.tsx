@@ -45,6 +45,7 @@ export default function TaskTable(props): JSX.Element {
             <div className="col-lg-12 col-md-12 d-flex align-items-center">
               <ReportTable
                 setSelectedRowInTable={props.setSelectedRowInTable}
+                shouldUpdateTable = {props.shouldUpdateTable}
               />
             </div>
           </div>

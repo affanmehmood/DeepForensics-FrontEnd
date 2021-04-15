@@ -116,8 +116,8 @@ export default function CustomizedTables(props) {
       });
   };
   useEffect(() => {
-    fetchData();
-  }, [classes]);
+  if(props.shouldUpdateTable || rows.length == 0) fetchData();
+  }, [classes, props.shouldUpdateTable]);
   function beauifyTime(time) {
     if (!time) return;
     const arr = time.split(':');

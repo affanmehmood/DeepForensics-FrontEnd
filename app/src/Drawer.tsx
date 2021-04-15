@@ -546,7 +546,8 @@ const MiniDrawer = (props) => {
             exact
             path="/tasktable"
             render={() => (
-              <TaskTable setSelectedRowInTable={setSelectedRowInTable} />
+              <TaskTable setSelectedRowInTable={setSelectedRowInTable}
+              shouldUpdateTable = {shouldUpdateTable} />
             )}
           />
           <Route

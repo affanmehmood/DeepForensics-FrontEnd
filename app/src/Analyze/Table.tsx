@@ -116,7 +116,6 @@ export default function CustomizedTables(props) {
       });
   };
   useEffect(() => {
-    myConsole.log("useEffect Table")
   if(props.shouldUpdateTable || rows.length == 0) fetchData();
   }, [classes, props.shouldUpdateTable]);
   function beauifyTime(time) {
