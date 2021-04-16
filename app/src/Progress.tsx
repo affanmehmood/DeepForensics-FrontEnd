@@ -72,6 +72,7 @@ const Progress = (props) => {
     progress: 0,
     estimated: 'calculating',
     count: 0,
+    fps: 0,
   });
 
   function beauifyTime(time: string) {
@@ -208,12 +209,14 @@ const Progress = (props) => {
                     : props.videoFilePath.split('\\').pop().split('/').pop()}
                 </div>
               </div>
-              <div className="row ml-0 mt-5 d-flex justify-content-center">
-                <div className="col-5 text-center">
-                  <h6>No. of object being tracked:</h6>
-                  <h5 className="text-center">{progressState.count}</h5>
-                </div>
+              <div className="row ml-0 mt-5 d-flex justify-content-center text-center">
+                  <h6 className="mr-1">FPS:</h6>
+                  <h6 className="text-center">{Math.round((progressState.fps + Number.EPSILON) * 100) / 100}</h6>
               </div>
+              <div className="row ml-0 mt-2 d-flex justify-content-center">
+                <h6 className="mr-1" >No. of object being tracked:</h6>
+                  <h6 className="text-center">{progressState.count}</h6>
+                </div>
             </div>
           </div>
 

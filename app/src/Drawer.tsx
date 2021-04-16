@@ -174,6 +174,7 @@ const MiniDrawer = (props) => {
     progress: '0',
     estimated: 'unknown',
     count: '0',
+    fps: 0,
   });
 
   const [videoFilePath, setVideoFilePath] = useState(null);
@@ -315,6 +316,7 @@ const MiniDrawer = (props) => {
         progress: data.progress,
         estimated: data.estimated,
         count: data.count,
+        fps: data.fps,
       });
     });
 
@@ -328,7 +330,7 @@ const MiniDrawer = (props) => {
     socket.on('work-end', () => {
       setIsDisabled(false);
       setState('0');
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' });
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0});
       myConsole.log("work-end")
       setShouldUpdateTable(true)
       // props.actions.updateStateAction('0');
@@ -350,7 +352,7 @@ const MiniDrawer = (props) => {
       // props.actions.updateStateAction('0');
       setState('0');
       setIsDisabled(false);
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' });
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0});
       myConsole.log('process halted!');
     });
   };
@@ -403,7 +405,7 @@ const MiniDrawer = (props) => {
             )}
             <h6 className="text-sm mb-0 mr-5">
               {state === '1' ? 'Initializing' : ''}
-              {state === '2' ? progress.progress + '% done' : ''}
+              {state === '2' ? progress.progress + '% done | ' + 'FPS: ' +  Math.round((progress.fps + Number.EPSILON) * 100) / 100  : ''}
               {state === '3' ? 'Extracting Faces' : ''}
               {state === '4' ? 'Generating Report' : ''}
             </h6>
