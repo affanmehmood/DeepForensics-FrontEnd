@@ -58,12 +58,13 @@ import Progress from './Progress';
 import Settings from './Settings/Settings';
 import Detections from './Detections/Detections';
 import Faces from './Detections/Faces';
-import Report from './ReportDashboard/Report';
+import ReportDashboard from './ReportDashboard/Dashboard/Dashboard'
 import LiveTracker from './LiveTracker/LiveTracker';
 import FaceMatching from './FaceMatching/FaceMatching';
 
 import updateStateAction from './redux/actions/updateStateActions';
 import updateProgressAction from './redux/actions/updateProgressActions';
+import Dashboard from './ReportDashboard/Dashboard/Dashboard';
 
 const nodeConsole = require('console');
 
@@ -565,7 +566,7 @@ const MiniDrawer = (props) => {
           />
           <Route exact path="/detections/:taskId" component={Detections} />
           <Route exact path="/faces/:taskId" component={Faces} />
-          <Route exact path="/report/:taskId" component={Report} />
+          <Route exact path="/report/:taskId" component={ReportDashboard} />
           <Route exact path="/track/:taskId/:trackId" component={LiveTracker} />
           <Route
             exact

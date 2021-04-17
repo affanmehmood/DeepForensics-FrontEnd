@@ -18,7 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -192,6 +192,8 @@ export default function CustomizedTables(props) {
               >
                 {row.timetaken ? (
                   <>
+
+                  <Tooltip title="Detection Results">
                     <IconButton
                       onClick={() => {
                         gotoDetection(row.id);
@@ -201,6 +203,8 @@ export default function CustomizedTables(props) {
                     >
                       <ViewModule />
                     </IconButton>
+                    </Tooltip>
+                  <Tooltip title="Face Matching">
                     <IconButton
                       onClick={() => {
                         gotoFaceMatching(row);
@@ -210,6 +214,9 @@ export default function CustomizedTables(props) {
                     >
                       <FaceIcon />
                     </IconButton>
+                    </Tooltip>
+
+                  <Tooltip title="Report">
                     <IconButton
                       onClick={() => {
                         gotoReport(row.id);
@@ -219,13 +226,17 @@ export default function CustomizedTables(props) {
                     >
                       <AssessmentIcon />
                     </IconButton>
+                    </Tooltip>
                   </>
                 ) : (
                   <></>
                 )}
+
+                <Tooltip title="Delete">
                 <IconButton color="secondary" aria-label="delete">
                   <DeleteIcon />
                 </IconButton>
+                </Tooltip>
               </StyledTableCell>
             </StyledTableRow>
           ))}

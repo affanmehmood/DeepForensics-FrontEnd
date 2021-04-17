@@ -1,3 +1,4 @@
+import { colors } from '@material-ui/core';
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 
@@ -8,7 +9,6 @@ export default function Donut(props): JSX.Element {
         breakpoint: 480,
         options: {
           chart: {
-            width: 200,
           },
           legend: {
             position: 'bottom',
@@ -17,7 +17,15 @@ export default function Donut(props): JSX.Element {
       },
     ],
     options: {
+      tooltip: {
+        theme: "dark",
+    },
+    theme: {
+      mode: 'dark',
+      palette: 'palette1',
+  },
       chart: {
+        background: false,
         toolbar: {
           show: true,
           tools: {
@@ -31,10 +39,9 @@ export default function Donut(props): JSX.Element {
   return (
     <div className="app mt-3 mb-3">
       <div className="row">
-        <div className="mixed-chart">
+        <div className="mixed-chart col-12">
           <Chart
             options={state.options}
-            height={400}
             series={props.cdata ? props.cdata.series : []}
             type="donut"
           />

@@ -18,7 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import ViewModule from '@material-ui/icons/ViewModule';
@@ -173,6 +173,7 @@ export default function CustomizedTables(props) {
               <StyledTableCell align="center">
                 {row.timetaken ? (
                   <>
+                  <Tooltip title="Detection Results">
                     <IconButton
                       onClick={() => {
                         gotoDetection(row.id);
@@ -181,7 +182,8 @@ export default function CustomizedTables(props) {
                       aria-label="open"
                     >
                       <ViewModule />
-                    </IconButton>
+                    </IconButton></Tooltip>
+                  <Tooltip title="Face Matching">
                     <IconButton
                       onClick={() => {
                         gotoFaceMatching(row);
@@ -191,6 +193,8 @@ export default function CustomizedTables(props) {
                     >
                       <FaceIcon />
                     </IconButton>
+                    </Tooltip>
+                  <Tooltip title="Report">
 
                     <IconButton
                       onClick={() => {
@@ -201,6 +205,7 @@ export default function CustomizedTables(props) {
                     >
                       <AssessmentIcon />
                     </IconButton>
+                    </Tooltip>
                   </>
                 ) : (
                   <></>

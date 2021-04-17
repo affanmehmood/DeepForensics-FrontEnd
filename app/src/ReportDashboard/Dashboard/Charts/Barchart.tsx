@@ -6,12 +6,19 @@ const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 export default function Barchart(props): JSX.Element {
   const [state, setState] = useState({
+
     options: {
+    tooltip: {
+        theme: "dark",
+    },
+      theme: {
+        mode: 'dark',
+        palette: 'palette1',
+    },
       chart: {
+        background: false,
         id: 'basic-bar',
       },
-      autoSelected: 'zoom',
-
       plotOptions: {
         bar: {
           horizontal: true,
@@ -24,13 +31,12 @@ export default function Barchart(props): JSX.Element {
   });
   return (
     <div className="app">
-      <div className="row">
-        <div className="mixed-chart">
+      <div className="row ml-0">
+        <div className="col-12">
           <Chart
             options={state.options}
             series={props.cdata ? props.cdata.series : []}
             type="bar"
-            height="300"
           />
         </div>
       </div>
