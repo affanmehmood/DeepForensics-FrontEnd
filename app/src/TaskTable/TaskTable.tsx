@@ -26,7 +26,6 @@ import socket from '../socketIoBase';
 import ReportTable from './Table';
 
 const nodeConsole = require('console');
-
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function TaskTable(props): JSX.Element {

@@ -21,7 +21,7 @@ export default function Barchart(props): JSX.Element {
       },
       plotOptions: {
         bar: {
-          horizontal: true,
+          horizontal: false,
         },
       },
       xaxis: {
