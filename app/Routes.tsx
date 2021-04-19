@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Drawer from './src/Drawer';
 import SplashScreen from './src/SplashScreen/Splash'
-
 import socket from '../app/src/socketIoBase';
 
 const nodeConsole = require('console');
@@ -20,17 +19,19 @@ export default function Routes() {
               setcompleted(true);
               setTimeout(() => {
                 setServerReady(true);
-              }, 600);
+              }, 3000);
             }, 1600);
     });
   }, [loading, completed])
   return (
     <div className="d-flex flex-column flex-sm-column">
-      {!serverReady ? (<div className="splash">
+      {!serverReady ? (
+      <div className="splash">
         <header className="splash-header">
           <SplashScreen loading={loading} completed={completed}/>
         </header>
-      </div>): <Drawer />}
+      </div>
+      ): <Drawer />}
     </div>
   );
 }

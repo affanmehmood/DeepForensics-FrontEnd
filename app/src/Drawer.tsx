@@ -67,14 +67,22 @@ import updateProgressAction from './redux/actions/updateProgressActions';
 import Dashboard from './ReportDashboard/Dashboard/Dashboard';
 
 const nodeConsole = require('console');
-
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
+
 // custom styles
 const drawerWidth = 190;
 const themeColor = '#394457';
 const dividerTheme = '#232e43';
 const chevron = '#ffffff';
 
+/* import ElectronTitlebarWindows from 'electron-titlebar-windows';
+
+const titlebar = new ElectronTitlebarWindows({
+  color: "#fff",
+  dragable: true
+});
+titlebar.append(document.body)
+ */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
