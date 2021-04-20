@@ -11,7 +11,9 @@ import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import Filter5Icon from '@material-ui/icons/Filter5';
 import AccessTime from "@material-ui/icons/AccessTime";
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import Accessibility from "@material-ui/icons/Accessibility";
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
@@ -290,78 +292,79 @@ export default function Dashboard() {
   return (
     <div className=" mx-auto">
       <GridContainer>
-        <GridItem xs={11} sm={6} md={3}>
-          <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-              <DriveEtaIcon/>
-              </CardIcon>
-              <p className={classes.cardCategory}># of Vehicles</p>
-              <h3 className={classes.cardTitle}>
-              {titles.countRV}
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
+        <GridItem xs={12} sm={6} md={3}>
+            <Card>
+              <CardHeader color="success" stats icon>
+                <CardIcon color="success">
+                  <EmojiObjectsIcon />
+                </CardIcon>
+                <p className={classes.cardCategory}># of Objects</p>
+                <h3 className={classes.cardTitle}>{titles.countObjs}</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <DateRange />
+                  Last 24 Hours
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={3}>
+            <Card>
+              <CardHeader color="danger" stats icon>
+                <CardIcon color="danger">
+                  <HourglassEmptyIcon />
+                </CardIcon>
+                <p className={classes.cardCategory}>Avg Duration Vehicles</p>
+                <h3 className={classes.cardTitle}>{titles.avgRV}</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <Update />
+                  Just Updated
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
 
-                  <Warning/>
-                  Get more space
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+        <GridItem xs={11} sm={6} md={3}>
+            <Card>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                <DriveEtaIcon/>
+                </CardIcon>
+                <p className={classes.cardCategory}># of Vehicles</p>
+                <h3 className={classes.cardTitle}>
+                {titles.countRV}
+                </h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+
+                    <Warning/>
+                    Get more space
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
         <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <HourglassEmptyIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}>Avg Duration Vehicles</p>
-              <h3 className={classes.cardTitle}>{titles.avgRV}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
-                Just Updated
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <EmojiObjectsIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}># of Objects</p>
-              <h3 className={classes.cardTitle}>{titles.countObjs}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange />
-                Last 24 Hours
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-              <HourglassEmptyIcon />
-              </CardIcon>
-              <p className={classes.cardCategory}>Avg Duration Objects</p>
-              <h3 className={classes.cardTitle}>{titles.avgObjs}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+            <Card>
+              <CardHeader color="info" stats icon>
+                <CardIcon color="info">
+                <AssignmentTurnedInIcon />
+                </CardIcon>
+                <p className={classes.cardCategory}>Avg Confidence</p>
+                <h3 className={classes.cardTitle}>{titles.avgObjs}</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <LocalOffer />
+                  Tracked from Github
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
       <GridContainer >
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
@@ -369,12 +372,12 @@ export default function Dashboard() {
             <Barchart cdata={chartData.barcharts.barChart1} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <h4 className={classes.cardTitle}>Top 5 most occuring objects</h4>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                  <Filter5Icon className={classes.Filter5Icon} />
                 </span>{" "}
-                increase in today sales.
+                The frequency of the most occuring objects are shown in each quater of the video where Q1 means 1st quater.
               </p>
             </CardBody>
             <CardFooter chart>
@@ -386,12 +389,16 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader className="pl-0 pb-0" color="warning">
-            <Barchart cdata={chartData.barcharts.barChart2} />
+            <CardHeader className="pl-0 pb-0" color="danger">
+            <Barchart cdata={chartData.barcharts.barChart3} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Avg time of top 5 objects</h4>
+              <p className={classes.cardCategory}><span className={classes.successText}>
+                  <AccessTime className={classes.Filter5Icon} />
+                </span>{" "}
+                The average time taken by each class from the top 5 most occuring objects in each quater of the video where Q1 means 1st quater.
+</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -402,12 +409,15 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader className="pl-0 pb-0" color="danger">
-            <Barchart cdata={chartData.barcharts.barChart3} />
+            <CardHeader className="pl-0 pb-0" color="warning">
+            <Barchart cdata={chartData.barcharts.barChart2} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Top 5 most occuring vehicles</h4>
+              <p className={classes.cardCategory}><span className={classes.successText}>
+                  <Filter5Icon className={classes.Filter5Icon} />
+                </span>{" "}  The frequency of the most occuring vehicles are shown in each quater of the video where Q1 means 1st quater.
+              </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -424,12 +434,12 @@ export default function Dashboard() {
             <Donutchart cdata={chartData.donuts.donut1} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <h4 className={classes.cardTitle}>Top 5 most occuring objects</h4>
               <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+              <span className={classes.successText}>
+                  <Filter5Icon className={classes.Filter5Icon} />
                 </span>{" "}
-                increase in today sales.
+                The frequency of the most occuring objects from the entire video.
               </p>
             </CardBody>
             <CardFooter chart>
@@ -445,8 +455,13 @@ export default function Dashboard() {
               <Donutchart cdata={chartData.donuts.donut2} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Avg time of top 5 objects</h4>
+              <p className={classes.cardCategory}>
+              <span className={classes.successText}>
+                  <AccessTime className={classes.Filter5Icon} />
+                </span>{" "}
+                The average time taken by each class from the top 5 most occuring objects from the entire video.
+</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -461,8 +476,12 @@ export default function Dashboard() {
             <Donutchart cdata={chartData.donuts.donut3} />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Top 5 most occuring vehicles</h4>
+              <p className={classes.cardCategory}>
+              <span className={classes.successText}>
+                  <Filter5Icon className={classes.Filter5Icon} />
+                </span>{" "}  The frequency of the most occuring vehicles from the entire video.
+              </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -518,7 +537,7 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+              <h4 className={classes.cardTitleWhite}>Video Object Stats</h4>
               <p className={classes.cardCategoryWhite}>
                 New employees on 15th September, 2016
               </p>

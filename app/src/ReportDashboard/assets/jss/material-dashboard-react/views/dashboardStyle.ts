@@ -12,6 +12,9 @@ const dashboardStyle = {
   upArrowCardCategory: {
     width: "16px",
     height: "16px"
+  },  Filter5Icon: {
+    width: "16px",
+    height: "16px"
   },
   stats: {
     color: grayColor[0],

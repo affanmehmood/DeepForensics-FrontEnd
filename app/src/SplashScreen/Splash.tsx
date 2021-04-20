@@ -57,11 +57,10 @@ function PreLoader2(props) {
 
             <div className="role-tanim">
                 <div className="block-tanim"></div>
-                <h3 className="text2-anim">Lets Begin</h3>
+                <h3 className="text2-anim">A video forensics toolkit</h3>
             </div>
         </div>
     </div>
-
         </>
       )}
     </>

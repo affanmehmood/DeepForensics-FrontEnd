@@ -140,7 +140,7 @@ export default function Faces(): JSX.Element {
                               <div className="bottom-div row m-0 d-flex justify-content-center">
                                 <h6 className="sub-text text-sm m-0 ">
                                   {Math.round(100 * val.score) + '% '}
-                                  confident {' ' + val.class}
+                                  confident
                                 </h6>
                                 <button
                                   onClick={() => {
