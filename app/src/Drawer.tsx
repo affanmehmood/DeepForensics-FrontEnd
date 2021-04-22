@@ -54,7 +54,7 @@ import logo1 from './images/deep.png';
 // main components
 import Analyze from './Analyze/Analyze';
 import TaskTable from './TaskTable/TaskTable';
-import Progress from './Progress';
+import Progress from './Porgress/Progress';
 import Settings from './Settings/Settings';
 import Detections from './Detections/Detections';
 import Faces from './Detections/Faces';
@@ -184,6 +184,7 @@ const MiniDrawer = (props) => {
     estimated: 'unknown',
     count: '0',
     fps: 0,
+    fpsArray: []
   });
 
   const [videoFilePath, setVideoFilePath] = useState(null);
@@ -326,6 +327,7 @@ const MiniDrawer = (props) => {
         estimated: data.estimated,
         count: data.count,
         fps: data.fps,
+        fpsArray: data.fpsArray
       });
     });
 
@@ -339,7 +341,7 @@ const MiniDrawer = (props) => {
     socket.on('work-end', () => {
       setIsDisabled(false);
       setState('0');
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0});
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[]});
       myConsole.log("work-end")
       setShouldUpdateTable(true)
       // props.actions.updateStateAction('0');
@@ -361,7 +363,7 @@ const MiniDrawer = (props) => {
       // props.actions.updateStateAction('0');
       setState('0');
       setIsDisabled(false);
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0});
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[]});
       myConsole.log('process halted!');
     });
   };

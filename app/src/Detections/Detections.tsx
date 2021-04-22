@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       margin: theme.spacing(1),
     },
-  })
+  }),
+
 );
 
 export default function Detections(): JSX.Element {
@@ -164,7 +165,9 @@ export default function Detections(): JSX.Element {
                               style={{ backgroundColor: '#394457' }}
                             >
                               <div className="box one">
-                                <img className="img-flex" alt="i" src={val.filePath} />
+                                <img className= "img-flex"
+
+                                 alt="i" src={val.filePath} />
                               </div>
                               <div className="bottom-div row m-0 d-flex justify-content-center">
                                 <h6 className="sub-text text-sm m-0 ">
