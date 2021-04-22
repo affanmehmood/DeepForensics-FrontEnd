@@ -15,6 +15,8 @@ import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import SpeedIcon from '@material-ui/icons/Speed';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VideocamIcon from '@material-ui/icons/Videocam';
+
+import LinearProgress from '@material-ui/core/LinearProgress';
 // core components
 import GridItem from "../ReportDashboard/components/Grid/GridItem";
 import GridContainer from "../ReportDashboard/components/Grid/GridContainer";
@@ -22,8 +24,8 @@ import Card from "../ReportDashboard/components/Card/Card";
 import CardHeader from "../ReportDashboard/components/Card/CardHeader";
 import CardIcon from "../ReportDashboard/components/Card/CardIcon";
 import CardBody from "../ReportDashboard/components/Card/CardBody";
-
 import CardFooter from "../ReportDashboard/components/Card/CardFooter";
+import Stepper from "./Stepper"
 
 // circle 1
 import CircularProgress, {
@@ -108,16 +110,13 @@ const Progress = (props) => {
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
             <div className="row mt-3 d-flex justify-content-center align-items-center">
-              <div className="col-5 text-center align-items-center">
+              <div className="col-12 text-center align-items-center">
                 <div className="row d-flex align-items-center justify-content-center">
                   <h4 className="text-center mb-0 mr-4 p-0">
                     Extracting Faces
                   </h4>
                   <CircularProgress />
                 </div>
-              </div>
-              <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
-                <Timeline state="face" />
               </div>
             </div>
           </div>
@@ -128,16 +127,13 @@ const Progress = (props) => {
         <div className="row  d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
             <div className="row mt-3 d-flex justify-content-center align-items-center">
-              <div className="col-5 text-center align-items-center">
+              <div className="col-12 text-center align-items-center">
                 <div className="row d-flex align-items-center justify-content-center">
                   <h4 className="text-center mb-0 mr-4 p-0">
                     Generating a report
                   </h4>
                   <CircularProgress />
                 </div>
-              </div>
-              <div className="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center">
-                <Timeline state="r" />
               </div>
             </div>
           </div>
@@ -148,9 +144,9 @@ const Progress = (props) => {
     }
   };
   const statsBlock = () => {
-    if (state == '0') {
+    if (state == '6') {
       return (
-        <div className="row ml-0 d-flex align-items-center" style={{height: "80vh"}}>
+        <div className="row ml-0 d-flex align-items-center" style={{height: "70vh"}}>
           <div className="col-md-12 col-lg-12 ml-0">
             <div className="row d-flex align-items-center justify-content-center ml-0">
               <h4 className="mr-4 mb-0">Processing Finished!</h4>
@@ -168,8 +164,8 @@ const Progress = (props) => {
       );
     } else if (state == '1') {
       return (
-        <div className="row d-flex align-items-center justify-content-center" style={{height: "80vh"}}>
-          <div className="col-md-5 col-lg-5 col-xl-5">
+        <div className="row d-flex align-items-center justify-content-center" style={{height: "70vh"}}>
+          <div className="col-md-12 col-lg-12 col-xl-12">
             <div className="row d-flex justify-content-center align-items-center">
               <h4 className="mr-4 mb-0 text-center align-self-center">
                 Initializing model...
@@ -178,9 +174,6 @@ const Progress = (props) => {
             </div>
           </div>
 
-          <div className="col-md-5 col-lg-5 col-xl-5">
-            <Timeline state="init" />
-          </div>
         </div>
       );
     } else if (state == '2') {
@@ -196,7 +189,6 @@ const Progress = (props) => {
                 <p className={classes.cardCategory+ ' ml-4 mt-2 pt-0'}>Please wait while the video is being processed.</p>
                 </div>
                 <div className="col-4 d-flex align-items-center justify-content-center">
-
                 </div>
                 </div>
               <CardFooter stats>
@@ -216,7 +208,7 @@ const Progress = (props) => {
               </CardFooter>
               <CardBody>
               <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={12} md={6}>
             <Card>
               <CardHeader color="danger" stats icon>
                 <CardIcon color="danger">
@@ -225,6 +217,9 @@ const Progress = (props) => {
                 <p className={classes.cardCategory}>% Completed</p>
                <h3 className={classes.cardTitle}>{progressState.progress}%</h3>
               </CardHeader>
+              <CardBody>
+                <LinearProgress variant="determinate" value={progressState.progress} />
+                </CardBody>
               <CardFooter stats>
                 <div className={classes.stats}>
                 <CheckCircleIcon />
@@ -233,6 +228,7 @@ const Progress = (props) => {
               </CardFooter>
             </Card>
           </GridItem>
+
         <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="success" stats icon>
@@ -269,6 +265,9 @@ const Progress = (props) => {
               </CardFooter>
             </Card>
           </GridItem>
+          </GridContainer>
+
+              <GridContainer>
         <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="info" stats icon>
@@ -284,33 +283,6 @@ const Progress = (props) => {
                   This shows the estimated time to completetion.
                 </div>
               </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      <h5 className="ml-4 mt-2 pt-0">System Resourse Utizilzation.</h5>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={6}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <HourglassEmptyIcon />
-                </CardIcon>
-                <p className={classes.cardCategory}>CPU Usage</p>
-                <h3 className={classes.cardTitle}>3</h3>
-              </CardHeader>
-
-            </Card>
-          </GridItem>
-        <GridItem xs={12} sm={6} md={6}>
-            <Card>
-              <CardHeader color="danger" stats icon>
-                <CardIcon color="danger">
-                  <HourglassEmptyIcon />
-                </CardIcon>
-                <p className={classes.cardCategory}>Memory Usage</p>
-                <h3 className={classes.cardTitle}>3</h3>
-              </CardHeader>
-
             </Card>
           </GridItem>
         </GridContainer>
@@ -341,7 +313,10 @@ const Progress = (props) => {
   };
   useEffect(() => {
     // myConsole.log('Drilled props Progress', props);
-    setState(props.state);
+    if(props.state=='0')
+      setState('6');
+    else
+      setState(props.state)
     setProgressState(props.progress);
   });
   return (
@@ -350,6 +325,7 @@ const Progress = (props) => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
+              <Stepper state = {state} />
               <div className="row">
                 <div className="col-lg-12 col-md-12 col-xl-12">
                   {statsBlock()}
