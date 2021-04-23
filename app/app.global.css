@@ -361,3 +361,8 @@ body {
       opacity: 0.5;
   }
 }
+
+#reactgooglegraph-1, #reactgooglegraph-2{
+  display: flex;
+  justify-content: center;
+}

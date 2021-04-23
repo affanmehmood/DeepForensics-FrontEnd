@@ -251,7 +251,7 @@ const Progress = (props) => {
                 <p className={classes.cardCategory}>FPS</p>
                 <h3 className={classes.cardTitle}>{Math.round((progressState.fps + Number.EPSILON) * 100) / 100}</h3>
               </CardHeader>
-              <CardBody>
+              <CardBody className="d-flex justify-content-center">
                 <Chart
                   width={250}
                   height={120}
