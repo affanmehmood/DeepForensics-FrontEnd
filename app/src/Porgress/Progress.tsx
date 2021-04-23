@@ -8,7 +8,7 @@
 /* eslint-disable no-else-return */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
+import { Chart } from "react-google-charts";
 import { makeStyles } from "@material-ui/core/styles";
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
@@ -50,37 +50,10 @@ import socket from '../socketIoBase';
 
 import Timeline from '../ReusableCompnents/Timeline';
 
+var os = require('os-utils');
+
 const useStyles = makeStyles(styles);
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { value: number }
-) {
-  return (
-    <Box position="relative" display="inline-flex">
-      <CircularProgress
-        style={{ width: '50px', height: '50px' }}
-        variant="determinate"
-        {...props}
-      />
-      <Box
-        style={{ width: '50px', height: '50px' }}
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          color="textSecondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+
 
 const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
@@ -89,12 +62,30 @@ const Progress = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const [state, setState] = useState('0');
+  const [resIntervalID, setResIntervalID] = useState(null)
+  const [sysres, setSysres] = useState({
+    cpu: 0,
+    memory: 0
+  })
   const [progressState, setProgressState] = useState({
     progress: 0,
     estimated: 'calculating',
     count: 0,
     fps: 0,
   });
+
+  if(resIntervalID == null){
+    const resID = setInterval( ()=>{
+      os.cpuUsage(function(v){
+        setSysres({
+          cpu: Math.round(v * 100 * 10) / 10,
+          memory: 100 - Math.round((os.freememPercentage()) * 100 * 10) / 10
+        })
+    });
+    }, 1000);
+    setResIntervalID(resID)
+    myConsole.log("resID is NULL")
+  }
 
   function beauifyTime(time: string) {
     if (!time) return;
@@ -116,6 +107,29 @@ const Progress = (props) => {
                     Extracting Faces
                   </h4>
                   <CircularProgress />
+                </div>
+                <div className="row d-flex align-items-center justify-content-center">
+
+                <Chart
+                  width={250}
+                  height={120}
+                  chartType="Gauge"
+                  loader={<div>Loading Chart</div>}
+                  data={
+                    [
+                    ['Label', 'Value'],
+                    ['CPU', sysres.cpu],
+                    ['Memory', sysres.memory]
+                  ]}
+                  options={{
+                    redFrom: 90,
+                    redTo: 100,
+                    yellowFrom: 75,
+                    yellowTo: 90,
+                    minorTicks: 5,
+                  }}
+                  rootProps={{ 'data-testid': '1' }}
+                />
                 </div>
               </div>
             </div>
@@ -173,7 +187,6 @@ const Progress = (props) => {
               <CircularIntermidiate />
             </div>
           </div>
-
         </div>
       );
     } else if (state == '2') {
@@ -208,7 +221,7 @@ const Progress = (props) => {
               </CardFooter>
               <CardBody>
               <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={3}>
             <Card>
               <CardHeader color="danger" stats icon>
                 <CardIcon color="danger">
@@ -223,7 +236,7 @@ const Progress = (props) => {
               <CardFooter stats>
                 <div className={classes.stats}>
                 <CheckCircleIcon />
-                  This shows how confident the model is overall.
+                  This shows how how much processing is done.
                 </div>
               </CardFooter>
             </Card>
@@ -238,6 +251,28 @@ const Progress = (props) => {
                 <p className={classes.cardCategory}>FPS</p>
                 <h3 className={classes.cardTitle}>{Math.round((progressState.fps + Number.EPSILON) * 100) / 100}</h3>
               </CardHeader>
+              <CardBody>
+                <Chart
+                  width={250}
+                  height={120}
+                  chartType="Gauge"
+                  loader={<div>Loading Chart</div>}
+                  data={
+                    [
+                    ['Label', 'Value'],
+                    ['CPU', sysres.cpu],
+                    ['Memory', sysres.memory]
+                  ]}
+                  options={{
+                    redFrom: 90,
+                    redTo: 100,
+                    yellowFrom: 75,
+                    yellowTo: 90,
+                    minorTicks: 5,
+                  }}
+                  rootProps={{ 'data-testid': '1' }}
+                />
+              </CardBody>
               <CardFooter stats>
                 <div className={classes.stats}>
                 <SpeedIcon />
@@ -265,10 +300,7 @@ const Progress = (props) => {
               </CardFooter>
             </Card>
           </GridItem>
-          </GridContainer>
-
-              <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="info" stats icon>
                 <CardIcon color="info">
@@ -285,8 +317,9 @@ const Progress = (props) => {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
-         <LineChart fpsArray={props.progress.fpsArray} />
+          </GridContainer>
+
+         <LineChart fpsArray={props.progress.fpsArray} noOfObjsArray={props.progress.noOfObjsArray} />
                </CardBody>
             </Card>
           </GridItem>
@@ -312,11 +345,11 @@ const Progress = (props) => {
     }
   };
   useEffect(() => {
-    // myConsole.log('Drilled props Progress', props);
     if(props.state=='0')
       setState('6');
     else
       setState(props.state)
+
     setProgressState(props.progress);
   });
   return (

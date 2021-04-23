@@ -9,6 +9,10 @@ function Graph(props) {
     {
       name: "FPS",
       data:  props.fpsArray,
+    },
+    {
+      name: "# of objects",
+      data:  props.noOfObjsArray,
     }
   ];
   const options = {
@@ -31,7 +35,7 @@ function Graph(props) {
       }}
     >
       <br />
-      <h5>FPS and confidence graph.</h5>
+      <h5>FPS Graph.</h5>
       <br />
       <ReactApexChart
         options={options}

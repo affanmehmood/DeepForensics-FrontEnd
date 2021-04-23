@@ -327,7 +327,8 @@ const MiniDrawer = (props) => {
         estimated: data.estimated,
         count: data.count,
         fps: data.fps,
-        fpsArray: data.fpsArray
+        fpsArray: data.fpsArray,
+        noOfObjsArray: data.noOfObjsArray
       });
     });
 
@@ -341,7 +342,7 @@ const MiniDrawer = (props) => {
     socket.on('work-end', () => {
       setIsDisabled(false);
       setState('0');
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[]});
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[], noOfObjsArray:[]});
       myConsole.log("work-end")
       setShouldUpdateTable(true)
       // props.actions.updateStateAction('0');
@@ -363,7 +364,7 @@ const MiniDrawer = (props) => {
       // props.actions.updateStateAction('0');
       setState('0');
       setIsDisabled(false);
-      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[]});
+      setProgress({ progress: '0', estimated: 'unknown', count: '0' , fps: 0, fpsArray:[], noOfObjsArray:[]});
       myConsole.log('process halted!');
     });
   };
