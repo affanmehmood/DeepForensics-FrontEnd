@@ -98,9 +98,9 @@ const Progress = (props) => {
   const getStatsForFace = () => {
   if (state === '3') {
       return (
-        <div className="row  d-flex justify-content-center align-items-center">
+        <div className="row mt-2 d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
-            <div className="row mt-3 d-flex justify-content-center align-items-center">
+            <div className="row d-flex justify-content-center align-items-center">
               <div className="col-12 text-center align-items-center">
                 <div className="row d-flex align-items-center justify-content-center">
                   <h4 className="text-center mb-0 mr-4 p-0">
@@ -108,8 +108,7 @@ const Progress = (props) => {
                   </h4>
                   <CircularProgress />
                 </div>
-                <div className="row d-flex align-items-center justify-content-center">
-
+                <div className="row d-flex align-items-center justify-content-center mt-3">
                 <Chart
                   width={250}
                   height={120}
@@ -138,9 +137,9 @@ const Progress = (props) => {
       );
     } else if (state === '4') {
       return (
-        <div className="row  d-flex justify-content-center align-items-center">
+        <div className="row mt-2 d-flex justify-content-center align-items-center">
           <div className="col-md-12 col-lg-12 ">
-            <div className="row mt-3 d-flex justify-content-center align-items-center">
+            <div className="row d-flex justify-content-center align-items-center">
               <div className="col-12 text-center align-items-center">
                 <div className="row d-flex align-items-center justify-content-center">
                   <h4 className="text-center mb-0 mr-4 p-0">
@@ -160,7 +159,7 @@ const Progress = (props) => {
   const statsBlock = () => {
     if (state == '6') {
       return (
-        <div className="row ml-0 d-flex align-items-center" style={{height: "70vh"}}>
+        <div className="row mt-3 ml-0 d-flex align-items-center">
           <div className="col-md-12 col-lg-12 ml-0">
             <div className="row d-flex align-items-center justify-content-center ml-0">
               <h4 className="mr-4 mb-0">Processing Finished!</h4>
@@ -178,7 +177,7 @@ const Progress = (props) => {
       );
     } else if (state == '1') {
       return (
-        <div className="row d-flex align-items-center justify-content-center" style={{height: "70vh"}}>
+        <div className="row mt-3 d-flex align-items-center justify-content-center">
           <div className="col-md-12 col-lg-12 col-xl-12">
             <div className="row d-flex justify-content-center align-items-center">
               <h4 className="mr-4 mb-0 text-center align-self-center">
@@ -192,35 +191,9 @@ const Progress = (props) => {
     } else if (state == '2') {
       return (
         <div className="col-12 ml-0">
-
         <GridContainer >
           <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <div className="row">
-                <div className="col-8">
-                <h3 className={classes.cardTitle + ' ml-4 mt-4'}>Progress Overview</h3>
-                <p className={classes.cardCategory+ ' ml-4 mt-2 pt-0'}>Please wait while the video is being processed.</p>
-                </div>
-                <div className="col-4 d-flex align-items-center justify-content-center">
-                </div>
-                </div>
-              <CardFooter stats>
-                <div className={classes.stats} >
-                  <VideocamIcon />
-                  <div style={{
-                    whiteSpace: 'nowrap',
-                    width: '150px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}>
-                  {props.videoFilePath == null
-                    ? 'Unknown'
-                    : props.videoFilePath.split('\\').pop().split('/').pop()}
-                    </div>
-                </div>
-              </CardFooter>
-              <CardBody>
-              <GridContainer>
+      <GridContainer>
         <GridItem xs={12} sm={12} md={3}>
             <Card>
               <CardHeader color="danger" stats icon>
@@ -318,10 +291,8 @@ const Progress = (props) => {
             </Card>
           </GridItem>
           </GridContainer>
+      <LineChart fpsArray={props.progress.fpsArray} noOfObjsArray={props.progress.noOfObjsArray} />
 
-         <LineChart fpsArray={props.progress.fpsArray} noOfObjsArray={props.progress.noOfObjsArray} />
-               </CardBody>
-            </Card>
           </GridItem>
         </GridContainer>
         </div>
@@ -329,10 +300,10 @@ const Progress = (props) => {
     } else if (state >= '2' && state < '5') {
       return (
         <>
-          <div className="row ml-0 mt-5 d-flex justify-content-center">
+          <div className="row ml-0 mt-3 d-flex justify-content-center">
             <div className="col-5 text-center">
-              <h6>Tracking Finished</h6>
-              <h5 className="text-center">
+              <h4>Tracking Finished</h4>
+              <h5 className="text-center mt-2">
                 Waiting for other processes to finish
               </h5>
             </div>
@@ -361,7 +332,34 @@ const Progress = (props) => {
               <Stepper state = {state} />
               <div className="row">
                 <div className="col-lg-12 col-md-12 col-xl-12">
-                  {statsBlock()}
+                <Card>
+              <div className="row">
+                <div className="col-8">
+                <h3 className={classes.cardTitle + ' ml-4 mt-4'}>Progress Overview</h3>
+                <p className={classes.cardCategory+ ' ml-4 mt-2 pt-0'}>Please wait while the video is being processed.</p>
+                </div>
+                <div className="col-4 d-flex align-items-center justify-content-center">
+                </div>
+                </div>
+              <CardFooter stats>
+                <div className={classes.stats} >
+                  <VideocamIcon />
+                  <div style={{
+                    whiteSpace: 'nowrap',
+                    width: '150px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>
+                  {props.videoFilePath == null
+                    ? 'Unknown'
+                    : props.videoFilePath.split('\\').pop().split('/').pop()}
+                    </div>
+                </div>
+              </CardFooter>
+              <CardBody className="pb-5">
+              {statsBlock()}
+              </CardBody>
+              </Card>
                 </div>
               </div>
             </div>

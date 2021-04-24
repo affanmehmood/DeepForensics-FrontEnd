@@ -151,7 +151,7 @@ export default function Dashboard() {
     countRV: '',
     avgRV: '',
     countObjs: '',
-    avgObjs: '',
+    avgObjs: 0,
   });
   const { taskId } = useParams();
   const history = useHistory();
@@ -162,13 +162,15 @@ export default function Dashboard() {
   useEffect(() => {
     // Anything in here is fired on component mount.
     getReport(taskId).then((data) => {
-      setTitles({
-        countRV: data.column1.total,
+      myConsole.log("REPORT", data);
+
+       setTitles({
+        countObjs: data.allOccurrences,
         avgRV: data.column2.totalHMS,
-        countObjs: data.column3.total,
-        avgObjs: data.column4.totalHMS,
+        countRV: data.column1.total,
+        avgObjs: roundToTwo(data.averageConfidence),
       });
-      // column 1 fill
+
       setChartData({
         barcharts: {
           barChart1: {
@@ -226,27 +228,6 @@ export default function Dashboard() {
               },
             ],
           },
-          barChart4: {
-            categories: ['Q1', 'Q2', 'Q3'],
-            series: [
-              {
-                name: 'Person',
-                data: data.column4.person,
-              },
-              {
-                name: 'Handbag',
-                data: data.column4.handbag,
-              },
-              {
-                name: 'Backpack',
-                data: data.column4.backpack,
-              },
-              {
-                name: 'Knife',
-                data: data.column4.knife,
-              },
-            ],
-          },
         },
         donuts: {
           donut1: {
@@ -272,15 +253,6 @@ export default function Dashboard() {
               data.column3.handbagTotal,
               data.column3.backpackTotal,
               data.column3.knifeTotal,
-            ],
-          },
-          donut4: {
-            labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
-            series: [
-              roundToTwo(data.column4.personAverage),
-              roundToTwo(data.column4.handbagAverage),
-              roundToTwo(data.column4.backpackAverage),
-              roundToTwo(data.column4.knifeAverage),
             ],
           },
         },
