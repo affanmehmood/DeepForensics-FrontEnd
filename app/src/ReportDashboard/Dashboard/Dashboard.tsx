@@ -52,97 +52,29 @@ export default function Dashboard() {
   const [chartData, setChartData] = useState({
     barcharts: {
       barChart1: {
-        categories: ['Q1', 'Q2', 'Q3'],
-        series: [
-          {
-            name: 'Cars',
-            data: [],
-          },
-          {
-            name: 'Motorbike',
-            data: [],
-          },
-          {
-            name: 'Truck',
-            data: [],
-          },
-        ],
+        categories: [],
+        series: [],
       },
       barChart2: {
-        categories: ['Q1', 'Q2', 'Q3'],
-        series: [
-          {
-            name: 'Cars',
-            data: [],
-          },
-          {
-            name: 'Motorbike',
-            data: [],
-          },
-          {
-            name: 'Truck',
-            data: [],
-          },
-        ],
+        categories: [],
+        series: [],
       },
       barChart3: {
-        categories: ['Q1', 'Q2', 'Q3'],
-        series: [
-          {
-            name: 'Person',
-            data: [],
-          },
-          {
-            name: 'Handbag',
-            data: [],
-          },
-          {
-            name: 'Person',
-            data: [],
-          },
-          {
-            name: 'Knife',
-            data: [],
-          },
-        ],
-      },
-      barChart4: {
-        categories: ['Q1', 'Q2', 'Q3'],
-        series: [
-          {
-            name: 'Person',
-            data: [],
-          },
-          {
-            name: 'Handbag',
-            data: [],
-          },
-          {
-            name: 'Person',
-            data: [],
-          },
-          {
-            name: 'Knife',
-            data: [],
-          },
-        ],
+        categories: [],
+        series: [],
       },
     },
     donuts: {
       donut1: {
-        labels: ['Cars', 'Motorbike', 'Truck'],
+        labels: [],
         series: [],
       },
       donut2: {
-        labels: ['Cars', 'Motorbike', 'Truck'],
+        labels: [],
         series: [],
       },
       donut3: {
-        labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
-        series: [],
-      },
-      donut4: {
-        labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
+        labels: [],
         series: [],
       },
     },
@@ -151,7 +83,7 @@ export default function Dashboard() {
     countRV: '',
     avgRV: '',
     countObjs: '',
-    avgObjs: 0,
+    avgConf: '',
   });
   const { taskId } = useParams();
   const history = useHistory();
@@ -162,99 +94,32 @@ export default function Dashboard() {
   useEffect(() => {
     // Anything in here is fired on component mount.
     getReport(taskId).then((data) => {
-      myConsole.log("REPORT", data);
-
+      myConsole.log("REPORT", data.fig1);
        setTitles({
-        countObjs: data.allOccurrences,
-        avgRV: data.column2.totalHMS,
-        countRV: data.column1.total,
-        avgObjs: roundToTwo(data.averageConfidence),
+        countObjs: data.totalOccurrences,
+        avgRV: data.averageTime,
+        countRV: data.totalVehicles,
+        avgConf: ((roundToTwo(data.averageConfidence)) * 100) + "%",
       });
-
       setChartData({
         barcharts: {
           barChart1: {
             categories: ['Q1', 'Q2', 'Q3'],
-            series: [
-              {
-                name: 'Cars',
-                data: data.column1.car,
-              },
-              {
-                name: 'Motorbike',
-                data: data.column1.motorbike,
-              },
-              {
-                name: 'Truck',
-                data: data.column1.truck,
-              },
-            ],
+            series: data.fig1
           },
           barChart2: {
             categories: ['Q1', 'Q2', 'Q3'],
-            series: [
-              {
-                name: 'Cars',
-                data: data.column2.car,
-              },
-              {
-                name: 'Motorbike',
-                data: data.column2.motorbike,
-              },
-              {
-                name: 'Truck',
-                data: data.column2.truck,
-              },
-            ],
+            series: data.fig2
           },
           barChart3: {
             categories: ['Q1', 'Q2', 'Q3'],
-            series: [
-              {
-                name: 'Person',
-                data: data.column3.person,
-              },
-              {
-                name: 'Handbag',
-                data: data.column3.handbag,
-              },
-              {
-                name: 'Backpack',
-                data: data.column3.backpack,
-              },
-              {
-                name: 'Knife',
-                data: data.column3.knife,
-              },
-            ],
+            series: data.fig3,
           },
         },
         donuts: {
-          donut1: {
-            labels: ['Cars', 'Motorbike', 'Truck'],
-            series: [
-              data.column1.carTotal,
-              data.column1.motorbikeTotal,
-              data.column1.truckTotal,
-            ],
-          },
-          donut2: {
-            labels: ['Cars', 'Motorbike', 'Truck'],
-            series: [
-              roundToTwo(data.column2.carAverage),
-              roundToTwo(data.column2.motorbikeAverage),
-              roundToTwo(data.column2.truckAverage),
-            ],
-          },
-          donut3: {
-            labels: ['Person', 'Handbag', 'Backpack', 'Knife'],
-            series: [
-              data.column3.personTotal,
-              data.column3.handbagTotal,
-              data.column3.backpackTotal,
-              data.column3.knifeTotal,
-            ],
-          },
+          donut1: data.fig4,
+          donut2: data.fig5,
+          donut3: data.fig6,
         },
       });
     });
@@ -325,7 +190,7 @@ export default function Dashboard() {
                 <AssignmentTurnedInIcon />
                 </CardIcon>
                 <p className={classes.cardCategory}>Avg Confidence</p>
-                <h3 className={classes.cardTitle}>{titles.avgObjs}</h3>
+                <h3 className={classes.cardTitle}>{titles.avgConf}</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -360,8 +225,8 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader className="pl-0 pb-0" color="danger">
-            <Barchart cdata={chartData.barcharts.barChart3} />
+            <CardHeader className="pl-0 pb-0" color="warning">
+            <Barchart cdata={chartData.barcharts.barChart2} />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Avg time of top 5 objects</h4>
@@ -369,7 +234,7 @@ export default function Dashboard() {
                   <AccessTime className={classes.Filter5Icon} />
                 </span>{" "}
                 The average time taken by each class from the top 5 most occuring objects in each quater of the video where Q1 means 1st quater.
-</p>
+              </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -380,8 +245,8 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader className="pl-0 pb-0" color="warning">
-            <Barchart cdata={chartData.barcharts.barChart2} />
+            <CardHeader className="pl-0 pb-0" color="danger">
+            <Barchart cdata={chartData.barcharts.barChart3} />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Top 5 most occuring vehicles</h4>

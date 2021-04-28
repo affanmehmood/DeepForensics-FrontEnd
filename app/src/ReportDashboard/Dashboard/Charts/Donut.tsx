@@ -1,5 +1,5 @@
 import { colors } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 
 export default function Donut(props): JSX.Element {
@@ -36,6 +36,41 @@ export default function Donut(props): JSX.Element {
       labels: props.cdata ? props.cdata.labels : [],
     },
   });
+  useEffect(()=>{
+    setState({
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+      options: {
+        tooltip: {
+          theme: "dark",
+      },
+      theme: {
+        mode: 'dark',
+        palette: 'palette1',
+    },
+        chart: {
+          background: false,
+          toolbar: {
+            show: true,
+            tools: {
+              download: true,
+            },
+          },
+        },
+        labels: props.cdata ? props.cdata.labels : [],
+      },
+    });
+  }, [props.cdata])
   return (
     <div className="app mt-3 mb-3">
       <div className="row">
