@@ -34,7 +34,7 @@ import CardBody from "../components/Card/CardBody";
 import CardFooter from "../components/Card/CardFooter";
 import Barchart from './Charts/Barchart';
 import Donutchart from './Charts/Donut';
-
+import CollapsibleTable from './CollapsibleTable'
 import UpdateRounded from '@material-ui/icons/UpdateRounded';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
@@ -85,6 +85,7 @@ export default function Dashboard() {
     countObjs: '',
     avgConf: '',
   });
+  const [tableData, setTableData] = useState([])
   const { taskId } = useParams();
   const history = useHistory();
 
@@ -94,8 +95,10 @@ export default function Dashboard() {
   useEffect(() => {
     // Anything in here is fired on component mount.
     getReport(taskId).then((data) => {
-      myConsole.log("REPORT", data.fig1);
-       setTitles({
+      // myConsole.log("REPORT", data);
+
+      setTableData(data.fig7);
+      setTitles({
         countObjs: data.totalOccurrences,
         avgRV: data.averageTime,
         countRV: data.totalVehicles,
@@ -329,66 +332,16 @@ export default function Dashboard() {
       </GridContainer>
 
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            title="Tasks:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Bugs",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                )
-              },
-              {
-                tabName: "Website",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                )
-              },
-              {
-                tabName: "Server",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                )
-              }
-            ]}
-          />
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Video Object Stats</h4>
+              <h4 className={classes.cardTitleWhite}>Video Comprehensive Summary</h4>
               <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
+                All the objects of each class are present here.
               </p>
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
+              <CollapsibleTable tableData= {tableData} />
             </CardBody>
           </Card>
         </GridItem>

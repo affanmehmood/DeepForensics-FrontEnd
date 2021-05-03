@@ -63,13 +63,6 @@ function createData(
   return { videoname, createdAt, videolength, numberobjects, timetaken, id };
 }
 
-/* const rows = [
-  createData('video0.mp4', 159, 6, 24),
-  createData('video1.mp4', 237, 9, 37),
-  createData('video2.mp4', 262, 16, 24),
-  createData('video3.mp4', 305, 3, 67),
-]; */
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
