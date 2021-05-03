@@ -341,7 +341,7 @@ export default function Dashboard() {
               </p>
             </CardHeader>
             <CardBody>
-              <CollapsibleTable tableData= {tableData} />
+              <CollapsibleTable taskId={taskId} tableData = {tableData} />
             </CardBody>
           </Card>
         </GridItem>

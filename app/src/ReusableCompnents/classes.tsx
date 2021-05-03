@@ -1,5 +1,4 @@
 const options = [
-  'All',
   'person',
   'bicycle',
   'car',

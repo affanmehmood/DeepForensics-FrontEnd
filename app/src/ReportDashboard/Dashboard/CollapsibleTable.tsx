@@ -9,11 +9,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
+import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useStore } from 'react-redux';
+import {useHistory } from 'react-router-dom';
 
 const useRowStyles = makeStyles({
   root: {
@@ -41,8 +44,8 @@ function createData(
   };
 }
 
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
+function Row(props: { row: ReturnType<typeof createData>, gotoTracker: Function }) {
+  const { row, gotoTracker } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -73,9 +76,10 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
-                    <TableCell>Initial Time</TableCell>
+                    <TableCell align="right">Initial Time</TableCell>
                     <TableCell align="right">Final Time</TableCell>
                     <TableCell align="right">Confidence</TableCell>
+                    <TableCell align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -84,10 +88,22 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                       <TableCell component="th" scope="row">
                         {objectsRow.id}
                       </TableCell>
-                      <TableCell>{objectsRow.initialTime}</TableCell>
+                      <TableCell align="right">{objectsRow.initialTime}</TableCell>
                       <TableCell align="right">{objectsRow.finalTime}</TableCell>
                       <TableCell align="right">
                         {objectsRow.confidence}
+                      </TableCell>
+                      <TableCell align="right">
+                      <Tooltip title="Live Tracking">
+                      <IconButton
+                          onClick={() => {
+                           gotoTracker(objectsRow.id);
+                          }}
+                          color="secondary"
+                          aria-label="delete">
+                          <TrackChangesIcon />
+                        </IconButton>
+                      </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -106,7 +122,10 @@ const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function CollapsibleTable(props) {
-
+  const history = useHistory();
+  const gotoTracker = (trackId) => {
+    history.push('/track/' + props.taskId + '/' + trackId);
+  };
   const [rows, setRows] = useState([])
   useEffect(()=>{
 
@@ -134,7 +153,7 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} />
+            <Row key={row.name} row={row} gotoTracker={gotoTracker}/>
           ))}
         </TableBody>
       </Table>
