@@ -42,6 +42,7 @@ import { bugs, website, server } from "../variables/general";
 
 import styles from "../assets/jss/material-dashboard-react/views/dashboardStyle";
 import { getReport } from '../../API';
+import ViewFaceMatchingResults from '../../FaceMatching/ViewFaceMatchingResults'
 
 const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
@@ -346,6 +347,7 @@ export default function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
+      <ViewFaceMatchingResults taskId={taskId} />
     </div>
   );
 }

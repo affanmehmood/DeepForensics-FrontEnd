@@ -184,7 +184,8 @@ const MiniDrawer = (props) => {
     estimated: 'unknown',
     count: '0',
     fps: 0,
-    fpsArray: []
+    fpsArray: [],
+    noOfObjsArray:[]
   });
 
   const [videoFilePath, setVideoFilePath] = useState(null);
@@ -239,12 +240,14 @@ const MiniDrawer = (props) => {
   const [shouldUpdateTable, setShouldUpdateTable] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [selectedNavlink, setSelectedNavlink] = React.useState(0)
   const handleClickOpen2 = () => {
     setOpen2(true);
   };
   const handleClose2 = () => {
     setOpen2(false);
   };
+
   const getIcon = (name: string) => {
     switch (name) {
       case 'Task Table': {
@@ -462,9 +465,13 @@ const MiniDrawer = (props) => {
         <List>
           {['Analyze', 'Task Table'].map((text, index) => (
             <NavLink
+            onClick={()=>{
+              setSelectedNavlink(index)
+              myConsole.log("selectedNavlink", selectedNavlink)
+            }}
               style={{
                 textDecoration: 'none',
-                color: 'grey',
+                color: selectedNavlink == index ? "#000000" : "grey"
               }}
               to={getRoutes(text)}
               key={text}
@@ -475,6 +482,7 @@ const MiniDrawer = (props) => {
                 style={{
                   paddingLeft: '15px',
                   paddingRight: '-7',
+                  backgroundColor: selectedNavlink == index ? "#F5F5F5" : ""
                 }}
               >
                 <ListItemIcon>{getIcon(text)}</ListItemIcon>

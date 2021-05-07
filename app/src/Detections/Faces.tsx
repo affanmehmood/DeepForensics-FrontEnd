@@ -22,7 +22,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FaceIcon from '@material-ui/icons/Face';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
-
+import ViewFaceMatchingResults from '../FaceMatching/ViewFaceMatchingResults'
 import { getFaces } from '../API';
 import Timeline from '../ReusableCompnents/Timeline';
 import options from '../ReusableCompnents/classes';
@@ -157,6 +157,9 @@ export default function Faces(): JSX.Element {
                         )
                       })}
                       </div>
+                      </div>
+                      <div className="col-12 mt-4">
+                        <ViewFaceMatchingResults taskId={taskId}/>
                       </div>
                   </div>
                 </div>

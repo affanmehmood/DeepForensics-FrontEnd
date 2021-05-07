@@ -366,3 +366,8 @@ body {
   display: flex;
   justify-content: center;
 }
+
+.selectedNavlink{
+  background-color: yellow;
+
+}

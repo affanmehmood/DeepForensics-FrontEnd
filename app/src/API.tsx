@@ -54,5 +54,14 @@ const getReport = async (taskId: number) => {
     });
   return data;
 };
+const getFaceMatchingResults = async (taskId: number) => {
+  var data = null;
+  await axios
+    .get('http://127.0.0.1:5000/matching-list?taskId=' + taskId.toString())
+    .then((res) => {
+      data = res.data.matchings;
+    });
+  return data;
+};
 // eslint-disable-next-line import/prefer-default-export
-export { getTableData, getDetections, getFaces, getReport, getTop5TableData };
+export { getTableData, getDetections, getFaces, getReport, getTop5TableData, getFaceMatchingResults };

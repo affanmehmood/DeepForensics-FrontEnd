@@ -338,8 +338,6 @@ const Progress = (props) => {
                 <h3 className={classes.cardTitle + ' ml-4 mt-4'}>Progress Overview</h3>
                 <p className={classes.cardCategory+ ' ml-4 mt-2 pt-0'}>Please wait while the video is being processed.</p>
                 </div>
-                <div className="col-4 d-flex align-items-center justify-content-center">
-                </div>
                 </div>
               <CardFooter stats>
                 <div className={classes.stats} >
