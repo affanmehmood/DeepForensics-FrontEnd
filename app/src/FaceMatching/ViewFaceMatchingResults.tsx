@@ -65,6 +65,7 @@ export default function Match(props): JSX.Element {
     getFaceMatchingResults(taskId)
       .then((data) => {
         myConsole.log("face matching results", data)
+        myConsole.log("matching", data[0].matching)
         if(data.length < 1)
          setNoneState(true)
         else
@@ -84,20 +85,22 @@ export default function Match(props): JSX.Element {
       return <></>;
     }
   }
-
+  const gotoTracker = (trackId) => {
+    history.push('/track/' + taskId + '/' + trackId);
+  };
   return (
     <>
         <div className="container-fluid">
             <div className="row">
               <div className="col-12">
                 <div className="container-fluid mb-5">
-                  {getNoneMsg()}
                   <div className="row">
                     <div className="col-12 mx-auto">
                       <div className="row">
                         <div className="col-8">
                           <h3 className={classes2.cardTitle + ' ml-4 mt-4'}>Face Matching History</h3>
                           <p className={classes2.cardCategory+ ' ml-4 mt-2 pt-0'}>All the previously matched faces.</p>
+                          {getNoneMsg()}
                         </div>
                       </div>
                       <div className="row">
@@ -112,9 +115,9 @@ export default function Match(props): JSX.Element {
                                     <div className="row">
                                       <div className="col-12">
                                         <div className="row">
-                                        <h5 className={classes2.cardTitle + ' ml-4 mt-2 mb-2'}>Known Images</h5>
+                                        <h5 className={classes2.cardTitle + ' ml-2 mt-2 mb-2'}>Known Images</h5>
                                         </div>
-                                        <div className="row">
+                                        <div className="row ml-1">
                                         {val.known_paths
                                           .map((path, ind) => {
                                             return (
@@ -132,7 +135,6 @@ export default function Match(props): JSX.Element {
                                                   <div className="box one">
                                                     <img className="img-flex" alt="i" src={path} />
                                                   </div>
-
                                                 </div>
                                                 </Grow>
                                             )
@@ -142,17 +144,17 @@ export default function Match(props): JSX.Element {
                                     <div className="row">
                                       <div className="col-12">
                                         <div className="row">
-                                          <h5 className={classes2.cardTitle + ' ml-4 mt-4'}>Faces matched in the video</h5>
+                                          <h5 className={classes2.cardTitle + ' ml-2 mt-4'}>Faces matched in the video</h5>
                                         </div>
-                                        <div className="row">
-                                          {val.matched_paths
-                                            .map((path, ind) => {
+                                        <div className="row ml-1">
+                                          {val.matching
+                                            .map((match, ind) => {
                                               return (
                                                 <Grow
                                                   in
                                                   style={{ transformOrigin: '0 0 0' }}
                                                   {...{
-                                                    timeout: (200 * ind) / (val.matched_paths.length / 3),
+                                                    timeout: (200 * ind) / (val.matching.length / 3),
                                                   }}
                                                 >
                                                   <div
@@ -160,9 +162,22 @@ export default function Match(props): JSX.Element {
                                                     style={{ backgroundColor: '#394457' }}
                                                   >
                                                     <div className="box one">
-                                                      <img className="img-flex" alt="i" src={path} />
+                                                      <img className="img-flex" alt="i" src={match.path} />
                                                     </div>
-
+                                                    <div className="bottom-div row m-0 d-flex justify-content-center">
+                                                      <h6 className="sub-text text-sm m-0 ">
+                                                        {'at ' + match.appears_at}
+                                                      </h6>
+                                                      <button
+                                                        onClick={() => {
+                                                          gotoTracker(match.id);
+                                                        }}
+                                                        className="button m-0"
+                                                        style={{ verticalAlign: 'middle' }}
+                                                      >
+                                                        <span>live tracking</span>
+                                                      </button>
+                                                    </div>
                                                   </div>
                                                   </Grow>
                                               )
