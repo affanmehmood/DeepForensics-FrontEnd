@@ -67,15 +67,15 @@ export default function LiveTracker(props): JSX.Element {
 
   return (
     <>
-      <section id="header" className="home-section ml-0 mt-2">
-        <div className="container-fluid ml-0">
-          <div className="row ml-0">
+      <section id="header" className="home-section  m-0 p-0 mt-2">
+        <div className="container-fluid m-0 p-0">
+          <div className="row m-0 p-0">
             <div className="col-lg-12 col-md-12 col-xl-12 ml-0">
               <div
-                className="row justify-content-center"
+                className="row justify-content-center  m-0 p-0 pt-3 pb-3"
               >
                 {state.url ? (
-                  <Player url={state.url} />
+                  <Player className="m-0 p-0" url={state.url} />
                 ) : (
                   <div className="row justify-content-center pt-5 pb-5">
                     <h4 className="text-center align-self-center mr-3">

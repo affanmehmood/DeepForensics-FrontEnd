@@ -374,29 +374,6 @@ function App(props) {
           />
         </div>
 
-        <Grid container style={{ marginTop: 20 }} spacing={3}>
-          {bookmarks.map((bookmark, index) => (
-            <Grid key={index} item>
-              <Paper
-                onClick={() => {
-                  playerRef.current.seekTo(bookmark.time);
-                  controlsRef.current.style.visibility = 'visible';
-
-                  setTimeout(() => {
-                    controlsRef.current.style.visibility = 'hidden';
-                  }, 1000);
-                }}
-                elevation={3}
-              >
-                <img crossOrigin="anonymous" src={bookmark.image} />
-                <Typography variant="body2" align="center">
-                  bookmark at {bookmark.display}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-        <canvas ref={canvasRef} />
       </Container>
     </>
   );

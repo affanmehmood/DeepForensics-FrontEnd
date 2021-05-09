@@ -162,16 +162,6 @@ const Controls = forwardRef(
                 Video Title
               </Typography>
             </Grid>
-            <Grid item>
-              <Button
-                onClick={onBookmark}
-                variant="contained"
-                color="primary"
-                startIcon={<BookmarkIcon />}
-              >
-                Bookmark
-              </Button>
-            </Grid>
           </Grid>
           <Grid container direction="row" alignItems="center" justify="center">
             <IconButton
