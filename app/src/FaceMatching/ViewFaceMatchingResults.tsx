@@ -64,19 +64,17 @@ export default function Match(props): JSX.Element {
     // get match data
     getFaceMatchingResults(taskId)
       .then((data) => {
-        myConsole.log("face matching results", data)
-        myConsole.log("matching", data[0].matching)
-        if(data.length < 1)
-         setNoneState(true)
-        else
-          setMatchData(data)
+        if(data.length === 0){
+         setNoneState(true)}
+        else{
+          setMatchData(data)}
       })
   }, []);
   function getNoneMsg() {
     if (noneState) {
       return (
-        <div className="row mt-5 ml-0 mr-0 p-0 d-flex justify-content-center align-items-center">
-          <h4 className="mr-4 mb-0 text-center align-self-center">
+        <div className="row mt-4 ml-0 mr-0 p-0">
+          <h4 className="mb-0">
             No faces matched yet
           </h4>
         </div>
@@ -98,8 +96,8 @@ export default function Match(props): JSX.Element {
                     <div className="col-12 mx-auto">
                       <div className="row">
                         <div className="col-8">
-                          <h3 className={classes2.cardTitle + ' ml-4 mt-4'}>Face Matching History</h3>
-                          <p className={classes2.cardCategory+ ' ml-4 mt-2 pt-0'}>All the previously matched faces.</p>
+                          <h3 className={classes2.cardTitle + ' mt-4'}>Face Matching History</h3>
+                          <p className={classes2.cardCategory+ ' mt-2 pt-0'}>All the previously matched faces.</p>
                           {getNoneMsg()}
                         </div>
                       </div>

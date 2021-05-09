@@ -23,9 +23,15 @@ import FaceIcon from '@material-ui/icons/Face';
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
 import ViewFaceMatchingResults from '../FaceMatching/ViewFaceMatchingResults'
+import LiveTracker from '../LiveTracker/LiveTrackerDialoge'
 import { getFaces } from '../API';
 import Timeline from '../ReusableCompnents/Timeline';
 import options from '../ReusableCompnents/classes';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { useStore } from 'react-redux';
 
 const nodeConsole = require('console');
 
@@ -48,12 +54,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Faces(): JSX.Element {
+  const [openLTdialog, setOpenLTdialog] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+
   const history = useHistory();
   const classes = useStyles();
   const { taskId } = useParams();
   const [facesData, setFacesData] = useState([]);
   const [noneState, setNoneState] = useState(false);
+  const [trackingID, setTrackingID] = useState(-1)
+  const handleClickOpenLTdialog = () => {
+    setOpenLTdialog(true);
+  };
 
+  const handleClickCloseLTdialog = () => {
+    setOpenLTdialog(false);
+  };
   useEffect(() => {
     // get faces data
     getFaces(taskId)
@@ -81,8 +98,10 @@ export default function Faces(): JSX.Element {
   function goBack() {
     history.push('/detections/' + taskId);
   }
-  const gotoTracker = (trackId) => {
-    history.push('/track/' + taskId + '/' + trackId);
+  const openTracker = (trackId) => {
+   // history.push('/track/' + taskId + '/' + trackId);
+   setTrackingID(trackId)
+   handleClickOpenLTdialog()
   };
   return (
     <>
@@ -144,13 +163,14 @@ export default function Faces(): JSX.Element {
                                 </h6>
                                 <button
                                   onClick={() => {
-                                    gotoTracker(val.id);
+                                    openTracker(val.id);
                                   }}
                                   className="button m-0"
                                   style={{ verticalAlign: 'middle' }}
                                 >
                                   <span>live tracking</span>
                                 </button>
+
                               </div>
                             </div>
                             </Grow>
@@ -166,6 +186,13 @@ export default function Faces(): JSX.Element {
               </div>
             </div>
           </Collapse>
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={openLTdialog}
+            onClose={handleClickCloseLTdialog}>
+            <LiveTracker taskId = {taskId} trackId = {trackingID}/>
+          </Dialog>
         </div>
       </section>
     </>

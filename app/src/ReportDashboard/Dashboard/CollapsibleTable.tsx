@@ -15,8 +15,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { useStore } from 'react-redux';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import {useHistory } from 'react-router-dom';
+import LiveTracker from '../../LiveTracker/LiveTrackerDialoge'
 
 const useRowStyles = makeStyles({
   root: {
@@ -44,8 +45,8 @@ function createData(
   };
 }
 
-function Row(props: { row: ReturnType<typeof createData>, gotoTracker: Function }) {
-  const { row, gotoTracker } = props;
+function Row(props: { row: ReturnType<typeof createData>, openTracker: Function }) {
+  const { row, openTracker } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -97,7 +98,7 @@ function Row(props: { row: ReturnType<typeof createData>, gotoTracker: Function 
                       <Tooltip title="Live Tracking">
                       <IconButton
                           onClick={() => {
-                           gotoTracker(objectsRow.id);
+                            openTracker(objectsRow.id);
                           }}
                           color="secondary"
                           aria-label="delete">
@@ -122,10 +123,22 @@ const nodeConsole = require('console');
 const myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
 export default function CollapsibleTable(props) {
-  const history = useHistory();
-  const gotoTracker = (trackId) => {
-    history.push('/track/' + props.taskId + '/' + trackId);
+  const [trackingID, setTrackingID] = useState(-1)
+  const [openLTdialog, setOpenLTdialog] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+  const handleClickOpenLTdialog = () => {
+    setOpenLTdialog(true);
   };
+
+  const handleClickCloseLTdialog = () => {
+    setOpenLTdialog(false);
+  };
+  const openTracker = (trackId) => {
+    // history.push('/track/' + taskId + '/' + trackId);
+    setTrackingID(trackId)
+    handleClickOpenLTdialog()
+   };
   const [rows, setRows] = useState([])
   useEffect(()=>{
 
@@ -153,10 +166,17 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} gotoTracker={gotoTracker}/>
+            <Row key={row.name} row={row} openTracker={openTracker}/>
           ))}
         </TableBody>
       </Table>
+      <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={openLTdialog}
+            onClose={handleClickCloseLTdialog}>
+            <LiveTracker taskId = {props.taskId} trackId = {trackingID}/>
+      </Dialog>
     </TableContainer>
   );
 }

@@ -48,61 +48,37 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function LiveTracker(): JSX.Element {
+export default function LiveTracker(props): JSX.Element {
   const [state, setState] = useState({
     url: null,
   });
-  const { taskId, trackId } = useParams();
+  const { taskId, trackId } = props;
   const classes = useStyles();
   const history = useHistory();
-  // 0 state means noting has happened
-  // 1 state means initializing model
-  // 2 state means started processing
-  // 3 state means processing finished
-  var processState = sessionStorage.getItem('processState');
-  if (processState == null || processState == '3') {
-    processState = '0';
-    sessionStorage.setItem('processState', '0');
-  }
-  function goBack() {
-    history.push('/detections/' + taskId);
-  }
+
+
   useEffect(() => {
-    // Anything in here is fired on component mount.
-    socket.emit('get-trackvideo', { trackId, taskId });
-    socket.on('trackvideo-done', (data) => {
-      setState(data.detections);
-    });
+        // Anything in here is fired on component mount.
+        socket.emit('get-trackvideo', { trackId, taskId });
+        socket.on('trackvideo-done', (data) => {
+          setState(data.detections);
+        });
   }, []);
 
   return (
     <>
-      <section id="header" className="home-section ml-0">
-        <div className="container-fluid pb-4 ml-0">
-          <div className="row mt-2 ml-0">
+      <section id="header" className="home-section ml-0 mt-2">
+        <div className="container-fluid ml-0">
+          <div className="row ml-0">
             <div className="col-lg-12 col-md-12 col-xl-12 ml-0">
-              <div className="row m-0 d-flex justify-content-center ml-0">
-                <Button
-                  onClick={goBack}
-                  variant="outlined"
-                  color="default"
-                  className={classes.button + ' mr-auto'}
-                >
-                  Back
-                </Button>
-                <h4 className="mr-auto mt-2" style={{ marginLeft: '-15px' }}>
-                  Objects Tracker{' Task: ' + taskId + ' Track: ' + trackId}
-                </h4>
-              </div>
               <div
-                className="row m-0 mt-3 ml-0 justify-content-center"
-                style={{ marginLeft: '-15px' }}
+                className="row justify-content-center"
               >
                 {state.url ? (
                   <Player url={state.url} />
                 ) : (
-                  <div className="row mt-5 justify-content-center">
-                    <h4 className="mr-4 mb-0 text-center align-self-center">
+                  <div className="row justify-content-center pt-5 pb-5">
+                    <h4 className="text-center align-self-center mr-3">
                       Tracking the object...
                     </h4>
                     <CircularIntermidiate />

@@ -318,12 +318,6 @@ function App(props) {
 
   return (
     <>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography>React Video Player</Typography>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
       <Container maxWidth="md">
         <div
           onMouseMove={handleMouseMove}

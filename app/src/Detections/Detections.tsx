@@ -16,12 +16,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Collapse from '@material-ui/core/Collapse';
 import Grow from '@material-ui/core/Grow';
 
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FaceIcon from '@material-ui/icons/Face';
 import { getDetections } from '../API';
+import LiveTracker from '../LiveTracker/LiveTrackerDialoge'
 import CircularIntermidiate from '../ReusableCompnents/CircularIntermidiate';
 import socket from '../socketIoBase';
 
@@ -57,6 +59,17 @@ export default function Detections(): JSX.Element {
   const [detectionData, setDetectionData] = useState([]);
   const [noneState, setNoneState] = useState(false);
 
+  const [trackingID, setTrackingID] = useState(-1)
+  const [openLTdialog, setOpenLTdialog] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+  const handleClickOpenLTdialog = () => {
+    setOpenLTdialog(true);
+  };
+
+  const handleClickCloseLTdialog = () => {
+    setOpenLTdialog(false);
+  };
   useEffect(() => {
     // Anything in here is fired on component mount.
 
@@ -94,9 +107,11 @@ export default function Detections(): JSX.Element {
     history.push('/faces/' + taskId);
   }
 
-  const gotoTracker = (trackId) => {
-    history.push('/track/' + taskId + '/' + trackId);
-  };
+  const openTracker = (trackId) => {
+    // history.push('/track/' + taskId + '/' + trackId);
+    setTrackingID(trackId)
+    handleClickOpenLTdialog()
+   };
   return (
     <>
       <section id="header" className="d-flex home-section">
@@ -176,7 +191,7 @@ export default function Detections(): JSX.Element {
                                 </h6>
                                 <button
                                   onClick={() => {
-                                    gotoTracker(val.id);
+                                    openTracker(val.id);
                                   }}
                                   className="button m-0"
                                   style={{ verticalAlign: 'middle' }}
@@ -195,6 +210,13 @@ export default function Detections(): JSX.Element {
               </div>
             </div>
           </Collapse>
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={openLTdialog}
+            onClose={handleClickCloseLTdialog}>
+            <LiveTracker taskId = {taskId} trackId = {trackingID}/>
+          </Dialog>
         </div>
       </section>
     </>
