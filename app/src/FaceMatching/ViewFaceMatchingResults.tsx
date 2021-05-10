@@ -12,6 +12,8 @@
 /* eslint-disable no-else-return */
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import LiveTracker from '../LiveTracker/LiveTrackerDialoge'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import socket from '../socketIoBase';
@@ -60,6 +62,18 @@ export default function Match(props): JSX.Element {
   const [matchData, setMatchData] = useState([]);
   const [noneState, setNoneState] = useState(false);
 
+
+  const [trackingID, setTrackingID] = useState(-1)
+  const [openLTdialog, setOpenLTdialog] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+  const handleClickOpenLTdialog = () => {
+    setOpenLTdialog(true);
+  };
+
+  const handleClickCloseLTdialog = () => {
+    setOpenLTdialog(false);
+  };
   useEffect(() => {
     // get match data
     getFaceMatchingResults(taskId)
@@ -74,18 +88,22 @@ export default function Match(props): JSX.Element {
     if (noneState) {
       return (
         <div className="row mt-4 ml-0 mr-0 p-0">
-          <h4 className="mb-0">
+          <h5 className="mb-0">
             No faces matched yet
-          </h4>
+
+          </h5>
         </div>
       );
     } else {
       return <></>;
     }
   }
-  const gotoTracker = (trackId) => {
-    history.push('/track/' + taskId + '/' + trackId);
-  };
+
+  const openTracker = (trackId) => {
+    // history.push('/track/' + taskId + '/' + trackId);
+    setTrackingID(trackId)
+    handleClickOpenLTdialog()
+   };
   return (
     <>
         <div className="container-fluid">
@@ -137,6 +155,7 @@ export default function Match(props): JSX.Element {
                                                 </Grow>
                                             )
                                           })}</div>
+
                                       </div>
                                     </div>
                                     <div className="row">
@@ -168,7 +187,7 @@ export default function Match(props): JSX.Element {
                                                       </h6>
                                                       <button
                                                         onClick={() => {
-                                                          gotoTracker(match.id);
+                                                          openTracker(match.id);
                                                         }}
                                                         className="button m-0"
                                                         style={{ verticalAlign: 'middle' }}
@@ -181,12 +200,18 @@ export default function Match(props): JSX.Element {
                                               )
                                             })}
                                         </div>
+                                        {val.matching.length===0 ? (<div className="row mt-3 ml-0 mr-0 p-0">
+                                            <h4 className="mb-0">
+                                              No faces matched
+                                            </h4>
+                                          </div>
+                                          ): (<></>)}
                                       </div>
                                     </div>
                                   </CardBody>
                                   <CardFooter stats>
                                     <div className={classes2.stats} >
-                                      4 faces matched
+                                      {val.matching.length} faces matched
                                     </div>
                                   </CardFooter>
                                 </Card>
@@ -200,6 +225,13 @@ export default function Match(props): JSX.Element {
                 </div>
               </div>
             </div>
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={openLTdialog}
+            onClose={handleClickCloseLTdialog}>
+            <LiveTracker taskId = {taskId} trackId = {trackingID}/>
+          </Dialog>
         </div>
     </>
   );
