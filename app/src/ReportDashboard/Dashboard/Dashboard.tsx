@@ -1,3 +1,4 @@
+/* eslint-disable promise/catch-or-return */
 import React, {useState, useEffect} from "react";
 import { useParams, useHistory } from 'react-router-dom';
 // react plugin for creating charts
@@ -97,7 +98,6 @@ export default function Dashboard() {
     // Anything in here is fired on component mount.
     getReport(taskId).then((data) => {
       // myConsole.log("REPORT", data);
-
       setTableData(data.fig7);
       setTitles({
         countObjs: data.totalOccurrences,
