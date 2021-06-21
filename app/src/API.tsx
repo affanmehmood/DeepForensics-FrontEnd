@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-var */
 /* eslint-disable promise/always-return */
 /* eslint-disable promise/catch-or-return */
@@ -63,5 +65,17 @@ const getFaceMatchingResults = async (taskId: number) => {
     });
   return data;
 };
+const updateRemark = async (matchingID: number, remark: string) =>{
+  axios.get('http://127.0.0.1:5000/update-remark?matchingId='+  matchingID.toString() +'&remark=' + remark)
+
+}
 // eslint-disable-next-line import/prefer-default-export
-export { getTableData, getDetections, getFaces, getReport, getTop5TableData, getFaceMatchingResults };
+export {
+  getTableData,
+  getDetections,
+  getFaces,
+  getReport,
+  getTop5TableData,
+  getFaceMatchingResults,
+  updateRemark,
+};

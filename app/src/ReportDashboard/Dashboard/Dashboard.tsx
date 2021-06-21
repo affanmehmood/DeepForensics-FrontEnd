@@ -145,7 +145,7 @@ export default function Dashboard() {
               <CardFooter stats>
                 <div className={classes.stats}>
                   <DateRange />
-                  Last 24 Hours
+                  Total number of objects detected.
                 </div>
               </CardFooter>
             </Card>
@@ -162,7 +162,7 @@ export default function Dashboard() {
               <CardFooter stats>
                 <div className={classes.stats}>
                   <Update />
-                  Just Updated
+                  Average time taken by all vehicles.
                 </div>
               </CardFooter>
             </Card>
@@ -182,7 +182,7 @@ export default function Dashboard() {
                 <div className={classes.stats}>
 
                     <Warning/>
-                    Get more space
+                    Number of total vehicles.
                 </div>
               </CardFooter>
             </Card>
@@ -199,7 +199,7 @@ export default function Dashboard() {
               <CardFooter stats>
                 <div className={classes.stats}>
                   <LocalOffer />
-                  Tracked from Github
+                  Average confidence of all objects.
                 </div>
               </CardFooter>
             </Card>
@@ -222,7 +222,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+                <AccessTime /> Barchart of top 5 most occuring objects.
               </div>
             </CardFooter>
           </Card>
@@ -242,7 +242,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> Average time taken by top 5 objects.
               </div>
             </CardFooter>
           </Card>
@@ -261,7 +261,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> Top 5 most occuring vehicles.
               </div>
             </CardFooter>
           </Card>
@@ -284,7 +284,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+                <AccessTime /> Donut chart of top 5 most occuring objects.
               </div>
             </CardFooter>
           </Card>
@@ -305,7 +305,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> Donut chart of average time taken by top 5 most occuring objects.
               </div>
             </CardFooter>
           </Card>
@@ -325,7 +325,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> Donut chart of top 5 most occuring vehicles.
               </div>
             </CardFooter>
           </Card>

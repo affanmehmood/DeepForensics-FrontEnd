@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-indent-props */
+/* eslint-disable react/jsx-equals-spacing */
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable promise/catch-or-return */
@@ -37,12 +39,13 @@ import SendIcon from '@material-ui/icons/Send';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import MenuIcon from '@material-ui/icons/Menu';
+import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import EditIcon from '@material-ui/icons/Edit';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import SaveIcon from '@material-ui/icons/Save';
 import ListItemText from '@material-ui/core/ListItemText';
 import styles from "../ReportDashboard/assets/jss/material-dashboard-react/views/dashboardStyle";
 
@@ -54,6 +57,8 @@ import CardHeader from "../ReportDashboard/components/Card/CardHeader";
 import CardIcon from "../ReportDashboard/components/Card/CardIcon";
 import CardBody from "../ReportDashboard/components/Card/CardBody";
 import CardFooter from "../ReportDashboard/components/Card/CardFooter";
+
+import {updateRemark} from "../API"
 
 const nodeConsole = require('console');
 
@@ -100,8 +105,8 @@ export default function Match(props): JSX.Element {
   const { taskId } = props;
   const [matchData, setMatchData] = useState([]);
   const [noneState, setNoneState] = useState(false);
-  const [readOnlyState, setReadOnlyState] = useState(true)
-  const [remark, setRemark ] = useState('')
+  const [readOnlyStates, setReadOnlyStates] = useState({arrayvar: []})
+  const [remarks, setRemarks ] = useState({arrayvar: []})
   const [trackingID, setTrackingID] = useState(-1)
   const [openLTdialog, setOpenLTdialog] = React.useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
@@ -120,9 +125,21 @@ export default function Match(props): JSX.Element {
       .then((data) => {
         if(data.length === 0){
          setNoneState(true)}
-        else{
-          myConsole.log("DATA", data)
-          setMatchData(data)}
+        else {
+          myConsole.log("data", data)
+           data.forEach((value)=>{
+            myConsole.log("remark", value.remark)
+
+            setRemarks(prevState => ({
+              arrayvar: [...prevState.arrayvar, value.remark]
+            }))
+            setReadOnlyStates(prevState => ({
+              arrayvar: [...prevState.arrayvar, true]
+            }))
+
+          })
+          setMatchData(data)
+        }
       })
   }, []);
   function getNoneMsg() {
@@ -146,14 +163,10 @@ export default function Match(props): JSX.Element {
     handleClickOpenLTdialog()
    };
 
-  const shuffleReadWriteRemarks = (value) => {
-    setReadOnlyState(value)
-  }
-  const updateRemark = (value)=>{
-    setRemark(value.target.value)
-  }
-  const saveUpdatedRemark=()=>{
-    myConsole.log(remark)
+
+  const saveUpdatedRemark=(id: number, index)=>{
+    updateRemark(id, remarks.arrayvar[index])
+    myConsole.log(remarks.arrayvar[index])
   }
   return (
     <>
@@ -172,12 +185,12 @@ export default function Match(props): JSX.Element {
                       </div>
                       <div className="row">
                       {matchData
-                      .map((val, ind) => {
+                      .map((val, index) => {
                         return (
                           <div className="row">
                               <div className="col-lg-12 col-md-12 col-xl-12">
                                 <Card>
-                                  <h4 className={classes2.cardTitle + ' ml-4 mt-3'}>Match #{ind+1}</h4>
+                                  <h4 className={classes2.cardTitle + ' ml-4 mt-3'}>Match #{index+1}</h4>
                                   <CardBody className="pb-1">
                                     <div className="row">
                                       <div className="col-12">
@@ -262,39 +275,53 @@ export default function Match(props): JSX.Element {
                                   </CardBody>
 
                                   <Paper className={classes.root +" col-5  ml-4"}>
-                                    <DvrIcon />
                                     <TextField
                                       label="User Remark"
-                                      defaultValue={val.remark}
+                                      defaultValue={val.remark? val.remark: ""}
                                       InputProps={{
-                                        readOnly: readOnlyState,
+                                        readOnly: readOnlyStates.arrayvar[index],
                                       }}
                                       multiline
+                                      fullWidth
                                       variant="outlined"
-                                      onChange={updateRemark}
+                                      onChange={(value)=>{
+                                        let items = [...remarks.arrayvar]
+                                        items[index] = value.target.value
+                                        setRemarks({arrayvar: items})
+                                      }}
                                     />
-                                    {readOnlyState ? (<IconButton
-                                      onClick={
-                                      ()=>{
-                                        shuffleReadWriteRemarks(false)
-                                      }
-                                    }
-                                      color="primary"
-                                      className={classes.iconButton}
-                                      aria-label="edit">
-                                      <EditIcon />
-                                    </IconButton>) : <IconButton
-                                      onClick={
-                                        ()=>{
-                                          shuffleReadWriteRemarks(true)
-                                          saveUpdatedRemark()
+                                    {readOnlyStates.arrayvar[index]? (
+                                          <Button
+                                          onClick={
+                                            ()=>{
+                                              const items = [...readOnlyStates.arrayvar]
+                                              items[index] = false
+                                              setReadOnlyStates({arrayvar: items})
+                                            }
+                                          }
+                                          variant="contained"
+                                          color="primary"
+                                            className={classes.button}
+                                          endIcon={<EditIcon />}
+                                        >
+                                          Edit
+                                        </Button>) :
+                                        (<Button
+                                        onClick={
+                                          ()=>{
+                                            const items = [...readOnlyStates.arrayvar]
+                                            items[index] = true
+                                            setReadOnlyStates({arrayvar: items})
+                                            saveUpdatedRemark(val.id, index)
+                                          }
                                         }
-                                      }
-                                      color="primary"
-                                      className={classes.iconButton}
-                                      aria-label="save">
-                                      <CheckCircleIcon />
-                                    </IconButton>}
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.button}
+                                        endIcon={<SaveIcon />}
+                                      >
+                                        Save
+                                      </Button>)}
 
                                   </Paper>
                                   <CardFooter stats>
@@ -319,7 +346,7 @@ export default function Match(props): JSX.Element {
             maxWidth={maxWidth}
             open={openLTdialog}
             onClose={handleClickCloseLTdialog}>
-            <LiveTracker taskId = {taskId} trackId = {trackingID}/>
+            <LiveTracker taskId = {taskId} trackId = {trackingID} />
           </Dialog>
         </div>
     </>
